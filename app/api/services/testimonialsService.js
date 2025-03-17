@@ -2,15 +2,21 @@ import { Testimonial } from '../models/testimonials.js';
 import { User } from '../models/users.js';
 
 async function listTestimonials() {
-    return Testimonial.findAll({
-        attributes: ['testimonial'],
+    const testimonials = await Testimonial.findAll({
         include: [
             {
                 model: User,
-                attributes: ['name'],
+                attributes: ['id', 'name'],
+                as: 'user',
             },
         ],
     });
+
+    return testimonials.map((testimonial) => ({
+        id: testimonial.id,
+        owner: testimonial.user,
+        testimonial: testimonial.testimonial,
+    }));
 }
 
 export default {
