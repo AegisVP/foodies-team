@@ -11,8 +11,6 @@ const app = express();
 const SERVER_PORT = process.env.SERVER_PORT || 3000;
 const basePath = path.join(process.cwd(), '..', 'httpdocs');
 
-console.log({ processPath: process.cwd(), basePath });
-
 app.use(morgan('dev'));
 app.use(cors());
 app.use(express.static(basePath));

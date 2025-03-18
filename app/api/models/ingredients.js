@@ -26,3 +26,5 @@ export const Ingredient = sequelize.define(
         timestamps: false,
     }
 );
+
+Ingredient.sync({ alter: true });

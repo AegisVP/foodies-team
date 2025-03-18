@@ -59,3 +59,5 @@ export const Recipe = sequelize.define(
 );
 
 Recipe.belongsTo(User, { foreignKey: 'owner', targetKey: 'id' });
+
+Recipe.sync({ alter: true });
