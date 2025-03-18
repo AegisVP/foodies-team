@@ -8,7 +8,7 @@ import apiRouter from './routes/index.js';
 import { handleErrors } from './middlewares/handleErrors.js';
 
 const app = express();
-const SERVER_PORT = 3000;
+const SERVER_PORT = process.env.SERVER_PORT || 3000;
 const basePath = path.join(process.cwd(), '..', 'httpdocs');
 
 console.log({ processPath: process.cwd(), basePath });
