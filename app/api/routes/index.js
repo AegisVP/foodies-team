@@ -3,7 +3,7 @@ import express from 'express';
 // import usersRouter from './usersRouter.js';
 // import categoriesRouter from './categoriesRouter.js';
 // import areasRouter from './areasRouter.js';
-// import ingredientsRouter from './ingredientsRouter.js';
+import ingredientsRouter from './ingredientsRouter.js';
 import testimonialsRouter from './testimonialsRouter.js';
 import recipesRouter from './recipesRouter.js';
 
@@ -13,7 +13,7 @@ const router = express.Router();
 // router.use('/users', usersRouter);
 // router.use('/categories', categoriesRouter);
 // router.use('/areas', areasRouter);
-// router.use('/ingredients', ingredientsRouter);
+router.use('/ingredients', ingredientsRouter);
 router.use('/testimonials', testimonialsRouter);
 router.use('/recipes', recipesRouter);
 
