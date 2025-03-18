@@ -5,8 +5,6 @@ const recipiesRouter = express.Router();
 
 recipiesRouter.get('/:id', getRecipeById);
 
-recipiesRouter.get('/search', recipesController); // пошук рецептів за категорією
-
 // recipiesRouter.get('/popular', recipesController); // популярні рецепти
 
 // recipiesRouter.use(authMiddleware);
