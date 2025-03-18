@@ -19,11 +19,7 @@ export const getRecipeById = async (req, res, next) => {
         category: recipe.category,
         time: recipe.time,
         description: recipe.description,
-        owner: {
-            id: recipe.user.id,
-            name: recipe.user.name,
-            avatar: recipe.user.avatar,
-        },
+        owner: recipe.user,
         ingredients: recipe.ingredients.map((ing) => {
             const ingredient = ingredients.find((ing_i) => ing_i.id === ing.id);
             return {

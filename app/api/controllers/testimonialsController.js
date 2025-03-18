@@ -6,10 +6,7 @@ export const listTestimonials = async (_, res) => {
     res.json(
         testimonials.map((testimonial) => ({
             id: testimonial.id,
-            owner: {
-                id: testimonial.user.id,
-                name: testimonial.user.name,
-            },
+            owner: testimonial.user,
             testimonial: testimonial.testimonial,
         }))
     );

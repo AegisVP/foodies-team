@@ -5,6 +5,7 @@ async function listTestimonials() {
     return await Testimonial.findAll({
         include: [
             {
+                attributes: ['id', 'name'],
                 model: User,
                 as: 'user',
             },

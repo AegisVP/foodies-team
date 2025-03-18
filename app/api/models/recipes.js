@@ -51,17 +51,10 @@ export const Recipe = sequelize.define(
             type: DataTypes.JSON,
             allowNull: false,
         },
-        created_at: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-        },
-        updated_at: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-        },
     },
     {
-        timestamps: false,
+        timestamps: true,
+        underscored: true,
     }
 );
 
