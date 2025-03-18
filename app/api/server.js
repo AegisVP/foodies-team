@@ -5,7 +5,7 @@ import path from 'path';
 import cors from 'cors';
 
 import { sequelize } from './db/db.js';
-// import './db/sync.js';
+import './db/sync.js';
 
 import apiRouter from './routes/index.js';
 import { handleErrors } from './middlewares/handleErrors.js';
