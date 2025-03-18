@@ -1,8 +1,11 @@
+import 'dotenv/config';
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
 import cors from 'cors';
-import 'dotenv/config';
+
+import './db/db.js';
+import './db/sync.js';
 
 import apiRouter from './routes/index.js';
 import { handleErrors } from './middlewares/handleErrors.js';
@@ -24,6 +27,35 @@ app.use('/api', apiRouter);
 
 app.use(handleErrors);
 app.use((_, res) => res.status(404).send('Not found'));
+
+const preparationJobs = [];
+preparationJobs.push(
+    new Promise((resolve, reject) => {
+        db.authenticate()
+            .then(() => resolve('Database connected successfully.'))
+            .catch((err) => reject('Unable to connect to the database: ' + err.message));
+    })
+);
+
+preparationJobs.push(
+    new Promise((resolve, reject) => {
+        verifyDirectories()
+            .then(() => resolve('Directories verified successfully.'))
+            .catch((err) => reject('Unable to verify working directories: ' + err.message));
+    })
+);
+
+await Promise.all(preparationJobs)
+    .then((res) =>
+        res.forEach((message) => {
+            console.info(message);
+        })
+    )
+    .catch((error) => {
+        console.error(error);
+        console.info('Server cannot start - exiting...');
+        process.exit(1);
+    });
 
 app.listen(SERVER_PORT, () => {
     console.log(`Server is running on port ${SERVER_PORT}`);

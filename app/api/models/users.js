@@ -28,5 +28,3 @@ export const User = sequelize.define(
         timestamps: false,
     }
 );
-
-User.sync({ alter: true });

@@ -25,5 +25,3 @@ export const Testimonial = sequelize.define(
 );
 
 Testimonial.belongsTo(User, { foreignKey: 'owner', targetKey: 'id' });
-
-Testimonial.sync({ alter: true });
