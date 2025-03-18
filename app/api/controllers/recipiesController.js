@@ -1,6 +1,44 @@
 import recipesService from '../services/recipesService.js';
 import ingredientsServices from '../services/ingredientsServices.js';
 
+export const listRecipes = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+
+    let whereCondition = '1=1';
+
+    if (req.query.category) {
+        whereCondition += ` AND category = '${req.query.category}'`;
+    }
+
+    if (req.query.area) {
+        whereCondition += ` AND area = '${req.query.area}'`;
+    }
+
+    if (req.query.ingredients) {
+        const ingredientIds = req.query.ingredients.split(',').map((id) => id.trim());
+        whereCondition += ` AND ${ingredientIds
+            .map((id) => `CAST(ingredients AS TEXT) SIMILAR TO '%"id":[ ]?"${id}"%'`)
+            .join(' AND ')}`;
+    }
+
+    const recipes = await recipesService.listRecipes(limit, (page - 1) * limit, whereCondition);
+
+    res.json(
+        recipes.map((recipe) => ({
+            id: recipe.id,
+            owner: {
+                id: recipe.user_id,
+                name: recipe.user_name,
+                avatar: recipe.user_avatar,
+            },
+            title: recipe.title,
+            description: recipe.description,
+            thumb: recipe.thumb,
+        }))
+    );
+};
+
 export const getRecipeById = async (req, res, next) => {
     const { id } = req.params;
     const recipe = await recipesService.getRecipeById(id);
