@@ -22,21 +22,7 @@ export const listRecipes = async (req, res) => {
             .join(' AND ')}`;
     }
 
-    const recipes = await recipesService.listRecipes(limit, (page - 1) * limit, whereCondition);
-
-    res.json(
-        recipes.map((recipe) => ({
-            id: recipe.id,
-            owner: {
-                id: recipe.user_id,
-                name: recipe.user_name,
-                avatar: recipe.user_avatar,
-            },
-            title: recipe.title,
-            description: recipe.description,
-            thumb: recipe.thumb,
-        }))
-    );
+    res.json(await recipesService.listRecipes(limit, page, whereCondition));
 };
 
 export const getRecipeById = async (req, res, next) => {
