@@ -4,8 +4,8 @@ import morgan from 'morgan';
 import path from 'path';
 import cors from 'cors';
 
-import './db/db.js';
-import './db/sync.js';
+import { sequelize } from './db/db.js';
+// import './db/sync.js';
 
 import apiRouter from './routes/index.js';
 import { handleErrors } from './middlewares/handleErrors.js';
@@ -31,19 +31,20 @@ app.use((_, res) => res.status(404).send('Not found'));
 const preparationJobs = [];
 preparationJobs.push(
     new Promise((resolve, reject) => {
-        db.authenticate()
+        sequelize
+            .authenticate()
             .then(() => resolve('Database connected successfully.'))
             .catch((err) => reject('Unable to connect to the database: ' + err.message));
     })
 );
 
-preparationJobs.push(
-    new Promise((resolve, reject) => {
-        verifyDirectories()
-            .then(() => resolve('Directories verified successfully.'))
-            .catch((err) => reject('Unable to verify working directories: ' + err.message));
-    })
-);
+// preparationJobs.push(
+//     new Promise((resolve, reject) => {
+//         verifyDirectories()
+//             .then(() => resolve('Directories verified successfully.'))
+//             .catch((err) => reject('Unable to verify working directories: ' + err.message));
+//     })
+// );
 
 await Promise.all(preparationJobs)
     .then((res) =>
