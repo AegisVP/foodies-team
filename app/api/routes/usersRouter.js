@@ -1,8 +1,25 @@
 import express from 'express';
 
+import {
+    registerNewUser,
+    //loginUser,
+    //logoutUser,
+    //getCurrentUser,
+    //updateAvatar,
+    //verifyEmail,
+    //resendVerifyEmail
+} from "../controllers/usersController.js";
+
+import controllerWrapper from "../decorators/controllerWrapper.js";
+
+import { usersSchema } from "../schemas/usersSchema.js";
+import { validateBody } from "../decorators/validateBody.js";
+
 const usersRouter = express.Router();
 
 // usersRouter.post('/register', userController); body:{email:__, password:__}
+usersRouter.post("/register", validateBody(usersSchema), controllerWrapper(registerNewUser));
+
 // usersRouter.post('/login', userController); body:{email:__, password:__}
 
 // usersRouter.use(authMiddleware);
