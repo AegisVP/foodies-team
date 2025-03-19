@@ -1,17 +1,25 @@
 {
-    "name": "webfront",
+    "name": "foodies",
     "private": true,
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite build --watch",
-        "build": "vite build",
+        "dev": "vite build --emptyOutDir --watch",
+        "build": "vite build --emptyOutDir",
         "lint": "eslint .",
         "preview": "vite preview"
     },
     "dependencies": {
+        "@reduxjs/toolkit": "^2.6.1",
+        "axios": "^1.8.3",
+        "modern-normalize": "^3.0.1",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react-dom": "^18.3.1",
+        "react-hook-form": "^7.54.2",
+        "react-hot-toast": "^2.5.2",
+        "react-redux": "^9.2.0",
+        "react-router-dom": "^7.3.0",
+        "yup": "^1.6.1"
     },
     "devDependencies": {
         "@eslint/js": "^9.8.0",
