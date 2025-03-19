@@ -23,6 +23,14 @@ export const User = sequelize.define(
                 isEmail: true,
             },
         },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        token: {
+            type: DataTypes.STRING,
+            defaultValue: null,
+        },
     },
     {
         timestamps: false,
