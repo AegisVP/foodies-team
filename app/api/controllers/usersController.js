@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
 import { nanoid } from "nanoid";
 import usersService from "../services/usersService.js";
@@ -26,5 +27,37 @@ export const registerNewUser = async (req, res) => {
             email: newUser.email,
             avatar: newUser.avatar,
       },
+    });
+};
+
+export const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await usersService.getUserByEmail(email);
+
+    if (!user) {
+        throw HttpError(401, "Email or password is wrong");
+    }
+
+    const passwordCompare = await bcrypt.compare(password, user.password);
+
+    if (!passwordCompare) {
+        throw HttpError(401, "Email or password is wrong");
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  
+    const result = await usersService.updateUserToken(user.id, token);
+    
+    if (!result) {
+      throw HttpError(401, "Email or password is wrong");
+    }
+
+    res.json({
+        token,
+        user: {
+            name: user.name,
+            email: user.email
+        },
     });
 };

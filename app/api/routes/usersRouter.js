@@ -2,7 +2,7 @@ import express from 'express';
 
 import {
     registerNewUser,
-    //loginUser,
+    loginUser,
     //logoutUser,
     //getCurrentUser,
     //updateAvatar,
@@ -12,15 +12,16 @@ import {
 
 import controllerWrapper from "../decorators/controllerWrapper.js";
 
-import { usersSchema } from "../schemas/usersSchema.js";
+import { usersSchema, loginSchema } from "../schemas/usersSchema.js";
 import { validateBody } from "../decorators/validateBody.js";
 
 const usersRouter = express.Router();
 
-// usersRouter.post('/register', userController); body:{email:__, password:__}
+// usersRouter.post('/register', userController); body:{name:__, email:__, password:__}
 usersRouter.post("/register", validateBody(usersSchema), controllerWrapper(registerNewUser));
 
 // usersRouter.post('/login', userController); body:{email:__, password:__}
+usersRouter.post("/login", validateBody(loginSchema), controllerWrapper(loginUser));
 
 // usersRouter.use(authMiddleware);
 

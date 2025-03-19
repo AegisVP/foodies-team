@@ -27,6 +27,10 @@ export const User = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
+        token: {
+            type: DataTypes.STRING,
+            defaultValue: null,
+        },
     },
     {
         timestamps: false,
