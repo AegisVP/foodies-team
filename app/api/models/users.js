@@ -28,3 +28,21 @@ export const User = sequelize.define(
         timestamps: false,
     }
 );
+
+export const Followers = sequelize.define('Followers', {
+    Followed: {
+        type: DataTypes.STRING(36),
+        references: {
+            model: User,
+            key: 'id',
+        },
+    },
+    Follower: {
+        type: DataTypes.STRING(36),
+        references: {
+            model: User,
+            key: 'id',
+        },
+    },
+});
+User.belongsToMany(User, { through: 'followers', as: 'follower' });

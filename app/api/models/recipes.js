@@ -1,6 +1,8 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../db/db.js';
 import { User } from './users.js';
+import { Category } from './categories.js';
+import { Area } from './areas.js';
 
 export const Recipe = sequelize.define(
     'recipes',
@@ -15,8 +17,12 @@ export const Recipe = sequelize.define(
             allowNull: false,
         },
         category: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.STRING(36),
             allowNull: false,
+            references: {
+                model: Category,
+                key: 'id',
+            },
         },
         owner: {
             type: DataTypes.STRING(36),
@@ -28,8 +34,12 @@ export const Recipe = sequelize.define(
             onDelete: 'CASCADE',
         },
         area: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.STRING(36),
             allowNull: false,
+            references: {
+                model: Area,
+                key: 'id',
+            },
         },
         instructions: {
             type: DataTypes.TEXT,
@@ -57,5 +67,3 @@ export const Recipe = sequelize.define(
         underscored: true,
     }
 );
-
-Recipe.belongsTo(User, { foreignKey: 'owner', targetKey: 'id' });
