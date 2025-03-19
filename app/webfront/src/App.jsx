@@ -1,16 +1,13 @@
-import { useState, useEffect } from 'react';
+import { SharedLayout, Toaster } from 'src/components';
+import AppNavigator from 'src/navigation/AppNavigator';
 
 function App() {
-    const [message, setMessage] = useState('Loading...');
-
-    useEffect(() => {
-        fetch('/api/message')
-            .then((res) => res.json())
-            .then((data) => setMessage(data.message))
-            .catch(() => setMessage('Error fetching data'));
-    }, []);
-
-    return <h1>{message}</h1>;
+    return (
+        <SharedLayout>
+            <AppNavigator />
+            <Toaster />
+        </SharedLayout>
+    );
 }
 
 export default App;
