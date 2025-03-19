@@ -1,5 +1,6 @@
 import { Recipe } from '../models/recipes.js';
 import { User } from '../models/users.js';
+import { FavoriteRecipe } from '../models/favoriteRecipes.js';
 import { sequelize } from '../db/db.js';
 import { QueryTypes } from 'sequelize';
 
@@ -40,7 +41,14 @@ async function getRecipeById(id, ownerAttributes = ['id', 'name', 'avatar']) {
     });
 }
 
+async function deleteFavorite(userId, recipeId) {
+    return await FavoriteRecipe.findOne({
+        where: { user_id: userId, recipe_id: recipeId },
+    });
+}
+
 export default {
     listRecipes,
     getRecipeById,
+    deleteFavorite,
 };

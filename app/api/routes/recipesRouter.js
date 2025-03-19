@@ -1,5 +1,5 @@
 import express from 'express';
-import { listRecipes, getRecipeById } from '../controllers/recipiesController.js';
+import { listRecipes, getRecipeById, removeFavorite } from '../controllers/recipiesController.js';
 
 const recipiesRouter = express.Router();
 
@@ -18,6 +18,6 @@ recipiesRouter.get('/:id', getRecipeById);
 
 // recipiesRouter.get('/favorite', recipesController); // мої обрані
 // recipiesRouter.post('/favorite', recipesController); // додати в обрані
-// recipiesRouter.delete('/favorite', recipesController); // видалити з обраних
+recipiesRouter.delete('/favorite', removeFavorite);
 
 export default recipiesRouter;
