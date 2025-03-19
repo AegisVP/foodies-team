@@ -1,4 +1,4 @@
-const syncCondition = { alter: true };
+const syncCondition = { alter: false, force: false };
 
 import { User } from '../models/users.js';
 User.sync(syncCondition);

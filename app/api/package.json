@@ -4,7 +4,7 @@
     "main": "server.js",
     "type": "module",
     "scripts": {
-        "start": "node server.js",
+        "start": "node server.js dotenv_config_path=../../.env",
         "dev": "nodemon server.js dotenv_config_path=../../.env"
     },
     "keywords": [],
