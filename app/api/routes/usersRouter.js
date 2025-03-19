@@ -3,7 +3,7 @@ import express from 'express';
 import {
     registerNewUser,
     loginUser,
-    //logoutUser,
+    logoutUser,
     //getCurrentUser,
     //updateAvatar,
     //verifyEmail,
@@ -14,6 +14,7 @@ import controllerWrapper from "../decorators/controllerWrapper.js";
 
 import { usersSchema, loginSchema } from "../schemas/usersSchema.js";
 import { validateBody } from "../decorators/validateBody.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
 
 const usersRouter = express.Router();
 
@@ -23,7 +24,7 @@ usersRouter.post("/register", validateBody(usersSchema), controllerWrapper(regis
 // usersRouter.post('/login', userController); body:{email:__, password:__}
 usersRouter.post("/login", validateBody(loginSchema), controllerWrapper(loginUser));
 
-// usersRouter.use(authMiddleware);
+usersRouter.use(authMiddleware);
 
 // usersRouter.get('/current', userController); // отримати свої дані
 // usersRouter.get('/:id', userController); // отримати дані користувача
@@ -36,6 +37,7 @@ usersRouter.post("/login", validateBody(loginSchema), controllerWrapper(loginUse
 // usersRouter.post('/followers/:id', userController); // додати за ким слідкуємо
 // usersRouter.delete('/followers/:id', userController); // відписатися від користувача
 
-// usersRouter.get('/logout', userController); // logout користувача
+// usersRouter.post('/logout', userController); // logout користувача
+usersRouter.post("/logout", controllerWrapper(logoutUser));
 
 export default usersRouter;
