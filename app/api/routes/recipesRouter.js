@@ -1,12 +1,11 @@
 import express from 'express';
-import { listRecipes, getRecipeById, removeFavorite } from '../controllers/recipiesController.js';
+import { listRecipes, getRecipeById, getPopularRecipes, removeFavorite } from '../controllers/recipiesController.js';
 
 const recipiesRouter = express.Router();
 
 recipiesRouter.get('/', listRecipes);
+recipiesRouter.get('/popular', getPopularRecipes);
 recipiesRouter.get('/:id', getRecipeById);
-
-// recipiesRouter.get('/popular', recipesController); // популярні рецепти
 
 // recipiesRouter.use(authMiddleware);
 

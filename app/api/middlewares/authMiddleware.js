@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
-import User from "../db/models/User.js";
+import HttpError from "../helpers/HttpError.js";
+import usersService from "../services/usersService.js";
 
 const SECRET_KEY = process.env.JWT_SECRET;
 
-export async function authMiddleware(req, res, next) {
-  try {
+const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       console.warn("Authorization header missing or malformed");
-      return res.status(401).json({ message: "Not authorized" });
+      return next(HttpError(401, "Not authorized"));
     }
 
     const token = authHeader.split(" ")[1];
@@ -18,20 +18,18 @@ export async function authMiddleware(req, res, next) {
       decoded = jwt.verify(token, SECRET_KEY);
     } catch (error) {
       console.error("JWT Verification Error:", error);
-      return res.status(401).json({ message: "Invalid token" });
+      return next(HttpError(401, "Invalid token"));
     }
 
-    const user = await User.findOne({ where: { id: decoded.id } });
+    const user = await usersService.getUserById(decoded.id);
 
     if (!user || user.token !== token) {
       console.warn("User not found or token mismatch");
-      return res.status(401).json({ message: "Not authorized" });
+      return next(HttpError(401, "Not authorized"));
     }
 
     req.user = user;
     next();
-  } catch (error) {
-    console.error("Authentication Middleware Error:", error);
-    return res.status(500).json({ message: "Internal server error" });
-  }
 }
+
+export default authMiddleware;
