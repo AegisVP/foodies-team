@@ -1,13 +1,15 @@
-import axios from 'axios';
+import { login } from './auth';
+import { getRecipes, addRecipe, deleteRecipe } from './recipes';
+import { getCategories } from './common';
 
-axios.defaults.baseURL = '/api';
-
-export const getMessage = async () => {
-    const { data } = await axios.get('/message');
-    return data;
-};
-
-export const getCategories = async () => {
-    const { data } = await axios.get('/categories');
-    return data;
+// TODO add all api methods here for reexport
+export default {
+    //auth
+    login,
+    //recipes
+    getRecipes,
+    addRecipe,
+    deleteRecipe,
+    //common
+    getCategories,
 };
