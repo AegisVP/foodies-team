@@ -61,10 +61,10 @@ export const getRecipeById = async (req, res, next) => {
 
 export const removeFavorite = async (req, res, next) => {
     try {
-        const { userId } = req.user;
-        const { recipeId } = req.params;
+        const { id: userId } = req.user;
+        const { id: recipeId } = req.body;
 
-        const favorite = await deleteFavorite(userId, recipeId);
+        const favorite = await recipesService.deleteFavorite(userId, recipeId);
 
         if (!favorite) {
             const error = new Error('Favorite not found');

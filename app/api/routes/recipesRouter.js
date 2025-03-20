@@ -1,4 +1,5 @@
 import express from 'express';
+import authMiddleware from "../middlewares/authMiddleware.js";
 import { listRecipes, getRecipeById, getPopularRecipes, removeFavorite } from '../controllers/recipiesController.js';
 
 const recipiesRouter = express.Router();
@@ -7,7 +8,7 @@ recipiesRouter.get('/', listRecipes);
 recipiesRouter.get('/popular', getPopularRecipes);
 recipiesRouter.get('/:id', getRecipeById);
 
-// recipiesRouter.use(authMiddleware);
+recipiesRouter.use(authMiddleware);
 
 // recipiesRouter.post('/', recipesController); // create recipe
 // recipiesRouter.delete('/', recipesController); // delete recipe
