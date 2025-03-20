@@ -74,3 +74,18 @@ export const logoutUser = async (req, res) => {
     await usersService.updateUserToken(id, null);
     res.status(204).json();
 };
+
+export const getCurrentUser = async (req, res) => {
+    const { id } = req.user;
+    const user = await usersService.getUserById(id);
+
+    if (!user) {
+        throw HttpError(401, "Not authorized");
+    }
+
+    res.json({
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar
+    });
+};

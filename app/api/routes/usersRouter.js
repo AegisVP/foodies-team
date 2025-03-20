@@ -4,7 +4,7 @@ import {
     registerNewUser,
     loginUser,
     logoutUser,
-    //getCurrentUser,
+    getCurrentUser,
     //updateAvatar,
     //verifyEmail,
     //resendVerifyEmail
@@ -27,6 +27,8 @@ usersRouter.post("/login", validateBody(loginSchema), controllerWrapper(loginUse
 usersRouter.use(authMiddleware);
 
 // usersRouter.get('/current', userController); // отримати свої дані
+usersRouter.get("/current", controllerWrapper(getCurrentUser));
+
 // usersRouter.get('/:id', userController); // отримати дані користувача
 
 // usersRouter.post('/avatar', userController);
