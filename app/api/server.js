@@ -20,6 +20,7 @@ app.use(cors());
 app.use(express.static(basePath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use("/avatars", express.static("public/avatars"));
 
 // Serve React's index.html for any unknown routes
 app.get('/', (req, res) => res.redirect('/index.html'));

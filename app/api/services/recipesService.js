@@ -106,6 +106,10 @@ async function getPopularRecipes(limit = 10, page = 1) {
     }));
 }
 
+async function countRecipesByOwner(ownerId) {
+    return await Recipe.count({ where: { owner: ownerId } });
+}
+
 async function deleteRecipe(query) {
     return Recipe.destroy({ where: query });
 }
@@ -115,5 +119,6 @@ export default {
     getRecipeById,
     deleteFavorite,
     getPopularRecipes,
+    countRecipesByOwner,
     deleteRecipe,
 };
