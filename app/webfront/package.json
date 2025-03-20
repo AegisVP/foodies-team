@@ -1,11 +1,12 @@
 {
-    "name": "Foodies",
+    "name": "foodies",
     "private": true,
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
-        "build": "vite build",
+        "dev:node": "cd ../api && npm run dev > /dev/null & cd ../webfront && npm run dev",
+        "dev": "vite build --emptyOutDir --watch",
+        "build": "vite build --emptyOutDir",
         "lint": "eslint .",
         "preview": "vite preview"
     },

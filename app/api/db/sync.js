@@ -1,4 +1,4 @@
-const syncCondition = { alter: true };
+const syncCondition = { alter: false, force: false };
 
 import { User } from '../models/users.js';
 User.sync(syncCondition);
@@ -14,8 +14,11 @@ Category.sync(syncCondition);
 
 import { Recipe } from '../models/recipes.js';
 Recipe.sync(syncCondition);
-Recipe.belongsTo(User, { foreignKey: 'owner', targetKey: 'id' });
+Recipe.belongsTo(User, { foreignKey: 'owner', targetKey: 'id', as: 'user' });
 
 import { Testimonial } from '../models/testimonials.js';
 Testimonial.sync(syncCondition);
 Testimonial.belongsTo(User, { foreignKey: 'owner', targetKey: 'id' });
+
+import { FavoriteRecipe } from '../models/favoriteRecipes.js';
+FavoriteRecipe.sync(syncCondition);

@@ -1,6 +1,6 @@
-import axiosPublic from './axiosPublic.js';
+import axios from './axiosInstance';
 
 export const getCategories = async () => {
-    const categories = await axiosPublic.get('/categories');
+    const categories = await axios.get('/categories');
     return categories;
 };

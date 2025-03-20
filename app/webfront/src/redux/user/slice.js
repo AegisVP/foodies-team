@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// getProfile, getRecipes, getFollowers
-const usersSlice = createSlice({
-    name: 'users',
+// add getProfile, getRecipes, getFollowers
+// unauthorized user with short profile
+const userSlice = createSlice({
+    name: 'user',
     initialState: {
         profile: null,
         recipes: [],
@@ -13,4 +14,4 @@ const usersSlice = createSlice({
     extraReducers: () => {},
 });
 
-export const usersReducer = usersSlice.reducer;
+export const userReducer = userSlice.reducer;

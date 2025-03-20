@@ -13,22 +13,19 @@ const HomePage = () => {
     const handleGetCategories = async () => {
         dispatch(getCategories());
     };
-    <ul>
-        {categories.map((category) => (
-            <li key={category.id}>{category.name}</li>
-        ))}
-    </ul>;
+
     useShowError(error);
 
     return (
         <div>
             <p>Home page</p>
+
             <p>Categories:</p>
             <button onClick={handleGetCategories}>Get categories</button>
             {isCategoriesLoading && <p>Loading getCategories...</p>}
             {!isCategoriesLoading && !!categories?.length && (
                 <ul>
-                    {categories.map((category) => (
+                    {categories?.map((category) => (
                         <li key={category.id}>{category.name}</li>
                     ))}
                 </ul>

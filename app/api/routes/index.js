@@ -1,6 +1,6 @@
 import express from 'express';
 // import authRouter from './authRouter.js';
-// import usersRouter from './usersRouter.js';
+import usersRouter from './usersRouter.js';
 import categoriesRouter from './categoriesRouter.js';
 import areasRouter from './areasRouter.js';
 import ingredientsRouter from './ingredientsRouter.js';
@@ -10,7 +10,7 @@ import recipesRouter from './recipesRouter.js';
 const router = express.Router();
 
 // router.use('/auth', authRouter);
-// router.use('/users', usersRouter);
+router.use('/users', usersRouter);
 router.use('/categories', categoriesRouter);
 router.use('/areas', areasRouter);
 router.use('/ingredients', ingredientsRouter);

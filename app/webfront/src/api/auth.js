@@ -1,6 +1,6 @@
-import axiosPublic from './axiosPublic.js';
+import axios from './axiosInstance.js';
 
 export const login = async (data) => {
-    const user = await axiosPublic.post('/auth/login', data);
+    const user = await axios.post('/auth/login', data);
     return user;
 };
