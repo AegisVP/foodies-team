@@ -1,7 +1,8 @@
 const syncCondition = { alter: false, force: false };
 
-import { User } from '../models/users.js';
+import { User, Follow } from '../models/users.js';
 User.sync(syncCondition);
+Follow.sync(syncCondition);
 
 import { Ingredient } from '../models/ingredients.js';
 Ingredient.sync(syncCondition);

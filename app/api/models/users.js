@@ -37,20 +37,42 @@ export const User = sequelize.define(
     }
 );
 
-export const Followers = sequelize.define('Followers', {
-    Followed: {
-        type: DataTypes.STRING(36),
-        references: {
-            model: User,
-            key: 'id',
+export const Follow = sequelize.define(
+    "follows",
+    {
+        followerId: {
+            type: DataTypes.STRING(36),
+            allowNull: false,
+            references: {
+                model: User,
+                key: "id",
+            },
+        },
+        followingId: {
+            type: DataTypes.STRING(36),
+            allowNull: false,
+            references: {
+                model: User,
+                key: "id",
+            },
         },
     },
-    Follower: {
-        type: DataTypes.STRING(36),
-        references: {
-            model: User,
-            key: 'id',
-        },
-    },
+    {
+        timestamps: false,
+        primaryKey: ["followerId", "followingId"],      // Composite primary key to prevent duplicates
+    }
+);
+
+User.belongsToMany(User, {
+    through: Follow,
+    as: "followers",            // Users that follow this user
+    foreignKey: "followingId",
+    otherKey: "followerId",
 });
-User.belongsToMany(User, { through: 'followers', as: 'follower' });
+
+User.belongsToMany(User, {
+    through: Follow,
+    as: "following",            // Users that this user follows
+    foreignKey: "followerId",
+    otherKey: "followingId",
+});
