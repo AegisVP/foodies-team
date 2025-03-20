@@ -58,3 +58,21 @@ export const getRecipeById = async (req, res, next) => {
         thumb: recipe.thumb,
     });
 };
+
+export const getPopularRecipes = async (req, res, next) => {
+    try {
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page) || 1;
+
+        const popularRecipes = await recipesService.getPopularRecipes(limit, page);
+
+        res.json({
+            page,
+            limit,
+            data: popularRecipes,
+        });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};

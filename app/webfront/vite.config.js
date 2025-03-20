@@ -7,4 +7,10 @@ export default defineConfig({
     build: {
         outDir: '../httpdocs',
     },
+    resolve: {
+        alias: {
+            src: '/src',
+        },
+    },
+    envDir: '../../',
 });

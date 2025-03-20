@@ -40,7 +40,58 @@ async function getRecipeById(id, ownerAttributes = ['id', 'name', 'avatar']) {
     });
 }
 
+async function getPopularRecipes(limit = 10, page = 1) {
+    const offset = (page - 1) * limit;
+
+    // Використовуємо SQL запит напряму, щоб уникнути проблем з регістром
+    const popularRecipes = await sequelize.query(
+        `
+        SELECT 
+            r.id,
+            r.title,
+            r.description,
+            r.thumb,
+            r.time,
+            u.id as user_id,
+            u.name as user_name,
+            u.avatar as user_avatar,
+            COUNT(fr.id) as favorite_count
+        FROM 
+            recipes r
+        LEFT JOIN 
+            users u ON r.owner = u.id
+        LEFT JOIN 
+            favorite_recipes fr ON r.id = fr.recipe_id
+        GROUP BY 
+            r.id, u.id
+        ORDER BY 
+            favorite_count DESC
+        LIMIT :limit OFFSET :offset
+    `,
+        {
+            replacements: { limit, offset },
+            type: QueryTypes.SELECT,
+        }
+    );
+
+    // Форматування відповіді
+    return popularRecipes.map((recipe) => ({
+        id: recipe.id,
+        title: recipe.title,
+        description: recipe.description,
+        thumb: recipe.thumb,
+        time: recipe.time,
+        favoriteCount: parseInt(recipe.favorite_count, 10) || 0,
+        owner: {
+            id: recipe.user_id,
+            name: recipe.user_name,
+            avatar: recipe.user_avatar,
+        },
+    }));
+}
+
 export default {
     listRecipes,
     getRecipeById,
+    getPopularRecipes,
 };
