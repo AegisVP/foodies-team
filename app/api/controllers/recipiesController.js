@@ -40,7 +40,7 @@ export const getRecipeById = async (req, res, next) => {
     res.json({
         id: recipe.id,
         title: recipe.title,
-        category: recipe.category,
+        category: recipe.category_association,
         time: recipe.time,
         description: recipe.description,
         owner: recipe.user,
@@ -53,7 +53,7 @@ export const getRecipeById = async (req, res, next) => {
                 measure: ing.measure,
             };
         }),
-        area: recipe.area,
+        area: recipe.area_association,
         instructions: recipe.instructions,
         thumb: recipe.thumb,
     });

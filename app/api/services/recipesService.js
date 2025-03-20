@@ -3,6 +3,8 @@ import { User } from '../models/users.js';
 import { FavoriteRecipe } from '../models/favoriteRecipes.js';
 import { sequelize } from '../db/db.js';
 import { QueryTypes } from 'sequelize';
+import { Category } from '../models/categories.js';
+import { Area } from '../models/areas.js';
 
 async function listRecipes(limit = 12, page = 1, whereCondition = null) {
     const recipes = await sequelize.query(
@@ -36,6 +38,14 @@ async function getRecipeById(id, ownerAttributes = ['id', 'name', 'avatar']) {
                 attributes: ownerAttributes,
                 model: User,
                 as: 'user',
+            },
+            {
+                model: Category,
+                as: 'category_association',
+            },
+            {
+                model: Area,
+                as: 'area_association',
             },
         ],
     });
