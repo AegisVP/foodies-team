@@ -76,3 +76,17 @@ export const getPopularRecipes = async (req, res, next) => {
         next(error);
     }
 };
+
+export const deleteRecipeById = async (req, res, next) => {
+    const { id } = req.params;
+    // const { id: owner } = req.user;
+    const recipe = await recipesService.deleteRecipe({ id }); // TODO pass owner when authMiddleware is ready
+
+    if (!recipe) {
+        const error = new Error('Recipe not found');
+        error.status = 404;
+        return next(error);
+    }
+
+    res.json(recipe);
+}
