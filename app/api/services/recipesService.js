@@ -90,8 +90,13 @@ async function getPopularRecipes(limit = 10, page = 1) {
     }));
 }
 
+async function deleteRecipe(query) {
+    return Recipe.destroy({ where: query });
+}
+
 export default {
     listRecipes,
     getRecipeById,
     getPopularRecipes,
+    deleteRecipe,
 };

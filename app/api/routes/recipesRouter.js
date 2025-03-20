@@ -1,16 +1,21 @@
 import express from 'express';
-import { listRecipes, getRecipeById, getPopularRecipes } from '../controllers/recipiesController.js';
+import {
+  listRecipes,
+  getRecipeById,
+  getPopularRecipes,
+  deleteRecipeById
+} from '../controllers/recipiesController.js';
 
 const recipiesRouter = express.Router();
 
 recipiesRouter.get('/', listRecipes);
 recipiesRouter.get('/popular', getPopularRecipes);
 recipiesRouter.get('/:id', getRecipeById);
+recipiesRouter.delete('/:id', deleteRecipeById);
 
 // recipiesRouter.use(authMiddleware);
 
 // recipiesRouter.post('/', recipesController); // create recipe
-// recipiesRouter.delete('/', recipesController); // delete recipe
 
 // recipiesRouter.get('/owner', recipesController); // мої рецепти
 // recipiesRouter.get('/owner/:id', recipesController); // рецепти користувача
