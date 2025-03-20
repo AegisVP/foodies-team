@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// get my followers, get following, follow, unfollow
+// get my followers, 
 const followersSlice = createSlice({
     name: 'followers',
     initialState: {

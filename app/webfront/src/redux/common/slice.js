@@ -8,7 +8,7 @@ const commonSlice = createSlice({
         areas: [],
         ingredients: [],
         testimonials: [],
-        // TODO revise do we need it here
+        // TODO revise do we need it here (for data from public endpoints)
         recipes: [],
         recipeDetails: null,
         favorites: [],

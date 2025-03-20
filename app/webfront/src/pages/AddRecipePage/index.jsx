@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateRecipeDetails } from 'src/redux/recipes/slice';
 import { selectRecipeDetails } from 'src/redux/recipes/selectors';
 
+// TODO delete content, just for example
 const AddRecipePage = () => {
     const dispatch = useDispatch();
     const recipeDetails = useSelector(selectRecipeDetails);
