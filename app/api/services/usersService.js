@@ -17,4 +17,8 @@ async function updateUserToken(userId, token) {
     return await User.update({ token }, { where: { id: userId } });
 }
 
-export default { registerUser, getUserById, getUserByEmail, updateUserToken };
+async function updateUserAvatar(userId, avatar) {
+    return await User.update({ avatar }, { where: { id: userId } });
+}
+
+export default { registerUser, getUserById, getUserByEmail, updateUserToken, updateUserAvatar };

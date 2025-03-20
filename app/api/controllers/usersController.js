@@ -2,8 +2,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
 import { nanoid } from "nanoid";
+import path from "node:path";
+import fs from "node:fs/promises";
 import usersService from "../services/usersService.js";
 import HttpError from "../helpers/HttpError.js";
+
+const avatarsDir = path.resolve("public/avatars");
 
 export const registerNewUser = async (req, res) => {
     const { name, email, password } = req.body;
@@ -89,3 +93,20 @@ export const getCurrentUser = async (req, res) => {
         avatar: user.avatar
     });
 };
+
+export const updateAvatar = async (req, res) => {
+    if (!req.file) {
+        throw HttpError(400, "No file uploaded");
+    }
+
+    const { path: tempPath, filename } = req.file;
+    const newAvatarName = `${req.user.id}-${Date.now()}${path.extname(filename)}`;
+    const newAvatarPath = path.join(avatarsDir, newAvatarName);
+
+    await fs.rename(tempPath, newAvatarPath);
+
+    const avatar = `/avatars/${newAvatarName}`;
+    await usersService.updateUserAvatar(req.user.id, avatar);
+
+    res.json({ avatar });
+}
