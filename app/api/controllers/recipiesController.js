@@ -59,6 +59,28 @@ export const getRecipeById = async (req, res, next) => {
     });
 };
 
+export const removeFavorite = async (req, res, next) => {
+    try {
+        const { id: userId } = req.user;
+        const { id: recipeId } = req.body;
+
+        const favorite = await recipesService.deleteFavorite(userId, recipeId);
+
+        if (!favorite) {
+            const error = new Error('Favorite not found');
+            error.status = 404;
+            return next(error);
+        }
+
+        await favorite.destroy();
+
+        res.status(200).json({ message: "Favorite removed successfully" });
+    } catch (error) {
+        console.error("Remove Favorite Error:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 export const getPopularRecipes = async (req, res, next) => {
     try {
         const limit = parseInt(req.query.limit) || 10;

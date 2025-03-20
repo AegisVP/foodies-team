@@ -1,5 +1,6 @@
 import { Recipe } from '../models/recipes.js';
 import { User } from '../models/users.js';
+import { FavoriteRecipe } from '../models/favoriteRecipes.js';
 import { sequelize } from '../db/db.js';
 import { QueryTypes } from 'sequelize';
 
@@ -40,6 +41,11 @@ async function getRecipeById(id, ownerAttributes = ['id', 'name', 'avatar']) {
     });
 }
 
+async function deleteFavorite(userId, recipeId) {
+    return await FavoriteRecipe.findOne({
+        where: { user_id: userId, recipe_id: recipeId },
+    });
+}
 async function getPopularRecipes(limit = 10, page = 1) {
     const offset = (page - 1) * limit;
 
@@ -97,6 +103,7 @@ async function deleteRecipe(query) {
 export default {
     listRecipes,
     getRecipeById,
+    deleteFavorite,
     getPopularRecipes,
     deleteRecipe,
 };

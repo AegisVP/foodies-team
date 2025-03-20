@@ -1,9 +1,11 @@
 import express from 'express';
+import authMiddleware from "../middlewares/authMiddleware.js";
 import {
   listRecipes,
   getRecipeById,
   getPopularRecipes,
-  deleteRecipeById
+  deleteRecipeById,
+  removeFavorite
 } from '../controllers/recipiesController.js';
 
 const recipiesRouter = express.Router();
@@ -13,7 +15,7 @@ recipiesRouter.get('/popular', getPopularRecipes);
 recipiesRouter.get('/:id', getRecipeById);
 recipiesRouter.delete('/:id', deleteRecipeById);
 
-// recipiesRouter.use(authMiddleware);
+recipiesRouter.use(authMiddleware);
 
 // recipiesRouter.post('/', recipesController); // create recipe
 
@@ -22,6 +24,6 @@ recipiesRouter.delete('/:id', deleteRecipeById);
 
 // recipiesRouter.get('/favorite', recipesController); // мої обрані
 // recipiesRouter.post('/favorite', recipesController); // додати в обрані
-// recipiesRouter.delete('/favorite', recipesController); // видалити з обраних
+recipiesRouter.delete('/favorite', removeFavorite);
 
 export default recipiesRouter;
