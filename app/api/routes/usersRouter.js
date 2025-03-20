@@ -10,8 +10,6 @@ import {
     //resendVerifyEmail
 } from "../controllers/usersController.js";
 
-import controllerWrapper from "../decorators/controllerWrapper.js";
-
 import { usersSchema, loginSchema } from "../schemas/usersSchema.js";
 import { validateBody } from "../decorators/validateBody.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
@@ -19,10 +17,10 @@ import authMiddleware from "../middlewares/authMiddleware.js";
 const usersRouter = express.Router();
 
 // usersRouter.post('/register', userController); body:{name:__, email:__, password:__}
-usersRouter.post("/register", validateBody(usersSchema), controllerWrapper(registerNewUser));
+usersRouter.post('/register', validateBody(usersSchema), registerNewUser);
 
 // usersRouter.post('/login', userController); body:{email:__, password:__}
-usersRouter.post("/login", validateBody(loginSchema), controllerWrapper(loginUser));
+usersRouter.post('/login', validateBody(loginSchema), loginUser);
 
 usersRouter.use(authMiddleware);
 
@@ -38,6 +36,6 @@ usersRouter.use(authMiddleware);
 // usersRouter.delete('/followers/:id', userController); // відписатися від користувача
 
 // usersRouter.post('/logout', userController); // logout користувача
-usersRouter.post("/logout", controllerWrapper(logoutUser));
+usersRouter.post('/logout', logoutUser);
 
 export default usersRouter;

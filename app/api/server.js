@@ -9,6 +9,7 @@ import './db/sync.js';
 
 import apiRouter from './routes/index.js';
 import { handleErrors } from './middlewares/handleErrors.js';
+import controllerWrapper from './decorators/controllerWrapper.js';
 
 const app = express();
 const SERVER_PORT = process.env.SERVER_PORT || 3000;
@@ -23,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 // Serve React's index.html for any unknown routes
 app.get('/', (req, res) => res.redirect('/index.html'));
 
-app.use('/api', apiRouter);
+app.use('/api', controllerWrapper(apiRouter));
 
 app.use(handleErrors);
 app.use((_, res) => res.status(404).send('Not found'));
