@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 import path from "node:path";
 import fs from "node:fs/promises";
 import usersService from "../services/usersService.js";
+import recipesService from "../services/recipesService.js";
 import HttpError from "../helpers/HttpError.js";
 
 const avatarsDir = path.resolve("public/avatars");
@@ -109,4 +110,38 @@ export const updateAvatar = async (req, res) => {
     await usersService.updateUserAvatar(req.user.id, avatar);
 
     res.json({ avatar });
+}
+
+export const getUserInformation = async (req, res) => {
+    const requestedUserId = req.params.id;
+    const authUserId = req.user.id;
+    const user = await usersService.getUserById(requestedUserId);
+
+    if (!user) {
+        throw HttpError(404, "User not found");
+    }
+
+    const recipeCount = await recipesService.countRecipesByOwner(requestedUserId);
+    const followersCount = await usersService.countFollowers(requestedUserId);
+
+    let response = {
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        recipesCount: recipeCount,
+        followersCount: followersCount,
+    };
+
+    if (authUserId === requestedUserId) {
+        const favoriteCount = "TBD";//await Favorite.count({ where: { userId: authUserId } });
+        const followingCount = await usersService.countFollowing(authUserId);
+
+        response = {
+            ...response,
+            favoriteCount: favoriteCount,
+            followingCount: followingCount,
+        };
+    }
+
+    res.json(response);
 }

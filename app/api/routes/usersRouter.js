@@ -5,7 +5,8 @@ import {
     loginUser,
     logoutUser,
     getCurrentUser,
-    updateAvatar
+    updateAvatar,
+    getUserInformation
 } from "../controllers/usersController.js";
 
 import controllerWrapper from "../decorators/controllerWrapper.js";
@@ -23,7 +24,7 @@ usersRouter.post("/login", validateBody(loginSchema), controllerWrapper(loginUse
 usersRouter.use(authMiddleware);
 
 usersRouter.get("/current", controllerWrapper(getCurrentUser));
-// usersRouter.get('/:id', userController); // отримати дані користувача
+usersRouter.get('/:id', controllerWrapper(getUserInformation));
 
 usersRouter.patch("/avatar", upload.single("avatar"), controllerWrapper(updateAvatar));
 

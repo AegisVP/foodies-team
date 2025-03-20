@@ -90,8 +90,13 @@ async function getPopularRecipes(limit = 10, page = 1) {
     }));
 }
 
+async function countRecipesByOwner(ownerId) {
+    return await Recipe.count({ where: { owner: ownerId } });
+}
+
 export default {
     listRecipes,
     getRecipeById,
     getPopularRecipes,
+    countRecipesByOwner,
 };
