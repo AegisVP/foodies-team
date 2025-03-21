@@ -5,8 +5,10 @@ import css from './SharedLayout.module.css';
 const SharedLayout = ({ children }) => {
     return (
         <div className={css.container}>
-            <Header />
-            <main className={css.main}>{children}</main>
+            <div className={css.paddingContainer}>
+                <Header />
+                <main className={css.main}>{children}</main>
+            </div>
             <Footer />
         </div>
     );

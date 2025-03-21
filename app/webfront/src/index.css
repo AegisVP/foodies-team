@@ -1,13 +1,23 @@
 :root {
+    --extra-black: #050505;
+    --black: #1a1a1a;
+    --gray: #bfbebe;
+    --white: #ffffff;
+    --transition: 300ms ease-in;
+
     font-family: 'Mulish', sans-serif;
     line-height: 1.5;
     font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--black);
     width: 100vw;
     height: 100vh;
     overflow: hidden;
 }
 
-body {
+body,
+header,
+footer {
     margin: 0;
     padding: 0;
     width: 100vw;

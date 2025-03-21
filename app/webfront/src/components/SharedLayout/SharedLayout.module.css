@@ -4,20 +4,23 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 100vh;
-    padding: 8px;
+}
+
+.paddingContainer {
+    padding: 0 8px;
 }
 
 /* Tablet Layout: Starts adapting at 768px */
-@media (min-width: 768px) {
-    .container {
-        padding: 16px;
+@media only screen and (min-width: 768px) {
+    .paddingContainer {
+        padding: 0 16px;
     }
 }
 
 /* Desktop Layout: Starts adapting at 1440px */
-@media (min-width: 1440px) {
-    .container {
-        padding: 20px;
+@media only screen and (min-width: 1440px) {
+    .paddingContainer {
+        padding: 0 20px;
     }
 }
 
