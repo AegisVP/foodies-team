@@ -24,14 +24,26 @@ async function updateUserAvatar(userId, avatar) {
 // To get followers of a user
 async function userWithFollowers(userId) {
     return await User.findByPk(userId, {
-        include: { model: User, as: "followers" },
+        include: {
+            model: User,
+            as: "followers",
+            through: { attributes: [] },
+            attributes: ['id', 'name', 'avatar', 'email'],
+        },
+        attributes: ['id', 'name', 'avatar', 'email'],
     });
 }
 
 // To get users that the user follows
 async function userWithFollowing(userId) {
     return await User.findByPk(userId, {
-        include: { model: User, as: "following" },
+        include: {
+            model: User,
+            as: "following",
+            through: { attributes: [] },
+            attributes: ['id', 'name', 'avatar', 'email'],
+        },
+        attributes: ['id', 'name', 'avatar', 'email'],
     });
 }
 

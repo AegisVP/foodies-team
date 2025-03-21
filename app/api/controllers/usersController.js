@@ -145,3 +145,21 @@ export const getUserInformation = async (req, res) => {
 
     res.json(response);
 }
+
+export const getUserFollowers = async (req, res) => {
+    const requestedUserId = req.params.id;
+    const followers = await usersService.userWithFollowers(requestedUserId);
+    res.json(followers);
+}
+
+export const getCurrentUserFollowers = async (req, res) => {
+    const authUserId = req.user.id;
+    const followers = await usersService.userWithFollowers(authUserId);
+    res.json(followers);
+}
+
+export const getCurrentUserFollowing = async (req, res) => {
+    const authUserId = req.user.id;
+    const followers = await usersService.userWithFollowing(authUserId);
+    res.json(followers);
+}

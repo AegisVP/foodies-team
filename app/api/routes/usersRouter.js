@@ -6,7 +6,10 @@ import {
     logoutUser,
     getCurrentUser,
     updateAvatar,
-    getUserInformation
+    getUserInformation,
+    getUserFollowers,
+    getCurrentUserFollowers,
+    getCurrentUserFollowing
 } from "../controllers/usersController.js";
 
 import { usersSchema, loginSchema } from "../schemas/usersSchema.js";
@@ -22,12 +25,13 @@ usersRouter.post("/login", validateBody(loginSchema), loginUser);            // 
 usersRouter.use(authMiddleware);
 
 usersRouter.get("/current", getCurrentUser);
+usersRouter.patch("/avatar", upload.single("avatar"), updateAvatar);
+usersRouter.get('/:id/followers', getUserFollowers);            // Отримати список користувачів, що слідкують за профілем користувача
+usersRouter.get('/followers/my', getCurrentUserFollowers);      // Отримати список користувачів, які слідкують за профілем авторизованого користувача
+usersRouter.get('/followers', getCurrentUserFollowing);         // Отримати список користувачів, за якіми слідкує авторизований користувач 
+
 usersRouter.get('/:id', getUserInformation);
 
-usersRouter.patch("/avatar", upload.single("avatar"), updateAvatar);
-
-// usersRouter.get('/followers/my', userController); // перелік хто слідкує
-// usersRouter.get('/followers', userController); // перелік за ким слідкуємо
 // usersRouter.post('/followers/:id', userController); // додати за ким слідкуємо
 // usersRouter.delete('/followers/:id', userController); // відписатися від користувача
 
