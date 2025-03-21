@@ -49,28 +49,24 @@ async function userWithFollowing(userId) {
 
 // Counts the number of users that follow the given userId.
 async function countFollowers(userId) {
-    try {
-        const followersCount = await Follow.count({
-            where: { followingId: userId },
-        });
-        return followersCount;
-    } catch (error) {
-        console.error("Error counting followers:", error);
-        throw error;
-    }
+    return await Follow.count({ where: { followingId: userId } });
 }
 
 //  Counts the number of users that the given userId is following.
 async function countFollowing(userId) {
-    try {
-        const followingCount = await Follow.count({
-            where: { followerId: userId },
-        });
-        return followingCount;
-    } catch (error) {
-        console.error("Error counting following:", error);
-        throw error;
-    }
+    return await Follow.count({ where: { followerId: userId } });
+}
+
+async function followFindOne(followerId, followingId) {
+    return await Follow.findOne({ where: { followerId, followingId } });
+}
+
+async function followAdd(followerId, followingId) {
+    return await Follow.create({ followerId, followingId });
+}
+
+async function followDelete(followerId, followingId) {
+    return await Follow.destroy({ where: { followerId, followingId } });
 }
 
 export default {
@@ -82,5 +78,8 @@ export default {
     userWithFollowers,
     userWithFollowing,
     countFollowers,
-    countFollowing
+    countFollowing,
+    followFindOne,
+    followAdd,
+    followDelete
 };
