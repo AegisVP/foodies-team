@@ -5,6 +5,7 @@ import { sequelize } from '../db/db.js';
 import { QueryTypes } from 'sequelize';
 import { Category } from '../models/categories.js';
 import { Area } from '../models/areas.js';
+import { v4 as uuidv4 } from 'uuid';
 
 async function listRecipes(limit = 12, page = 1, whereCondition = null) {
     const recipes = await sequelize.query(
@@ -114,6 +115,26 @@ async function deleteRecipe(query) {
     return Recipe.destroy({ where: query });
 }
 
+async function createRecipe(recipeData, userId) {
+
+    const recipeId = uuidv4();
+
+    const recipe = await Recipe.create({
+        id: recipeId,
+        title: recipeData.title,
+        category: recipeData.category,
+        area: recipeData.area,
+        owner: userId,
+        instructions: recipeData.instructions,
+        description: recipeData.description,
+        thumb: recipeData.thumb,
+        time: recipeData.time,
+        ingredients: recipeData.ingredients
+    });
+
+    return await getRecipeById(recipeId);
+}
+
 export default {
     listRecipes,
     getRecipeById,
@@ -121,4 +142,5 @@ export default {
     getPopularRecipes,
     countRecipesByOwner,
     deleteRecipe,
+    createRecipe,
 };
