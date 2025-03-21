@@ -12,7 +12,7 @@ import { handleErrors } from './middlewares/handleErrors.js';
 import controllerWrapper from './decorators/controllerWrapper.js';
 
 const app = express();
-const SERVER_PORT = process.env.SERVER_PORT || 3000;
+const SERVER_PORT = process.env.PORT || process.env.SERVER_PORT || 3000;
 const basePath = path.join(process.cwd(), '..', 'httpdocs');
 
 app.use(morgan('dev'));
@@ -20,7 +20,7 @@ app.use(cors());
 app.use(express.static(basePath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/avatars", express.static("public/avatars"));
+app.use('/avatars', express.static('public/avatars'));
 
 // Serve React's index.html for any unknown routes
 app.get('/', (req, res) => res.redirect('/index.html'));
