@@ -10,13 +10,13 @@ import HttpError from "../helpers/HttpError.js";
 
 const avatarsDir = path.resolve("public/avatars");
 
-export const registerNewUser = async (req, res) => {
+export const registerNewUser = async (req, res, next) => {
     const { name, email, password } = req.body;
 
     const existingUser = await usersService.getUserByEmail(email);
 
     if (existingUser) {
-        throw HttpError(409, "Email in use");
+        return next(HttpError(409, "Email in use"));
     }
 
     const id = nanoid();
@@ -35,19 +35,19 @@ export const registerNewUser = async (req, res) => {
     });
 };
 
-export const loginUser = async (req, res) => {
+export const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
 
     const user = await usersService.getUserByEmail(email);
 
     if (!user) {
-        throw HttpError(401, "Email or password is wrong");
+        return next(HttpError(401, "Email or password is wrong"));
     }
 
     const passwordCompare = await bcrypt.compare(password, user.password);
 
     if (!passwordCompare) {
-        throw HttpError(401, "Email or password is wrong");
+        return next(HttpError(401, "Email or password is wrong"));
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
@@ -55,7 +55,7 @@ export const loginUser = async (req, res) => {
     const result = await usersService.updateUserToken(user.id, token);
     
     if (!result) {
-      throw HttpError(401, "Email or password is wrong");
+        return next(HttpError(401, "Email or password is wrong"));
     }
 
     res.json({
@@ -67,25 +67,25 @@ export const loginUser = async (req, res) => {
     });
 };
 
-export const logoutUser = async (req, res) => {
+export const logoutUser = async (req, res, next) => {
     const { id } = req.user;
 
     const user = await usersService.getUserById(id);
 
     if (!user) {
-        throw HttpError(401, "Not authorized");
+        return next(HttpError(401, "Not authorized"));
     }
 
     await usersService.updateUserToken(id, null);
     res.status(204).json();
 };
 
-export const getCurrentUser = async (req, res) => {
+export const getCurrentUser = async (req, res, next) => {
     const { id } = req.user;
     const user = await usersService.getUserById(id);
 
     if (!user) {
-        throw HttpError(401, "Not authorized");
+        return next(HttpError(401, "Not authorized"));
     }
 
     res.json({
@@ -95,9 +95,9 @@ export const getCurrentUser = async (req, res) => {
     });
 };
 
-export const updateAvatar = async (req, res) => {
+export const updateAvatar = async (req, res, next) => {
     if (!req.file) {
-        throw HttpError(400, "No file uploaded");
+        return next(HttpError(400, "No file uploaded"));
     }
 
     const { path: tempPath, filename } = req.file;
@@ -112,13 +112,13 @@ export const updateAvatar = async (req, res) => {
     res.json({ avatar });
 }
 
-export const getUserInformation = async (req, res) => {
+export const getUserInformation = async (req, res, next) => {
     const requestedUserId = req.params.id;
     const authUserId = req.user.id;
     const user = await usersService.getUserById(requestedUserId);
 
     if (!user) {
-        throw HttpError(404, "User not found");
+        return next(HttpError(404, "User not found"));
     }
 
     const recipeCount = await recipesService.countRecipesByOwner(requestedUserId);
@@ -144,4 +144,66 @@ export const getUserInformation = async (req, res) => {
     }
 
     res.json(response);
+}
+
+export const getUserFollowers = async (req, res) => {
+    const requestedUserId = req.params.id;
+    const followers = await usersService.userWithFollowers(requestedUserId);
+    res.json(followers);
+}
+
+export const getCurrentUserFollowers = async (req, res) => {
+    const authUserId = req.user.id;
+    const followers = await usersService.userWithFollowers(authUserId);
+    res.json(followers);
+}
+
+export const getCurrentUserFollowing = async (req, res) => {
+    const authUserId = req.user.id;
+    const followers = await usersService.userWithFollowing(authUserId);
+    res.json(followers);
+}
+
+export const addUserToFollow = async (req, res, next) => {
+    const followerId = req.user.id;
+    const followingId = req.params.id;
+
+    const userToFollowExists = await usersService.getUserById(followingId);
+
+    if (!userToFollowExists) {
+        return next(HttpError(404, "User to follow not found"));
+    }
+
+    if (followerId === followingId) {
+        return next(HttpError(400, "You can't follow yourself."));
+    }
+
+    const existingFollow = await usersService.followFindOne(followerId, followingId);
+
+    if (existingFollow) {
+        return next(HttpError(400, "You are already following this user."));
+    }
+
+    await usersService.followAdd(followerId, followingId);
+
+    res.status(201).json({ message: "User followed successfully" });
+}
+
+export const removeUserFromFollow = async (req, res, next) => {
+    const followerId = req.user.id;
+    const followingId = req.params.id;
+
+    const userToUnfollowExist = await usersService.getUserById(followingId);
+
+    if (!userToUnfollowExist) {
+        return next(HttpError(404, "User to unfollow not found"));
+    }
+
+    const deleted = await usersService.followDelete(followerId, followingId);
+
+    if (deleted) {
+        res.status(200).json({ message: "You have successfully unsubscribed" });
+    } else {
+        res.status(400).json({ message: "You have already unsubscribed" });
+    }
 }
