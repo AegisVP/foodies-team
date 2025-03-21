@@ -1,43 +1,35 @@
-import { useState, useEffect } from 'react';
-import toast from 'react-hot-toast';
-import { getMessage, getCategories } from 'src/api/index.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { useShowError } from 'src/hooks/useShowError.js';
+import { selectCategories, selectCommonError, selectIsCommonLoading } from 'src/redux/common/selectors';
+import { getCategories } from 'src/redux/common/operations';
 
 const HomePage = () => {
-    // TODO delete, used for debug and example
-    const [message, setMessage] = useState('Loading...');
-    const [categories, setCategories] = useState([]);
+    const isCategoriesLoading = useSelector(selectIsCommonLoading);
+    const error = useSelector(selectCommonError);
+    const categories = useSelector(selectCategories);
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const data = await getMessage();
-                setMessage(data.message);
-            } catch (e) {
-                toast.error(e.message);
-            }
-        })();
-    }, []);
+    const dispatch = useDispatch();
 
     const handleGetCategories = async () => {
-        try {
-            const data = await getCategories();
-            setCategories(data);
-        } catch (e) {
-            toast.error(e.message);
-        }
+        dispatch(getCategories());
     };
+
+    useShowError(error);
 
     return (
         <div>
             <p>Home page</p>
-            <h1>{message}</h1>
+
             <p>Categories:</p>
             <button onClick={handleGetCategories}>Get categories</button>
-            <ul>
-                {categories.map((category) => (
-                    <li key={category.id}>{category.name}</li>
-                ))}
-            </ul>
+            {isCategoriesLoading && <p>Loading getCategories...</p>}
+            {!isCategoriesLoading && !!categories?.length && (
+                <ul>
+                    {categories?.map((category) => (
+                        <li key={category.id}>{category.name}</li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };

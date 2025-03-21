@@ -16,6 +16,8 @@ Category.sync(syncCondition);
 import { Recipe } from '../models/recipes.js';
 Recipe.sync(syncCondition);
 Recipe.belongsTo(User, { foreignKey: 'owner', targetKey: 'id', as: 'user' });
+Recipe.belongsTo(Category, { foreignKey: 'category', targetKey: 'id', as: 'category_association' });
+Recipe.belongsTo(Area, { foreignKey: 'area', targetKey: 'id', as: 'area_association' });
 
 import { Testimonial } from '../models/testimonials.js';
 Testimonial.sync(syncCondition);

@@ -1,7 +1,10 @@
 import { Recipe } from '../models/recipes.js';
 import { User } from '../models/users.js';
+import { FavoriteRecipe } from '../models/favoriteRecipes.js';
 import { sequelize } from '../db/db.js';
 import { QueryTypes } from 'sequelize';
+import { Category } from '../models/categories.js';
+import { Area } from '../models/areas.js';
 
 async function listRecipes(limit = 12, page = 1, whereCondition = null) {
     const recipes = await sequelize.query(
@@ -36,10 +39,23 @@ async function getRecipeById(id, ownerAttributes = ['id', 'name', 'avatar']) {
                 model: User,
                 as: 'user',
             },
+            {
+                model: Category,
+                as: 'category_association',
+            },
+            {
+                model: Area,
+                as: 'area_association',
+            },
         ],
     });
 }
 
+async function deleteFavorite(userId, recipeId) {
+    return await FavoriteRecipe.findOne({
+        where: { user_id: userId, recipe_id: recipeId },
+    });
+}
 async function getPopularRecipes(limit = 10, page = 1) {
     const offset = (page - 1) * limit;
 
@@ -94,9 +110,15 @@ async function countRecipesByOwner(ownerId) {
     return await Recipe.count({ where: { owner: ownerId } });
 }
 
+async function deleteRecipe(query) {
+    return Recipe.destroy({ where: query });
+}
+
 export default {
     listRecipes,
     getRecipeById,
+    deleteFavorite,
     getPopularRecipes,
     countRecipesByOwner,
+    deleteRecipe,
 };

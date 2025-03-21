@@ -40,7 +40,7 @@ export const getRecipeById = async (req, res, next) => {
     res.json({
         id: recipe.id,
         title: recipe.title,
-        category: recipe.category,
+        category: recipe.category_association,
         time: recipe.time,
         description: recipe.description,
         owner: recipe.user,
@@ -53,10 +53,32 @@ export const getRecipeById = async (req, res, next) => {
                 measure: ing.measure,
             };
         }),
-        area: recipe.area,
+        area: recipe.area_association,
         instructions: recipe.instructions,
         thumb: recipe.thumb,
     });
+};
+
+export const removeFavorite = async (req, res, next) => {
+    try {
+        const { id: userId } = req.user;
+        const { id: recipeId } = req.body;
+
+        const favorite = await recipesService.deleteFavorite(userId, recipeId);
+
+        if (!favorite) {
+            const error = new Error('Favorite not found');
+            error.status = 404;
+            return next(error);
+        }
+
+        await favorite.destroy();
+
+        res.status(200).json({ message: "Favorite removed successfully" });
+    } catch (error) {
+        console.error("Remove Favorite Error:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
 };
 
 export const getPopularRecipes = async (req, res, next) => {
@@ -76,3 +98,17 @@ export const getPopularRecipes = async (req, res, next) => {
         next(error);
     }
 };
+
+export const deleteRecipeById = async (req, res, next) => {
+    const { id } = req.params;
+    // const { id: owner } = req.user;
+    const recipe = await recipesService.deleteRecipe({ id }); // TODO pass owner when authMiddleware is ready
+
+    if (!recipe) {
+        const error = new Error('Recipe not found');
+        error.status = 404;
+        return next(error);
+    }
+
+    res.json(recipe);
+}
