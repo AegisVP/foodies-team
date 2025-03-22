@@ -20,7 +20,7 @@ async function listRecipes(limit = 12, page = 1, whereCondition = null) {
         { type: QueryTypes.SELECT }
     );
 
-    return recipes.map((recipe) => ({
+    return recipes.map(recipe => ({
         id: recipe.id,
         owner: {
             id: recipe.user_id,
@@ -109,7 +109,7 @@ async function getPopularRecipes(limit = 10, page = 1) {
     );
 
     // Форматування відповіді
-    return popularRecipes.map((recipe) => ({
+    return popularRecipes.map(recipe => ({
         id: recipe.id,
         title: recipe.title,
         description: recipe.description,

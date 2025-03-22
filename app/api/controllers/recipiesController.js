@@ -23,10 +23,10 @@ export const createRecipe = controllerWrapper(async (req, res, next) => {
 
     // Verify all ingredients exist
     // Convert all ingredient IDs to strings to ensure consistency
-    const ingredientIds = ingredients.map((ing) => String(ing.id));
+    const ingredientIds = ingredients.map(ing => String(ing.id));
 
     // Update ingredients array with string IDs for database storage
-    const ingredientsWithStringIds = ingredients.map((ing) => ({
+    const ingredientsWithStringIds = ingredients.map(ing => ({
         ...ing,
         id: String(ing.id),
     }));
@@ -35,16 +35,16 @@ export const createRecipe = controllerWrapper(async (req, res, next) => {
     const existingIngredients = await ingredientsServices.listIngredients({ id: ingredientIds });
 
     if (existingIngredients.length !== ingredientIds.length) {
-        const foundIds = existingIngredients.map((ing) => ing.id);
-        const missingIds = ingredientIds.filter((id) => !foundIds.includes(id));
+        const foundIds = existingIngredients.map(ing => ing.id);
+        const missingIds = ingredientIds.filter(id => !foundIds.includes(id));
         return next(HttpError(404, `Ingredients with ids ${missingIds.join(', ')} not found`));
     }
 
     const recipe = await recipesService.createRecipe(req.body, userId);
 
-    const ingredientsWithDetails = ingredientsWithStringIds.map((ing) => {
+    const ingredientsWithDetails = ingredientsWithStringIds.map(ing => {
         const ingredientDetails = existingIngredients.find(
-            (ingDetail) => ingDetail.id === ing.id || ingDetail.id === String(ing.id)
+            ingDetail => ingDetail.id === ing.id || ingDetail.id === String(ing.id)
         );
 
         if (!ingredientDetails) {
@@ -94,9 +94,9 @@ export const listRecipes = async (req, res) => {
     }
 
     if (req.query.ingredients) {
-        const ingredientIds = req.query.ingredients.split(',').map((id) => id.trim());
+        const ingredientIds = req.query.ingredients.split(',').map(id => id.trim());
         whereCondition += ` AND ${ingredientIds
-            .map((id) => `CAST(ingredients AS TEXT) SIMILAR TO '%"id":[ ]?"${id}"%'`)
+            .map(id => `CAST(ingredients AS TEXT) SIMILAR TO '%"id":[ ]?"${id}"%'`)
             .join(' AND ')}`;
     }
 
@@ -113,7 +113,7 @@ export const getRecipeById = async (req, res, next) => {
         return next(error);
     }
 
-    const ingredients = await ingredientsServices.listIngredients({ id: recipe.ingredients.map((ing) => ing.id) });
+    const ingredients = await ingredientsServices.listIngredients({ id: recipe.ingredients.map(ing => ing.id) });
 
     res.json({
         id: recipe.id,
@@ -122,8 +122,8 @@ export const getRecipeById = async (req, res, next) => {
         time: recipe.time,
         description: recipe.description,
         owner: recipe.user,
-        ingredients: recipe.ingredients.map((ing) => {
-            const ingredient = ingredients.find((ing_i) => ing_i.id === ing.id);
+        ingredients: recipe.ingredients.map(ing => {
+            const ingredient = ingredients.find(ing_i => ing_i.id === ing.id);
             return {
                 id: ing.id,
                 name: ingredient ? ingredient.name : 'Unknown',

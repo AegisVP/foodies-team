@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import morgan from 'morgan';
-import path from 'path';
+import path from 'node:path';
 import cors from 'cors';
 
 import { sequelize } from './db/db.js';
@@ -42,7 +42,7 @@ preparationJobs.push(
         sequelize
             .authenticate()
             .then(() => resolve('Database connected successfully.'))
-            .catch((err) => reject('Unable to connect to the database: ' + err.message));
+            .catch(err => reject('Unable to connect to the database: ' + err.message));
     })
 );
 
@@ -55,12 +55,12 @@ preparationJobs.push(
 // );
 
 await Promise.all(preparationJobs)
-    .then((res) =>
-        res.forEach((message) => {
+    .then(res =>
+        res.forEach(message => {
             console.info(message);
         })
     )
-    .catch((error) => {
+    .catch(error => {
         console.error(error);
         console.info('Server cannot start - exiting...');
         process.exit(1);
