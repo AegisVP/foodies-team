@@ -8,6 +8,7 @@ export const Ingredient = sequelize.define(
             type: DataTypes.STRING(36),
             primaryKey: true,
             allowNull: false,
+            defaultValue: DataTypes.UUIDV4,
         },
         name: {
             type: DataTypes.STRING(255),

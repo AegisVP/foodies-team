@@ -9,6 +9,7 @@ export const Testimonial = sequelize.define(
             type: DataTypes.STRING(36),
             allowNull: false,
             primaryKey: true,
+            defaultValue: DataTypes.UUIDV4,
         },
         owner: {
             type: DataTypes.STRING(36),
