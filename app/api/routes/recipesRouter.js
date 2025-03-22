@@ -1,14 +1,15 @@
 import express from 'express';
-import authMiddleware from "../middlewares/authMiddleware.js";
-import { validateBody } from "../decorators/validateBody.js";
-import { createRecipeSchema } from "../schemas/recipesSchema.js";
+import authMiddleware from '../middlewares/authMiddleware.js';
+import { validateBody } from '../decorators/validateBody.js';
+import { createRecipeSchema } from '../schemas/recipesSchema.js';
 import {
-  createRecipe,
-  listRecipes,
-  getRecipeById,
-  getPopularRecipes,
-  deleteRecipeById,
-  removeFavorite
+    createRecipe,
+    listRecipes,
+    getRecipeById,
+    getPopularRecipes,
+    deleteRecipeById,
+    addRecipeToFavorites,
+    removeFavorite,
 } from '../controllers/recipiesController.js';
 
 const recipiesRouter = express.Router();
@@ -26,7 +27,7 @@ recipiesRouter.post('/', validateBody(createRecipeSchema), createRecipe); // cre
 // recipiesRouter.get('/owner/:id', recipesController); // рецепти користувача
 
 // recipiesRouter.get('/favorite', recipesController); // мої обрані
-// recipiesRouter.post('/favorite', recipesController); // додати в обрані
+recipiesRouter.post('/favorite/:recipeId', addRecipeToFavorites);
 recipiesRouter.delete('/favorite', removeFavorite);
 
 export default recipiesRouter;

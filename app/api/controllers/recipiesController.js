@@ -8,63 +8,63 @@ import controllerWrapper from '../decorators/controllerWrapper.js';
 export const createRecipe = controllerWrapper(async (req, res, next) => {
     const { id: userId } = req.user;
     const { title, category, area, instructions, description, thumb, time, ingredients } = req.body;
-    
+
     // Verify category exists
     const categoryExists = await categoriesServices.listCategories({ id: category });
     if (!categoryExists || categoryExists.length === 0) {
         return next(HttpError(404, `Category with id ${category} not found`));
     }
-    
+
     // Verify area exists
     const areaExists = await areasServices.listAreas({ id: area });
     if (!areaExists || areaExists.length === 0) {
         return next(HttpError(404, `Area with id ${area} not found`));
     }
-    
+
     // Verify all ingredients exist
     // Convert all ingredient IDs to strings to ensure consistency
-    const ingredientIds = ingredients.map(ing => String(ing.id));
-    
+    const ingredientIds = ingredients.map((ing) => String(ing.id));
+
     // Update ingredients array with string IDs for database storage
-    const ingredientsWithStringIds = ingredients.map(ing => ({
+    const ingredientsWithStringIds = ingredients.map((ing) => ({
         ...ing,
-        id: String(ing.id)
+        id: String(ing.id),
     }));
     req.body.ingredients = ingredientsWithStringIds;
-    
+
     const existingIngredients = await ingredientsServices.listIngredients({ id: ingredientIds });
-    
+
     if (existingIngredients.length !== ingredientIds.length) {
-        const foundIds = existingIngredients.map(ing => ing.id);
-        const missingIds = ingredientIds.filter(id => !foundIds.includes(id));
+        const foundIds = existingIngredients.map((ing) => ing.id);
+        const missingIds = ingredientIds.filter((id) => !foundIds.includes(id));
         return next(HttpError(404, `Ingredients with ids ${missingIds.join(', ')} not found`));
     }
 
     const recipe = await recipesService.createRecipe(req.body, userId);
 
-    const ingredientsWithDetails = ingredientsWithStringIds.map(ing => {
-        const ingredientDetails = existingIngredients.find(ingDetail => 
-            ingDetail.id === ing.id || ingDetail.id === String(ing.id)
+    const ingredientsWithDetails = ingredientsWithStringIds.map((ing) => {
+        const ingredientDetails = existingIngredients.find(
+            (ingDetail) => ingDetail.id === ing.id || ingDetail.id === String(ing.id)
         );
-        
+
         if (!ingredientDetails) {
             console.warn(`Ingredient details not found for ID: ${ing.id}`);
             return {
                 id: ing.id,
-                name: "Unknown Ingredient",
+                name: 'Unknown Ingredient',
                 image: null,
-                measure: ing.quantity
+                measure: ing.quantity,
             };
         }
-        
+
         return {
             id: ing.id,
             name: ingredientDetails.name,
             image: ingredientDetails.image,
-            measure: ing.quantity
+            measure: ing.quantity,
         };
     });
-    
+
     res.status(201).json({
         id: recipe.id,
         title: recipe.title,
@@ -75,7 +75,7 @@ export const createRecipe = controllerWrapper(async (req, res, next) => {
         ingredients: ingredientsWithDetails,
         area: recipe.area_association,
         instructions: recipe.instructions,
-        thumb: recipe.thumb
+        thumb: recipe.thumb,
     });
 });
 
@@ -137,6 +137,18 @@ export const getRecipeById = async (req, res, next) => {
     });
 };
 
+export const addRecipeToFavorites = async (req, res, next) => {
+    try {
+        const { id: userId } = req.user;
+        const { recipeId } = req.params;
+
+        await recipesService.addRecipeToFavorites(userId, recipeId);
+        return res.status(201).json({ message: 'Recipe added to favorites' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const removeFavorite = async (req, res, next) => {
     try {
         const { id: userId } = req.user;
@@ -152,10 +164,10 @@ export const removeFavorite = async (req, res, next) => {
 
         await favorite.destroy();
 
-        res.status(200).json({ message: "Favorite removed successfully" });
+        res.status(200).json({ message: 'Favorite removed successfully' });
     } catch (error) {
-        console.error("Remove Favorite Error:", error);
-        return res.status(500).json({ message: "Internal server error" });
+        console.error('Remove Favorite Error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
 };
 
@@ -189,4 +201,4 @@ export const deleteRecipeById = async (req, res, next) => {
     }
 
     res.json(recipe);
-}
+};
