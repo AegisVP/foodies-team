@@ -132,7 +132,11 @@ paths:
             operationId: refreshUser
             responses:
                 '200':
-                    $ref: '#/components/responses/authorisedResponse'
+                    description: Successfully authorised
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/fullUser'
                 '401':
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
