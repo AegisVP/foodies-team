@@ -7,6 +7,7 @@ import cors from 'cors';
 import { sequelize } from './db/db.js';
 import './db/sync.js';
 
+import openapiRouter from './routes/openapiRouter.js';
 import apiRouter from './routes/index.js';
 import { handleErrors } from './middlewares/handleErrors.js';
 import controllerWrapper from './decorators/controllerWrapper.js';
@@ -22,13 +23,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/avatars', express.static('public/avatars'));
 
-// Serve React's index.html for any unknown routes
-app.get('/', (req, res) => res.redirect('/index.html'));
+app.use('/api-docs', controllerWrapper(openapiRouter));
 
 app.use('/api', controllerWrapper(apiRouter));
+app.use('/*', (_, res) => res.sendFile(path.join(basePath, 'index.html')));
 
 app.use(handleErrors);
-app.use((_, res) => res.status(404).send('Not found'));
+app.use((req, res) =>
+    res
+        .header('Content-Type', req.headers['content-type'] ?? 'text/html')
+        .status(404)
+        .send(req.headers['content-type'] === 'application/json' ? { message: 'Not found' } : 'Not found')
+);
 
 const preparationJobs = [];
 preparationJobs.push(
