@@ -38,14 +38,14 @@ export const User = sequelize.define(
 );
 
 export const Follow = sequelize.define(
-    "follows",
+    'follows',
     {
         followerId: {
             type: DataTypes.STRING(36),
             allowNull: false,
             references: {
                 model: User,
-                key: "id",
+                key: 'id',
             },
         },
         followingId: {
@@ -53,26 +53,26 @@ export const Follow = sequelize.define(
             allowNull: false,
             references: {
                 model: User,
-                key: "id",
+                key: 'id',
             },
         },
     },
     {
         timestamps: false,
-        primaryKey: ["followerId", "followingId"],      // Composite primary key to prevent duplicates
+        primaryKey: ['followerId', 'followingId'], // Composite primary key to prevent duplicates
     }
 );
 
 User.belongsToMany(User, {
     through: Follow,
-    as: "followers",            // Users that follow this user
-    foreignKey: "followingId",
-    otherKey: "followerId",
+    as: 'followers', // Users that follow this user
+    foreignKey: 'followingId',
+    otherKey: 'followerId',
 });
 
 User.belongsToMany(User, {
     through: Follow,
-    as: "following",            // Users that this user follows
-    foreignKey: "followerId",
-    otherKey: "followingId",
+    as: 'following', // Users that this user follows
+    foreignKey: 'followerId',
+    otherKey: 'followingId',
 });
