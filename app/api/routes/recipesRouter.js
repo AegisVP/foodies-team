@@ -1,14 +1,14 @@
 import express from 'express';
-import authMiddleware from "../middlewares/authMiddleware.js";
-import { validateBody } from "../decorators/validateBody.js";
-import { createRecipeSchema } from "../schemas/recipesSchema.js";
+import authMiddleware from '../middlewares/authMiddleware.js';
+import { validateBody } from '../decorators/validateBody.js';
+import { createRecipeSchema } from '../schemas/recipesSchema.js';
 import {
-  createRecipe,
-  listRecipes,
-  getRecipeById,
-  getPopularRecipes,
-  deleteRecipeById,
-  removeFavorite
+    createRecipe,
+    listRecipes,
+    getRecipeById,
+    getPopularRecipes,
+    deleteRecipeById,
+    removeFavorite,
 } from '../controllers/recipiesController.js';
 
 const recipiesRouter = express.Router();

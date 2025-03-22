@@ -1,4 +1,4 @@
-import { User, Follow } from "../models/users.js";
+import { User, Follow } from '../models/users.js';
 
 async function registerUser(id, name, email, password, avatar) {
     const user = await User.create({ id, name, email, password, avatar });
@@ -26,7 +26,7 @@ async function userWithFollowers(userId) {
     return await User.findByPk(userId, {
         include: {
             model: User,
-            as: "followers",
+            as: 'followers',
             through: { attributes: [] },
             attributes: ['id', 'name', 'avatar', 'email'],
         },
@@ -39,7 +39,7 @@ async function userWithFollowing(userId) {
     return await User.findByPk(userId, {
         include: {
             model: User,
-            as: "following",
+            as: 'following',
             through: { attributes: [] },
             attributes: ['id', 'name', 'avatar', 'email'],
         },
@@ -81,5 +81,5 @@ export default {
     countFollowing,
     followFindOne,
     followAdd,
-    followDelete
+    followDelete,
 };
