@@ -11,7 +11,7 @@ servers:
     - url: https://foodies-5tjw.onrender.com/api
       description: Foodies server
     - url: http://localhost:3000/api
-      description: Foodies server
+      description: Local development server
 
 tags:
     - name: users
