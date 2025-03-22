@@ -61,3 +61,23 @@ button {
 input:-webkit-autofill {
     transition: background-color 5000s ease-in-out 0s;
 }
+
+.swiper-pagination-bullet {
+    width: 14px !important;
+    height: 14px !important;
+    background-color: var(--gray) !important;
+    opacity: 1 !important;
+    margin: 0 !important;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: var(--extra-black) !important;
+}
+
+/* Tablet Layout: Starts adapting at 768px */
+@media only screen and (min-width: 768px) {
+    .swiper-pagination-bullet {
+        width: 16px !important;
+        height: 16px !important;
+    }
+}

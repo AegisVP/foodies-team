@@ -18,6 +18,7 @@
 .copyriteContent {
     font-size: 14px;
     line-height: 1.429;
+    letter-spacing: -0.02em;
     font-weight: 500;
     text-align: center;
 }
@@ -37,6 +38,7 @@
     color: var(--extra-black);
     font-size: 20px;
     line-height: 1.2;
+    letter-spacing: -0.02em;
 }
 
 .socialLinksContainer {
@@ -90,6 +92,7 @@
     .logoContent {
         font-size: 24px;
         line-height: 1.6667;
+        letter-spacing: -0.02em;
     }
 
     .socialLinkItemContainer {
@@ -100,6 +103,7 @@
     .copyriteContent {
         font-size: 16px;
         line-height: 1.5;
+        letter-spacing: -0.02em;
     }
 
     .socialLinksContainer {
