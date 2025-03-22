@@ -1,20 +1,20 @@
 import Testimonial from '../Testimonial';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { Pagination, Autoplay } from 'swiper/modules';
 import css from './Slider.module.css';
 
 import 'swiper/css';
-import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
 
 const Slider = ({ items, type }) => {
     return (
         <Swiper
-            modules={[Navigation, Pagination, Scrollbar, A11y]}
-            pagination={true}
-            navigation={true}
-            spaceBetween={50}
+            modules={[Pagination, Autoplay]}
+            pagination={{ clickable: true }}
+            autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+            }}
             slidesPerView={1}
             className={css.sliderContainer}
         >
