@@ -12,7 +12,6 @@ const Testimonial = ({ item }) => {
                 <span className={css.reviewHeader}>Testimonials</span>
             </div>
             <span className={css.reviewContent}>{item.testimonial}</span>
-
             <span className={css.reviewer}>{item.owner.name}</span>
         </div>
     );

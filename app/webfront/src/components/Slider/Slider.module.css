@@ -3,11 +3,22 @@
     margin-bottom: 80px;
 }
 
+.customPagination {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
 /* Tablet Layout: Starts adapting at 768px */
 @media only screen and (min-width: 768px) {
     .sliderContainer {
         max-width: 704px;
         margin-bottom: 100px;
+    }
+
+    .customPagination {
+        gap: 12px;
     }
 }
 

@@ -8,24 +8,26 @@ import 'swiper/css/pagination';
 
 const Slider = ({ items, type }) => {
     return (
-        <Swiper
-            modules={[Pagination, Autoplay]}
-            pagination={{ clickable: true }}
-            autoplay={{
-                delay: 5000,
-                disableOnInteraction: false,
-            }}
-            slidesPerView={1}
-            className={css.sliderContainer}
-        >
-            {items.map((item, index) =>
-                type === 'testimonial' ? (
-                    <SwiperSlide key={item.id || index}>
-                        <Testimonial item={item} />
-                    </SwiperSlide>
-                ) : null
-            )}
-        </Swiper>
+        <div className={css.sliderContainer}>
+            <Swiper
+                modules={[Pagination, Autoplay]}
+                pagination={{ el: `.${css.customPagination}`, clickable: true }}
+                autoplay={{
+                    delay: 5000,
+                    disableOnInteraction: false,
+                }}
+                slidesPerView={1}
+            >
+                {items.map((item, index) =>
+                    type === 'testimonial' ? (
+                        <SwiperSlide key={item.id || index}>
+                            <Testimonial item={item} />
+                        </SwiperSlide>
+                    ) : null
+                )}
+            </Swiper>
+            <div className={css.customPagination}></div>
+        </div>
     );
 };
 
