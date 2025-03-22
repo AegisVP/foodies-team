@@ -11,6 +11,7 @@ export const Recipe = sequelize.define(
             type: DataTypes.STRING(36),
             primaryKey: true,
             allowNull: false,
+            defaultValue: DataTypes.UUIDV4,
         },
         title: {
             type: DataTypes.STRING(255),

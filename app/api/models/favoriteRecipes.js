@@ -10,6 +10,7 @@ export const FavoriteRecipe = sequelize.define(
             type: DataTypes.STRING(36),
             primaryKey: true,
             allowNull: false,
+            defaultValue: DataTypes.UUIDV4,
         },
         userId: {
             type: DataTypes.STRING(36),
