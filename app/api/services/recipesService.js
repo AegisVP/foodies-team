@@ -6,6 +6,7 @@ import { QueryTypes } from 'sequelize';
 import { Category } from '../models/categories.js';
 import { Area } from '../models/areas.js';
 import { v4 as uuidv4 } from 'uuid';
+import HttpError from '../helpers/HttpError.js';
 
 async function listRecipes(limit = 12, page = 1, whereCondition = null) {
     const recipes = await sequelize.query(
@@ -50,6 +51,22 @@ async function getRecipeById(id, ownerAttributes = ['id', 'name', 'avatar']) {
             },
         ],
     });
+}
+
+async function addRecipeToFavorites(userId, recipeId) {
+    const existingFavorite = await FavoriteRecipe.findOne({
+        where: { userId, recipeId },
+    });
+    if (existingFavorite) {
+        throw HttpError(400, 'Recipe is already in favorites');
+    }
+    const recipe = await getRecipeById(recipeId);
+    if (!recipe) {
+        throw HttpError(404, `Recipe with id=${recipeId} not found`);
+    }
+    const favorite = await FavoriteRecipe.create({ id: uuidv4(), userId, recipeId });
+
+    return favorite;
 }
 
 async function deleteFavorite(userId, recipeId) {
@@ -142,4 +159,5 @@ export default {
     countRecipesByOwner,
     deleteRecipe,
     createRecipe,
+    addRecipeToFavorites,
 };

@@ -137,6 +137,18 @@ export const getRecipeById = async (req, res, next) => {
     });
 };
 
+export const addRecipeToFavorites = async (req, res, next) => {
+    try {
+        const { id: userId } = req.user;
+        const { recipeId } = req.params;
+
+        await recipesService.addRecipeToFavorites(userId, recipeId);
+        return res.status(201).json({ message: 'Recipe added to favorites' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const removeFavorite = async (req, res, next) => {
     try {
         const { id: userId } = req.user;
