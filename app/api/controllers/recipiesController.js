@@ -65,7 +65,7 @@ export const createRecipe = controllerWrapper(async (req, res, next) => {
         };
     });
 
-    res.status(201).json({
+    res.json({
         id: recipe.id,
         title: recipe.title,
         category: recipe.category_association,
@@ -80,27 +80,40 @@ export const createRecipe = controllerWrapper(async (req, res, next) => {
 });
 
 export const listRecipes = async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
 
-    let whereCondition = '1=1';
+    const whereCondition = [];
 
     if (req.query.category) {
-        whereCondition += ` AND category = '${req.query.category}'`;
+        whereCondition.push(`category = '${req.query.category}'`);
     }
 
     if (req.query.area) {
-        whereCondition += ` AND area = '${req.query.area}'`;
+        whereCondition.push(`area = '${req.query.area}'`);
     }
 
-    if (req.query.ingredients) {
-        const ingredientIds = req.query.ingredients.split(',').map(id => id.trim());
-        whereCondition += ` AND ${ingredientIds
-            .map(id => `CAST(ingredients AS TEXT) SIMILAR TO '%"id":[ ]?"${id}"%'`)
-            .join(' AND ')}`;
+    const ingredientIds = req.query.ingredients?.split(',').map(id => id.trim()) || [];
+    if (ingredientIds.length > 0) {
+        whereCondition.push(`ingredients IN (${ingredientIds.join(', ')})`);
     }
 
-    res.json(await recipesService.listRecipes(limit, page, whereCondition));
+    if (req.query.owner) {
+        whereCondition.push(`recipes.owner = '${req.query.owner}'`);
+    }
+
+    // whereCondition = whereCondition === baseCondition ? null : whereCondition.slice(5 + baseCondition.length);
+    console.log({ whereCondition });
+
+    const recipes = await recipesService.listRecipes(whereCondition.join(' AND '));
+
+    const pages = Math.ceil(recipes.length / limit);
+    const page = Math.min(pages, parseInt(req.query.page) || 1);
+    const startIdx = (page - 1) * limit;
+    const endIdx = Math.min(startIdx + limit, recipes.length);
+
+    console.log({ page, limit, startIdx, endIdx });
+
+    res.json({ page, pages, total: recipes.length, recipes: recipes.slice(startIdx, endIdx) });
 };
 
 export const getRecipeById = async (req, res, next) => {
@@ -108,9 +121,7 @@ export const getRecipeById = async (req, res, next) => {
     const recipe = await recipesService.getRecipeById(id);
 
     if (!recipe) {
-        const error = new Error('Recipe not found');
-        error.status = 404;
-        return next(error);
+        throw HttpError(404, 'Recipe not found');
     }
 
     const ingredients = await ingredientsServices.listIngredients({ id: recipe.ingredients.map(ing => ing.id) });
@@ -138,15 +149,11 @@ export const getRecipeById = async (req, res, next) => {
 };
 
 export const addRecipeToFavorites = async (req, res, next) => {
-    try {
-        const { id: userId } = req.user;
-        const { recipeId } = req.params;
+    const { id: userId } = req.user;
+    const { recipeId } = req.params;
 
-        await recipesService.addRecipeToFavorites(userId, recipeId);
-        return res.status(201).json({ message: 'Recipe added to favorites' });
-    } catch (error) {
-        next(error);
-    }
+    await recipesService.addRecipeToFavorites(userId, recipeId);
+    return res.status(201).send();
 };
 
 export const removeFavorite = async (req, res, next) => {

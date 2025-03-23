@@ -8,17 +8,19 @@ import { Area } from '../models/areas.js';
 import { v4 as uuidv4 } from 'uuid';
 import HttpError from '../helpers/HttpError.js';
 
-async function listRecipes(limit = 12, page = 1, whereCondition = null) {
-    const recipes = await sequelize.query(
-        `SELECT "recipes".*, 
-                "user"."id" AS "user_id", 
-                "user"."name" AS "user_name", 
-                "user"."avatar" AS "user_avatar", 
-                "user"."email" AS "user_email" FROM "recipes" AS "recipes" LEFT OUTER JOIN "users" AS "user" ON "recipes"."owner" = "user"."id" ${
-                    whereCondition ? `WHERE ${whereCondition}` : ''
-                } LIMIT ${limit} OFFSET ${(page - 1) * limit}`,
-        { type: QueryTypes.SELECT }
-    );
+async function listRecipes(whereCondition = null) {
+    let query = `
+    SELECT "recipes".*, "user"."id" AS "owner"
+    FROM "recipes" AS "recipes"
+    LEFT OUTER JOIN "users" AS "user" ON "recipes"."owner" = "user"."id"`;
+
+    if (whereCondition) {
+        query += ` WHERE ${whereCondition}`;
+    }
+
+    console.log({ query });
+
+    const recipes = await sequelize.query(query, { type: QueryTypes.SELECT });
 
     return recipes.map(recipe => ({
         id: recipe.id,
@@ -124,8 +126,9 @@ async function getPopularRecipes(limit = 10, page = 1) {
     }));
 }
 
-async function countRecipesByOwner(ownerId) {
-    return await Recipe.count({ where: { owner: ownerId } });
+async function countRecipesByOwner(ownerId = null) {
+    const whereCondition = ownerId ? { where: { owner: ownerId } } : null;
+    return await Recipe.count(whereCondition);
 }
 
 async function deleteRecipe(query) {
@@ -133,10 +136,7 @@ async function deleteRecipe(query) {
 }
 
 async function createRecipe(recipeData, userId) {
-    const recipeId = uuidv4();
-
     const recipe = await Recipe.create({
-        id: recipeId,
         title: recipeData.title,
         category: recipeData.category,
         area: recipeData.area,
@@ -148,7 +148,11 @@ async function createRecipe(recipeData, userId) {
         ingredients: recipeData.ingredients,
     });
 
-    return await getRecipeById(recipeId);
+    if (!recipe) {
+        throw HttpError(400, 'Failed to create recipe');
+    }
+
+    return await getRecipeById(recipe.id);
 }
 
 export default {

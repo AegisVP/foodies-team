@@ -17,17 +17,17 @@ const recipiesRouter = express.Router();
 recipiesRouter.get('/', listRecipes);
 recipiesRouter.get('/popular', getPopularRecipes);
 recipiesRouter.get('/:id', getRecipeById);
-recipiesRouter.delete('/:id', deleteRecipeById);
 
 recipiesRouter.use(authMiddleware);
 
+recipiesRouter.post('/favorite/:recipeId', addRecipeToFavorites);
+recipiesRouter.delete('/favorite', removeFavorite);
 recipiesRouter.post('/', validateBody(createRecipeSchema), createRecipe); // create recipe
+recipiesRouter.delete('/:id', deleteRecipeById);
 
 // recipiesRouter.get('/owner', recipesController); // мої рецепти
 // recipiesRouter.get('/owner/:id', recipesController); // рецепти користувача
 
 // recipiesRouter.get('/favorite', recipesController); // мої обрані
-recipiesRouter.post('/favorite/:recipeId', addRecipeToFavorites);
-recipiesRouter.delete('/favorite', removeFavorite);
 
 export default recipiesRouter;
