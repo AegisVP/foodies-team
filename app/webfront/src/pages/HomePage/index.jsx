@@ -22,7 +22,6 @@ const HomePage = () => {
 
             <p>Categories:</p>
             <button onClick={handleGetCategories}>Get categories</button>
-
             {isCategoriesLoading && <p>Loading getCategories...</p>}
             {!isCategoriesLoading && !!categories?.length && (
                 <ul>
