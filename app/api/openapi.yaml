@@ -99,7 +99,7 @@ paths:
             requestBody:
                 $ref: '#/components/requestBodies/registerRequest'
             responses:
-                '200':
+                '201':
                     $ref: '#/components/responses/registerResponse'
                 '401':
                     $ref: '#/components/responses/notAuthorisedResponse'
@@ -156,6 +156,30 @@ paths:
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
+    /users/avatar:
+        patch:
+            security:
+                - bearerAuth: []
+            tags:
+                - users
+            summary: Upload avatar
+            operationId: uploadAvatar
+            requestBody:
+                $ref: '#/components/requestBodies/avatarRequest'
+            responses:
+                '200':
+                    description: Successfully updated avatar
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    avatar:
+                                        type: string
+                '401':
+                    $ref: '#/components/responses/notAuthorisedResponse'
+                '500':
+                    $ref: '#/components/responses/serverErrorResponse'
     /users/followers:
         get:
             security:
@@ -203,6 +227,8 @@ paths:
             responses:
                 '204':
                     description: No content
+                '400':
+                    $ref: '#/components/responses/invalidRequestResponse'
                 '401':
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
@@ -225,6 +251,8 @@ paths:
                     description: No content
                 '401':
                     $ref: '#/components/responses/notAuthorisedResponse'
+                '404':
+                    $ref: '#/components/responses/notFoundResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
     /recipes:
@@ -276,35 +304,7 @@ paths:
             summary: Create a recipe
             operationId: createRecipe
             requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                title:
-                                    type: string
-                                category:
-                                    type: string
-                                area:
-                                    type: string
-                                instructions:
-                                    type: string
-                                description:
-                                    type: string
-                                thumb:
-                                    type: string
-                                time:
-                                    type: string
-                                ingredients:
-                                    type: array
-                                    items:
-                                        type: object
-                                        properties:
-                                            id:
-                                                type: string
-                                            measure:
-                                                type: string
+                $ref: '#/components/requestBodies/createRecipeRequest'
             responses:
                 '201':
                     $ref: '#/components/responses/recipeInformationResponse'
@@ -380,6 +380,8 @@ paths:
             responses:
                 '200':
                     $ref: '#/components/responses/recipeSearchResponse'
+                '400':
+                    $ref: '#/components/responses/invalidRequestResponse'
                 '401':
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
@@ -402,6 +404,8 @@ paths:
                     description: No content
                 '401':
                     $ref: '#/components/responses/notAuthorisedResponse'
+                '404':
+                    $ref: '#/components/responses/notFoundResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
     /recipes/owner:
@@ -443,6 +447,48 @@ paths:
 
 components:
     requestBodies:
+        createRecipeRequest:
+            description: Create recipe request
+            required: true
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            title:
+                                type: string
+                            category:
+                                type: string
+                            area:
+                                type: string
+                            instructions:
+                                type: string
+                            description:
+                                type: string
+                            thumb:
+                                type: string
+                            time:
+                                type: string
+                            ingredients:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: string
+                                        measure:
+                                            type: string
+        avatarRequest:
+            description: Upload avatar request
+            required: true
+            content:
+                multipart/form-data:
+                    schema:
+                        type: object
+                        properties:
+                            avatar:
+                                type: string
+                                format: binary
         registerRequest:
             description: Register user request
             required: true
@@ -556,6 +602,18 @@ components:
                         type: array
                         items:
                             $ref: '#/components/schemas/ingredientShort'
+        invalidRequestResponse:
+            description: Invalid request
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/error'
+        notFoundResponse:
+            description: Not found
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/error'
         serverErrorResponse:
             description: Internal Server Error
             content:

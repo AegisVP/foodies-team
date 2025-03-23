@@ -61,8 +61,10 @@ export const loginUser = async (req, res, next) => {
     res.json({
         token,
         user: {
+            id: user.id,
             name: user.name,
             email: user.email,
+            avatar: user.avatar,
         },
     });
 };
@@ -77,7 +79,7 @@ export const logoutUser = async (req, res, next) => {
     }
 
     await usersService.updateUserToken(id, null);
-    res.status(204).json();
+    res.status(204).send();
 };
 
 export const getCurrentUser = async (req, res, next) => {
@@ -89,6 +91,7 @@ export const getCurrentUser = async (req, res, next) => {
     }
 
     res.json({
+        id: user.id,
         name: user.name,
         email: user.email,
         avatar: user.avatar,
@@ -168,42 +171,34 @@ export const addUserToFollow = async (req, res, next) => {
     const followerId = req.user.id;
     const followingId = req.params.id;
 
-    const userToFollowExists = await usersService.getUserById(followingId);
-
-    if (!userToFollowExists) {
-        return next(HttpError(404, 'User to follow not found'));
-    }
-
     if (followerId === followingId) {
         return next(HttpError(400, "You can't follow yourself."));
     }
 
-    const existingFollow = await usersService.followFindOne(followerId, followingId);
+    if (!(await usersService.getUserById(followingId))) {
+        return next(HttpError(404, 'User to follow not found'));
+    }
 
-    if (existingFollow) {
+    if (await usersService.followFindOne(followerId, followingId)) {
         return next(HttpError(400, 'You are already following this user.'));
     }
 
     await usersService.followAdd(followerId, followingId);
 
-    res.status(201).json({ message: 'User followed successfully' });
+    res.status(204).send();
 };
 
 export const removeUserFromFollow = async (req, res, next) => {
     const followerId = req.user.id;
     const followingId = req.params.id;
 
-    const userToUnfollowExist = await usersService.getUserById(followingId);
-
-    if (!userToUnfollowExist) {
+    if (!(await usersService.getUserById(followingId))) {
         return next(HttpError(404, 'User to unfollow not found'));
     }
 
-    const deleted = await usersService.followDelete(followerId, followingId);
-
-    if (deleted) {
-        res.status(200).json({ message: 'You have successfully unsubscribed' });
-    } else {
-        res.status(400).json({ message: 'You have already unsubscribed' });
+    if (!(await usersService.followDelete(followerId, followingId))) {
+        return next(HttpError(400, 'You have already unsubscribed'));
     }
+
+    res.status(204).send();
 };
