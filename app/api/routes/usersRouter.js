@@ -7,9 +7,8 @@ import {
     getCurrentUser,
     updateAvatar,
     getUserInformation,
-    getUserFollowers,
-    getCurrentUserFollowers,
-    getCurrentUserFollowing,
+    getUsersFollowers,
+    getUsersFollowees,
     addUserToFollow,
     removeUserFromFollow,
 } from '../controllers/usersController.js';
@@ -28,11 +27,10 @@ usersRouter.use(authMiddleware);
 
 usersRouter.get('/current', getCurrentUser);
 usersRouter.patch('/avatar', upload.single('avatar'), updateAvatar);
-usersRouter.get('/:id/followers', getUserFollowers); // Отримати список користувачів, що слідкують за профілем користувача
-usersRouter.get('/followers/my', getCurrentUserFollowers); // Отримати список користувачів, які слідкують за профілем авторизованого користувача
-usersRouter.get('/followers', getCurrentUserFollowing); // Отримати список користувачів, за якіми слідкує авторизований користувач
-usersRouter.post('/followers/:id', addUserToFollow); // додати за ким слідкуємо
-usersRouter.delete('/followers/:id', removeUserFromFollow); // відписатися від користувача
+usersRouter.get('/followers', getUsersFollowers); // Отримати список користувачів, які слідкують за користувачev
+usersRouter.get('/followees', getUsersFollowees); // Отримати список користувачів, за якіми слідкує користувач
+usersRouter.post('/followees/:id', addUserToFollow); // додати за ким слідкуємо
+usersRouter.delete('/followees/:id', removeUserFromFollow); // відписатися від користувача
 usersRouter.get('/:id', getUserInformation);
 usersRouter.post('/logout', logoutUser);
 

@@ -128,6 +128,7 @@ export const getUserInformation = async (req, res, next) => {
     const followersCount = await usersService.countFollowers(requestedUserId);
 
     let response = {
+        id: user.id,
         name: user.name,
         email: user.email,
         avatar: user.avatar,
@@ -137,67 +138,61 @@ export const getUserInformation = async (req, res, next) => {
 
     if (authUserId === requestedUserId) {
         const favoriteCount = 'TBD'; //await Favorite.count({ where: { userId: authUserId } });
-        const followingCount = await usersService.countFollowing(authUserId);
+        const followeesCount = await usersService.countFollowees(authUserId);
 
         response = {
             ...response,
             favoriteCount: favoriteCount,
-            followingCount: followingCount,
+            followeesCount: followeesCount,
         };
     }
 
     res.json(response);
 };
 
-export const getUserFollowers = async (req, res) => {
-    const requestedUserId = req.params.id;
+export const getUsersFollowers = async (req, res) => {
+    const requestedUserId = req.query.id ?? req.user.id;
     const followers = await usersService.userWithFollowers(requestedUserId);
     res.json(followers);
 };
 
-export const getCurrentUserFollowers = async (req, res) => {
+export const getUsersFollowees = async (req, res) => {
     const authUserId = req.user.id;
-    const followers = await usersService.userWithFollowers(authUserId);
-    res.json(followers);
-};
-
-export const getCurrentUserFollowing = async (req, res) => {
-    const authUserId = req.user.id;
-    const followers = await usersService.userWithFollowing(authUserId);
-    res.json(followers);
+    const followees = await usersService.userWithFollowees(authUserId);
+    res.json(followees);
 };
 
 export const addUserToFollow = async (req, res, next) => {
     const followerId = req.user.id;
-    const followingId = req.params.id;
+    const followeeId = req.params.id;
 
-    if (followerId === followingId) {
+    if (followerId === followeeId) {
         return next(HttpError(400, "You can't follow yourself."));
     }
 
-    if (!(await usersService.getUserById(followingId))) {
+    if (!(await usersService.getUserById(followeeId))) {
         return next(HttpError(404, 'User to follow not found'));
     }
 
-    if (await usersService.followFindOne(followerId, followingId)) {
+    if (await usersService.followFindOne(followerId, followeeId)) {
         return next(HttpError(400, 'You are already following this user.'));
     }
 
-    await usersService.followAdd(followerId, followingId);
+    await usersService.followAdd(followerId, followeeId);
 
     res.status(204).send();
 };
 
 export const removeUserFromFollow = async (req, res, next) => {
     const followerId = req.user.id;
-    const followingId = req.params.id;
+    const followeeId = req.params.id;
 
-    if (!(await usersService.getUserById(followingId))) {
+    if (!(await usersService.getUserById(followeeId))) {
         return next(HttpError(404, 'User to unfollow not found'));
     }
 
-    if (!(await usersService.followDelete(followerId, followingId))) {
-        return next(HttpError(400, 'You have already unsubscribed'));
+    if (!(await usersService.followDelete(followerId, followeeId))) {
+        return next(HttpError(400, 'You are not subscribed to this user'));
     }
 
     res.status(204).send();

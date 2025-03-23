@@ -10,7 +10,7 @@ info:
 servers:
     - url: https://foodies-5tjw.onrender.com/api
       description: Foodies server
-    - url: http://localhost:3000/api
+    - url: http://127.0.0.1:3000/api
       description: Local development server
 
 tags:
@@ -186,8 +186,15 @@ paths:
                 - bearerAuth: []
             tags:
                 - users
-            summary: Get list of users I am following
+            summary: Get list of users following a user
             operationId: getFollowers
+            parameters:
+                - name: id
+                  description: User id (if ommited, current user will be used)
+                  in: query
+                  required: false
+                  schema:
+                      type: string
             responses:
                 '200':
                     $ref: '#/components/responses/followersResponse'
@@ -195,14 +202,14 @@ paths:
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
-    /users/followers/my:
+    /users/followees:
         get:
             security:
                 - bearerAuth: []
             tags:
                 - users
-            summary: Get list of users who follow me
-            operationId: getFollowing
+            summary: Get list of people authorized user is following
+            operationId: getFollowees
             responses:
                 '200':
                     $ref: '#/components/responses/followersResponse'
@@ -210,7 +217,7 @@ paths:
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
-    /users/followers/{id}:
+    /users/followees/{id}:
         post:
             security:
                 - bearerAuth: []
@@ -220,6 +227,7 @@ paths:
             operationId: follow
             parameters:
                 - name: id
+                  description: User id to follow
                   in: path
                   required: true
                   schema:
@@ -242,6 +250,7 @@ paths:
             operationId: unfollow
             parameters:
                 - name: id
+                  description: User id to unfollow
                   in: path
                   required: true
                   schema:
@@ -255,6 +264,31 @@ paths:
                     $ref: '#/components/responses/notFoundResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
+    /users/{id}:
+        get:
+            security:
+                - bearerAuth: []
+            tags:
+                - users
+            summary: Get a user information
+            operationId: getUserInformation
+            parameters:
+                - name: id
+                  description: User id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    $ref: '#/components/responses/userResponse'
+                '401':
+                    $ref: '#/components/responses/notAuthorisedResponse'
+                '404':
+                    $ref: '#/components/responses/notFoundResponse'
+                '500':
+                    $ref: '#/components/responses/serverErrorResponse'
+
     /recipes:
         get:
             security:
@@ -289,11 +323,17 @@ paths:
                   required: false
                   schema:
                       type: string
+                - name: owner
+                  in: query
+                  description: Filter recipes by owner
+                  required: false
+                  schema:
+                      type: string
             responses:
                 '200':
                     $ref: '#/components/responses/recipeSearchResponse'
-                '401':
-                    $ref: '#/components/responses/notAuthorisedResponse'
+                '400':
+                    $ref: '#/components/responses/invalidRequestResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
         post:
@@ -308,27 +348,8 @@ paths:
             responses:
                 '201':
                     $ref: '#/components/responses/recipeInformationResponse'
-                '401':
-                    $ref: '#/components/responses/notAuthorisedResponse'
-                '500':
-                    $ref: '#/components/responses/serverErrorResponse'
-    /recipes/{id}:
-        get:
-            security:
-                - none: []
-            tags:
-                - recipes
-            summary: Get information about a recipe
-            operationId: getRecipe
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-            responses:
-                '200':
-                    $ref: '#/components/responses/recipeInformationResponse'
+                '400':
+                    $ref: '#/components/responses/invalidRequestResponse'
                 '401':
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
@@ -344,11 +365,11 @@ paths:
             responses:
                 '200':
                     $ref: '#/components/responses/recipeSearchResponse'
-                '401':
-                    $ref: '#/components/responses/notAuthorisedResponse'
+                '400':
+                    $ref: '#/components/responses/invalidRequestResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
-    /recipes/favorite:
+    /recipes/favorites:
         get:
             security:
                 - bearerAuth: []
@@ -363,13 +384,35 @@ paths:
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
-    /recipes/favorite/{id}:
+    /recipes/{id}:
+        get:
+            security:
+                - none: []
+            tags:
+                - recipes
+            summary: Get information about a recipe
+            operationId: getRecipe
+            parameters:
+                - name: id
+                  description: Recipe id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    $ref: '#/components/responses/recipeInformationResponse'
+                '404':
+                    $ref: '#/components/responses/notFoundResponse'
+                '500':
+                    $ref: '#/components/responses/serverErrorResponse'
+    /recipes/{id}/favorites:
         post:
             security:
                 - bearerAuth: []
             tags:
                 - recipes
-            summary: Add to favorite
+            summary: Add recipe to favorite
             operationId: addToFavoriteRecipes
             parameters:
                 - name: id
@@ -391,7 +434,7 @@ paths:
                 - bearerAuth: []
             tags:
                 - recipes
-            summary: Remove from favorite
+            summary: Remove recipe from favorite
             operationId: removeFavoriteRecipes
             parameters:
                 - name: id
@@ -406,42 +449,6 @@ paths:
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '404':
                     $ref: '#/components/responses/notFoundResponse'
-                '500':
-                    $ref: '#/components/responses/serverErrorResponse'
-    /recipes/owner:
-        get:
-            security:
-                - bearerAuth: []
-            tags:
-                - recipes
-            summary: Get my recipes
-            operationId: listMyRecipes
-            responses:
-                '200':
-                    $ref: '#/components/responses/recipeSearchResponse'
-                '401':
-                    $ref: '#/components/responses/notAuthorisedResponse'
-                '500':
-                    $ref: '#/components/responses/serverErrorResponse'
-    /recipes/owner/{id}:
-        get:
-            security:
-                - bearerAuth: []
-            tags:
-                - recipes
-            summary: Get my recipes
-            operationId: listUserRecipes
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-            responses:
-                '200':
-                    $ref: '#/components/responses/recipeSearchResponse'
-                '401':
-                    $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
 
@@ -550,6 +557,23 @@ components:
                                       type: array
                                       items:
                                           $ref: '#/components/schemas/fullUser'
+        userResponse:
+            description: User information
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: '#/components/schemas/fullUser'
+                            - type: object
+                              properties:
+                                  followers:
+                                      type: integer
+                                  followeers:
+                                      type: integer
+                                  recipes:
+                                      type: integer
+                                  favoriteRecipes:
+                                      type: integer
         registerResponse:
             description: Successfully registered
             content:
