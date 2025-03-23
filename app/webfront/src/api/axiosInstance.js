@@ -9,16 +9,21 @@ const axiosPrivateInstance = axios.create({
     },
 });
 
-// TODO add token extraction
 axiosPrivateInstance.interceptors.request.use(async (config) => {
-    const accessToken = "";
-    config.headers.Authorization = `Bearer ${accessToken}`;
+    const accessToken = localStorage.getItem("token");
+    if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+    } else {
+        delete config.headers.Authorization;
+    }
     return config;
-});
+    },
+    (error) => Promise.reject(error)
+);
 
 axiosPrivateInstance.interceptors.response.use(
     (response) => response.data,
-    (error) => error
+    (error) => Promise.reject(error)
 );
 
 export default axiosPrivateInstance;
