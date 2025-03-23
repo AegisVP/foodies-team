@@ -1,0 +1,95 @@
+.testimonialContainer {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 64px;
+    text-align: center;
+    position: relative;
+}
+
+.reviewer {
+    font-weight: 800;
+    color: var(--extra-black);
+    text-transform: uppercase;
+}
+
+.reviewHeaderContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.reviewSubHeader {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.4286;
+    letter-spacing: -0.02em;
+}
+
+.reviewHeader {
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1.1429;
+    letter-spacing: -0.02em;
+    color: var(--extra-black);
+    text-transform: uppercase;
+}
+
+.reviewContent {
+    display: block;
+    height: 192px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.3333;
+    letter-spacing: -0.02em;
+    color: var(--extra-black);
+}
+
+.quotesIcon {
+    width: 40px;
+    height: 32px;
+    fill: var(--gray);
+    position: absolute;
+    top: 80px;
+    left: 8px;
+    z-index: 2;
+}
+
+/* Tablet Layout: Starts adapting at 768px */
+@media only screen and (min-width: 768px) {
+    .reviewSubHeader {
+        font-size: 16px;
+        line-height: 1.5;
+        letter-spacing: -0.02em;
+    }
+
+    .reviewHeader {
+        font-size: 40px;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+    }
+
+    .reviewContainer {
+        gap: 80px;
+    }
+
+    .reviewContent {
+        font-size: 24px;
+        line-height: 1.5;
+        letter-spacing: -0.02em;
+    }
+
+    .reviewer {
+        font-size: 20px;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+    }
+
+    .quotesIcon {
+        width: 59px;
+        height: 48px;
+        top: 76px;
+        left: 40px;
+    }
+}

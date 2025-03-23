@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getCategories } from './operations';
+import { getCategories, getTestimonials } from './operations';
 
 const commonSlice = createSlice({
     name: 'recipes',
@@ -16,27 +16,30 @@ const commonSlice = createSlice({
         isLoading: false,
         error: null,
     },
-    extraReducers: (builder) => {
+    extraReducers: builder => {
         builder
             .addCase(getCategories.fulfilled, (state, action) => {
                 state.categories = action.payload;
             })
+            .addCase(getTestimonials.fulfilled, (state, action) => {
+                state.testimonials = action.payload;
+            })
             // TODO add other cases here
             .addMatcher(
-                (action) => action.type.endsWith('/rejected'),
+                action => action.type.endsWith('/rejected'),
                 (state, action) => {
                     state.error = action.payload;
                 }
             )
             .addMatcher(
-                (action) => action.type.endsWith('/pending'),
-                (state) => {
+                action => action.type.endsWith('/pending'),
+                state => {
                     state.isLoading = true;
                 }
             )
             .addMatcher(
-                (action) => action.type.endsWith('/fulfilled'),
-                (state) => {
+                action => action.type.endsWith('/fulfilled'),
+                state => {
                     state.isLoading = false;
                 }
             );
