@@ -1,0 +1,70 @@
+.component {
+    align-items: center;
+    border: 1px solid;
+    border-radius: 30px;
+    display: inline-flex;
+    font-size: 16px;
+    font-weight: 700;
+    justify-content: center;
+    padding: 15px 40px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s;
+}
+
+.light {
+    background-color: transparent;
+    border-color: var(--black);
+    color: var(--black);
+
+    &:hover,
+    &:focus {
+        background-color: var(--extra-black);
+        border-color: var(--extra-black);
+        color: var(--white);
+
+        svg {
+            fill: var(--white);
+        }
+    }
+}
+
+.dark {
+    background-color: var(--extra-black);
+    border-color: var(--extra-black);
+    color: var(--white);
+
+    &:hover,
+    &:focus {
+        background-color: transparent;
+        border-color: var(--black);
+        color: var(--black);
+
+        svg {
+            fill: var(--black);
+        }
+    }
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+svg {
+    height: 20px;
+    width: 20px;
+}
+
+.noLabel {
+    border-color: var(--gray);
+    border-radius: 50%;
+    height: 42px;
+    padding: 0;
+    width: 42px;
+}
+
+.withIcon {
+    svg {
+        margin-left: 10px;
+    }
+}

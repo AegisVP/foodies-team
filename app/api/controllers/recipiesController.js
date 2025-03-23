@@ -159,7 +159,8 @@ export const addRecipeToFavorites = async (req, res, next) => {
 export const removeFavorite = async (req, res, next) => {
     try {
         const { id: userId } = req.user;
-        const { id: recipeId } = req.body;
+        // Змінюємо доступ до параметра recipeId через req.params замість req.body
+        const { recipeId } = req.params;
 
         const favorite = await recipesService.deleteFavorite(userId, recipeId);
 
@@ -171,7 +172,7 @@ export const removeFavorite = async (req, res, next) => {
 
         await favorite.destroy();
 
-        res.status(200).json({ message: 'Favorite removed successfully' });
+        res.status(200).json({ message: 'Recipe removed from favorites' });
     } catch (error) {
         console.error('Remove Favorite Error:', error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -208,4 +209,17 @@ export const deleteRecipeById = async (req, res, next) => {
     }
 
     res.json(recipe);
+};
+
+export const getFavoriteRecipes = async (req, res, next) => {
+    try {
+        const { page = 1, limit = 12 } = req.query;
+        const userId = req.user.id;
+
+        const recipes = await recipesService.getFavoriteRecipes(userId, Number(limit), Number(page));
+
+        res.json(recipes);
+    } catch (error) {
+        next(error);
+    }
 };

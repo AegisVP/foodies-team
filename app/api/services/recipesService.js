@@ -155,6 +155,49 @@ async function createRecipe(recipeData, userId) {
     return await getRecipeById(recipe.id);
 }
 
+async function getFavoriteRecipes(userId, limit = 12, page = 1) {
+    const offset = (page - 1) * limit;
+
+    const favoriteRecipes = await sequelize.query(
+        `
+        SELECT 
+            r.id,
+            r.title,
+            r.description,
+            r.thumb,
+            u.id as user_id,
+            u.name as user_name,
+            u.avatar as user_avatar
+        FROM 
+            recipes r
+        JOIN 
+            favorite_recipes fr ON r.id = fr.recipe_id
+        JOIN 
+            users u ON r.owner = u.id
+        WHERE 
+            fr.user_id = :userId
+        LIMIT :limit OFFSET :offset
+    `,
+        {
+            replacements: { userId, limit, offset },
+            type: QueryTypes.SELECT,
+        }
+    );
+
+    return favoriteRecipes.map(recipe => ({
+        id: recipe.id,
+        title: recipe.title,
+        description: recipe.description,
+        thumb: recipe.thumb,
+        time: recipe.time,
+        owner: {
+            id: recipe.user_id,
+            name: recipe.user_name,
+            avatar: recipe.user_avatar,
+        },
+    }));
+}
+
 export default {
     listRecipes,
     getRecipeById,
@@ -164,4 +207,5 @@ export default {
     deleteRecipe,
     createRecipe,
     addRecipeToFavorites,
+    getFavoriteRecipes,
 };
