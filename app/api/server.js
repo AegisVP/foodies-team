@@ -22,19 +22,12 @@ app.use(express.static(basePath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/avatars', express.static('public/avatars'));
-
 app.use('/api-docs', controllerWrapper(openapiRouter));
-
 app.use('/api', controllerWrapper(apiRouter));
 app.use('/*', (_, res) => res.sendFile(path.join(basePath, 'index.html')));
 
 app.use(handleErrors);
-app.use((req, res) =>
-    res
-        .header('Content-Type', req.headers['content-type'] ?? 'text/html')
-        .status(404)
-        .send(req.headers['content-type'] === 'application/json' ? { message: 'Not found' } : 'Not found')
-);
+app.use((_, res) => res.header('Content-Type', 'text/html').status(404).send('Not found'));
 
 const preparationJobs = [];
 preparationJobs.push(
