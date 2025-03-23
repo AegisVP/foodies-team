@@ -11,6 +11,7 @@ build/
 
 # production
 /build
+**/public/avatars
 
 # misc
 .idea/
