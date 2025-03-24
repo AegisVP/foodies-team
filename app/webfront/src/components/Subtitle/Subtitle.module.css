@@ -1,0 +1,17 @@
+.subtitle {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.14286;
+    letter-spacing: -0.02em;
+    color: var(--gray);
+}
+
+/* Tablet Layout: Starts adapting at 768px */
+@media only screen and (min-width: 768px) {
+    .subtitle {
+        font-size: 16px;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        color: var(--black);
+    }
+}

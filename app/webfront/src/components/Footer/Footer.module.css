@@ -33,14 +33,6 @@
     text-decoration: none;
 }
 
-.logoContent {
-    font-weight: 800;
-    color: var(--extra-black);
-    font-size: 20px;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-}
-
 .socialLinksContainer {
     width: 140px;
     display: flex;
@@ -87,12 +79,6 @@
 
     .contentContainer {
         padding: 0 32px;
-    }
-
-    .logoContent {
-        font-size: 24px;
-        line-height: 1.6667;
-        letter-spacing: -0.02em;
     }
 
     .socialLinkItemContainer {

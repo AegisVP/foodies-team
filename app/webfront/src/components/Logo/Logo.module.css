@@ -2,10 +2,9 @@
 
 .logo {
     font-size: 20px;
-    font-style: normal;
     font-weight: 800;
-    line-height: 24px; /* 120% */
-    letter-spacing: -0.4px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     text-transform: lowercase;
     text-decoration: none;
 }
@@ -21,7 +20,7 @@
 @media only screen and (min-width: 768px) {
     .logo {
         font-size: 24px;
-        line-height: 28px; /* 116.667% */
-        letter-spacing: -0.48px;
+        line-height: 1.6667;
+        letter-spacing: -0.02em;
     }
 }
