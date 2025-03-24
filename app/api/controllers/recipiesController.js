@@ -1,222 +1,257 @@
-import recipesService from '../services/recipesService.js';
-import ingredientsServices from '../services/ingredientsServices.js';
-import categoriesServices from '../services/categoriesServices.js';
-import areasServices from '../services/areasServices.js';
-import HttpError from '../helpers/HttpError.js';
-import controllerWrapper from '../decorators/controllerWrapper.js';
+import recipesService from "../services/recipesService.js";
+import ingredientsServices from "../services/ingredientsServices.js";
+import categoriesServices from "../services/categoriesServices.js";
+import areasServices from "../services/areasServices.js";
+import HttpError from "../helpers/HttpError.js";
+import controllerWrapper from "../decorators/controllerWrapper.js";
 
 export const createRecipe = controllerWrapper(async (req, res, next) => {
-    const { id: userId } = req.user;
-    const { title, category, area, instructions, description, thumb, time, ingredients } = req.body;
+	const { id: userId } = req.user;
+	const {
+		title,
+		category,
+		area,
+		instructions,
+		description,
+		thumb,
+		time,
+		ingredients,
+	} = req.body;
 
-    // Verify category exists
-    const categoryExists = await categoriesServices.listCategories({ id: category });
-    if (!categoryExists || categoryExists.length === 0) {
-        return next(HttpError(404, `Category with id ${category} not found`));
-    }
+	// Verify category exists
+	const categoryExists = await categoriesServices.listCategories({
+		id: category,
+	});
+	if (!categoryExists || categoryExists.length === 0) {
+		return next(HttpError(404, `Category with id ${category} not found`));
+	}
 
-    // Verify area exists
-    const areaExists = await areasServices.listAreas({ id: area });
-    if (!areaExists || areaExists.length === 0) {
-        return next(HttpError(404, `Area with id ${area} not found`));
-    }
+	// Verify area exists
+	const areaExists = await areasServices.listAreas({ id: area });
+	if (!areaExists || areaExists.length === 0) {
+		return next(HttpError(404, `Area with id ${area} not found`));
+	}
 
-    // Verify all ingredients exist
-    // Convert all ingredient IDs to strings to ensure consistency
-    const ingredientIds = ingredients.map(ing => String(ing.id));
+	// Verify all ingredients exist
+	// Convert all ingredient IDs to strings to ensure consistency
+	const ingredientIds = ingredients.map((ing) => String(ing.id));
 
-    // Update ingredients array with string IDs for database storage
-    const ingredientsWithStringIds = ingredients.map(ing => ({
-        ...ing,
-        id: String(ing.id),
-    }));
-    req.body.ingredients = ingredientsWithStringIds;
+	// Update ingredients array with string IDs for database storage
+	const ingredientsWithStringIds = ingredients.map((ing) => ({
+		...ing,
+		id: String(ing.id),
+	}));
+	req.body.ingredients = ingredientsWithStringIds;
 
-    const existingIngredients = await ingredientsServices.listIngredients({ id: ingredientIds });
+	const existingIngredients = await ingredientsServices.listIngredients({
+		id: ingredientIds,
+	});
 
-    if (existingIngredients.length !== ingredientIds.length) {
-        const foundIds = existingIngredients.map(ing => ing.id);
-        const missingIds = ingredientIds.filter(id => !foundIds.includes(id));
-        return next(HttpError(404, `Ingredients with ids ${missingIds.join(', ')} not found`));
-    }
+	if (existingIngredients.length !== ingredientIds.length) {
+		const foundIds = existingIngredients.map((ing) => ing.id);
+		const missingIds = ingredientIds.filter((id) => !foundIds.includes(id));
+		return next(
+			HttpError(404, `Ingredients with ids ${missingIds.join(", ")} not found`),
+		);
+	}
 
-    const recipe = await recipesService.createRecipe(req.body, userId);
+	const recipe = await recipesService.createRecipe(req.body, userId);
 
-    const ingredientsWithDetails = ingredientsWithStringIds.map(ing => {
-        const ingredientDetails = existingIngredients.find(
-            ingDetail => ingDetail.id === ing.id || ingDetail.id === String(ing.id)
-        );
+	const ingredientsWithDetails = ingredientsWithStringIds.map((ing) => {
+		const ingredientDetails = existingIngredients.find(
+			(ingDetail) => ingDetail.id === ing.id || ingDetail.id === String(ing.id),
+		);
 
-        if (!ingredientDetails) {
-            console.warn(`Ingredient details not found for ID: ${ing.id}`);
-            return {
-                id: ing.id,
-                name: 'Unknown Ingredient',
-                image: null,
-                measure: ing.quantity,
-            };
-        }
+		if (!ingredientDetails) {
+			console.warn(`Ingredient details not found for ID: ${ing.id}`);
+			return {
+				id: ing.id,
+				name: "Unknown Ingredient",
+				image: null,
+				measure: ing.quantity,
+			};
+		}
 
-        return {
-            id: ing.id,
-            name: ingredientDetails.name,
-            image: ingredientDetails.image,
-            measure: ing.quantity,
-        };
-    });
+		return {
+			id: ing.id,
+			name: ingredientDetails.name,
+			image: ingredientDetails.image,
+			measure: ing.quantity,
+		};
+	});
 
-    res.status(201).json({
-        id: recipe.id,
-        title: recipe.title,
-        category: recipe.category_association,
-        time: recipe.time,
-        description: recipe.description,
-        owner: recipe.user,
-        ingredients: ingredientsWithDetails,
-        area: recipe.area_association,
-        instructions: recipe.instructions,
-        thumb: recipe.thumb,
-    });
+	res.status(201).json({
+		id: recipe.id,
+		title: recipe.title,
+		category: recipe.category_association,
+		time: recipe.time,
+		description: recipe.description,
+		owner: recipe.user,
+		ingredients: ingredientsWithDetails,
+		area: recipe.area_association,
+		instructions: recipe.instructions,
+		thumb: recipe.thumb,
+	});
 });
 
 export const listRecipes = async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 12;
+	const page = Number.parseInt(req.query.page) || 1;
+	const limit = Number.parseInt(req.query.limit) || 12;
 
-    let whereCondition = '1=1';
+	let whereCondition = "1=1";
 
-    if (req.query.category) {
-        whereCondition += ` AND category = '${req.query.category}'`;
-    }
+	if (req.query.category) {
+		whereCondition += ` AND category = '${req.query.category}'`;
+	}
 
-    if (req.query.area) {
-        whereCondition += ` AND area = '${req.query.area}'`;
-    }
+	if (req.query.area) {
+		whereCondition += ` AND area = '${req.query.area}'`;
+	}
 
-    if (req.query.ingredients) {
-        const ingredientIds = req.query.ingredients.split(',').map(id => id.trim());
-        whereCondition += ` AND ${ingredientIds
-            .map(id => `CAST(ingredients AS TEXT) SIMILAR TO '%"id":[ ]?"${id}"%'`)
-            .join(' AND ')}`;
-    }
+	if (req.query.ingredients) {
+		const ingredientIds = req.query.ingredients
+			.split(",")
+			.map((id) => id.trim());
+		whereCondition += ` AND ${ingredientIds
+			.map((id) => `CAST(ingredients AS TEXT) SIMILAR TO '%"id":[ ]?"${id}"%'`)
+			.join(" AND ")}`;
+	}
 
-    res.json(await recipesService.listRecipes(limit, page, whereCondition));
+	res.json(await recipesService.listRecipes(limit, page, whereCondition));
 };
 
 export const getRecipeById = async (req, res, next) => {
-    const { id } = req.params;
-    const recipe = await recipesService.getRecipeById(id);
+	const { id } = req.params;
+	const recipe = await recipesService.getRecipeById(id);
 
-    if (!recipe) {
-        const error = new Error('Recipe not found');
-        error.status = 404;
-        return next(error);
-    }
+	if (!recipe) {
+		const error = new Error("Recipe not found");
+		error.status = 404;
+		return next(error);
+	}
 
-    const ingredients = await ingredientsServices.listIngredients({ id: recipe.ingredients.map(ing => ing.id) });
+	const ingredients = await ingredientsServices.listIngredients({
+		id: recipe.ingredients.map((ing) => ing.id),
+	});
 
-    res.json({
-        id: recipe.id,
-        title: recipe.title,
-        category: recipe.category_association,
-        time: recipe.time,
-        description: recipe.description,
-        owner: recipe.user,
-        ingredients: recipe.ingredients.map(ing => {
-            const ingredient = ingredients.find(ing_i => ing_i.id === ing.id);
-            return {
-                id: ing.id,
-                name: ingredient ? ingredient.name : 'Unknown',
-                image: ingredient ? ingredient.image : null,
-                measure: ing.measure,
-            };
-        }),
-        area: recipe.area_association,
-        instructions: recipe.instructions,
-        thumb: recipe.thumb,
-    });
+	res.json({
+		id: recipe.id,
+		title: recipe.title,
+		category: recipe.category_association,
+		time: recipe.time,
+		description: recipe.description,
+		owner: recipe.user,
+		ingredients: recipe.ingredients.map((ing) => {
+			const ingredient = ingredients.find((ing_i) => ing_i.id === ing.id);
+			return {
+				id: ing.id,
+				name: ingredient ? ingredient.name : "Unknown",
+				image: ingredient ? ingredient.image : null,
+				measure: ing.measure,
+			};
+		}),
+		area: recipe.area_association,
+		instructions: recipe.instructions,
+		thumb: recipe.thumb,
+	});
 };
 
 export const addRecipeToFavorites = async (req, res, next) => {
-    try {
-        const { id: userId } = req.user;
-        const { recipeId } = req.params;
+	try {
+		const { id: userId } = req.user;
+		const { recipeId } = req.params;
 
-        await recipesService.addRecipeToFavorites(userId, recipeId);
-        return res.status(201).json({ message: 'Recipe added to favorites' });
-    } catch (error) {
-        next(error);
-    }
+		await recipesService.addRecipeToFavorites(userId, recipeId);
+		return res.status(201).json({ message: "Recipe added to favorites" });
+	} catch (error) {
+		next(error);
+	}
 };
 
 export const removeFavorite = async (req, res, next) => {
-    try {
-        const { id: userId } = req.user;
-        // Змінюємо доступ до параметра recipeId через req.params замість req.body
-        const { recipeId } = req.params;
+	try {
+		const { id: userId } = req.user;
+		// Змінюємо доступ до параметра recipeId через req.params замість req.body
+		const { recipeId } = req.params;
 
-        const favorite = await recipesService.deleteFavorite(userId, recipeId);
+		const favorite = await recipesService.deleteFavorite(userId, recipeId);
 
-        if (!favorite) {
-            const error = new Error('Favorite not found');
-            error.status = 404;
-            return next(error);
-        }
+		if (!favorite) {
+			const error = new Error("Favorite not found");
+			error.status = 404;
+			return next(error);
+		}
 
-        await favorite.destroy();
+		await favorite.destroy();
 
-        res.status(200).json({ message: 'Recipe removed from favorites' });
-    } catch (error) {
-        console.error('Remove Favorite Error:', error);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
+		res.status(200).json({ message: "Recipe removed from favorites" });
+	} catch (error) {
+		console.error("Remove Favorite Error:", error);
+		return res.status(500).json({ message: "Internal server error" });
+	}
 };
 
 export const getPopularRecipes = async (req, res, next) => {
-    try {
-        const limit = parseInt(req.query.limit) || 10;
-        const page = parseInt(req.query.page) || 1;
+	try {
+		const limit = Number.parseInt(req.query.limit) || 10;
+		const page = Number.parseInt(req.query.page) || 1;
 
-        const popularRecipes = await recipesService.getPopularRecipes(limit, page);
+		const popularRecipes = await recipesService.getPopularRecipes(limit, page);
 
-        res.json({
-            page,
-            limit,
-            data: popularRecipes,
-        });
-    } catch (error) {
-        console.log(error);
-        next(error);
-    }
+		res.json({
+			page,
+			limit,
+			data: popularRecipes,
+		});
+	} catch (error) {
+		console.log(error);
+		next(error);
+	}
 };
 
 export const deleteRecipeById = async (req, res, next) => {
-    const { id } = req.params;
-    // const { id: owner } = req.user;
-    const recipe = await recipesService.deleteRecipe({ id }); // TODO pass owner when authMiddleware is ready
+	const { id } = req.params;
+	// const { id: owner } = req.user;
+	const recipe = await recipesService.deleteRecipe({ id }); // TODO pass owner when authMiddleware is ready
 
-    if (!recipe) {
-        const error = new Error('Recipe not found');
-        error.status = 404;
-        return next(error);
-    }
+	if (!recipe) {
+		const error = new Error("Recipe not found");
+		error.status = 404;
+		return next(error);
+	}
 
-    res.json(recipe);
+	res.json(recipe);
 };
 
 export const getFavoriteRecipes = async (req, res, next) => {
-    try {
-        const { page = 1, limit = 12 } = req.query;
-        const userId = req.user.id;
-        
-        const recipes = await recipesService.getFavoriteRecipes(
-            userId,
-            Number(limit),
-            Number(page)
-        );
-        
-        res.json(recipes);
-    } catch (error) {
-        next(error);
-    }
+	try {
+		const { page = 1, limit = 12 } = req.query;
+		const userId = req.user.id;
+
+		const recipes = await recipesService.getFavoriteRecipes(
+			userId,
+			Number(limit),
+			Number(page),
+		);
+
+		res.json(recipes);
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const getOwnerRecipes = async (req, res, next) => {
+	try {
+		const userId = req.user.id;
+		const { page = 1, limit = 12 } = req.query;
+
+		const recipes = await recipesService.getOwnerRecipes(
+			userId,
+			Number(limit),
+			Number(page),
+		);
+		res.json(recipes);
+	} catch (error) {
+		next(error);
+	}
 };
