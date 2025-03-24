@@ -26,7 +26,7 @@ recipiesRouter.use(authMiddleware);
 
 // 1. Специфічні маршрути без параметрів
 recipiesRouter.get('/favorite', getFavoriteRecipes);
-recipiesRouter.get('/owner', authMiddleware, getOwnerRecipes);
+recipiesRouter.get('/owner', getOwnerRecipes);
 
 // 2. Специфічні маршрути з параметрами
 recipiesRouter.post('/favorite/:recipeId', addRecipeToFavorites);
