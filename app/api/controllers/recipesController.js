@@ -3,7 +3,6 @@ import ingredientsServices from '../services/ingredientsServices.js';
 import categoriesServices from '../services/categoriesServices.js';
 import areasServices from '../services/areasServices.js';
 import HttpError from '../helpers/HttpError.js';
-import controllerWrapper from '../decorators/controllerWrapper.js';
 import usersService from '../services/usersService.js';
 
 const paginateRecipes = (sentPage = 1, limit = 12, recipes) => {
@@ -79,7 +78,7 @@ export const getRecipeById = async (req, res, next) => {
     });
 };
 
-export const createRecipe = controllerWrapper(async (req, res, next) => {
+export const createRecipe = async (req, res, next) => {
     const { id: userId } = req.user;
     const { category, area, ingredients } = req.body;
 
@@ -133,7 +132,7 @@ export const createRecipe = controllerWrapper(async (req, res, next) => {
         instructions: recipe.instructions,
         thumb: recipe.thumb,
     });
-});
+};
 
 export const deleteRecipeById = async (req, res, next) => {
     const { id } = req.params;
