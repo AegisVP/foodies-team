@@ -1,7 +1,6 @@
 @import '../../index.css';
 
 .logo {
-  color: var(--white, #FFF);
   font-size: 20px;
   font-style: normal;
   font-weight: 800;
@@ -11,8 +10,12 @@
   text-decoration: none;
 }
 
-.black {
+.light {
   color: var(--extra-black, #000);
+}
+
+.dark {
+  color: var(--white, #FFF);
 }
 
 @media only screen and (min-width: 768px) {

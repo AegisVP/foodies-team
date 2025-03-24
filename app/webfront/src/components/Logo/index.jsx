@@ -1,13 +1,25 @@
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import css from './Logo.module.css';
 
-const Logo = ({ color }) => {
-    const colorClass = color === 'white' ? css.logo : `${css.logo} ${css.black}`;
+const Logo = ({ theme }) => {
+    const classes = clsx(
+        css.logo,
+        {
+          [css.light]: theme === 'light',
+          [css.dark]: theme === 'dark',
+        },
+      );
 
     return (
-        <a href="/" className={colorClass} aria-label="Foodies">
+        <a href="/" className={classes} aria-label="Foodies">
             Foodies
         </a>
     );
+};
+
+Logo.propTypes = {
+  theme: PropTypes.oneOf(['light', 'dark']),
 };
 
 export default Logo;

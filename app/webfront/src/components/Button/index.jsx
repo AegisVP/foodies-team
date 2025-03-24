@@ -12,6 +12,7 @@ const Button = ({
   href,
   icon,
   to,
+  className,
 }) => {
   const classes = clsx(
     css.component,
@@ -22,6 +23,7 @@ const Button = ({
       [css.noLabel]: icon && !label,
       [css.withIcon]: icon && label,
     },
+    className,
   );
 
   if (href) {
@@ -86,6 +88,7 @@ Button.propTypes = {
   onClick: PropTypes.func,
   theme: PropTypes.oneOf(['light', 'dark']),
   to: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export default Button;
