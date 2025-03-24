@@ -17,6 +17,7 @@ const Slider = ({ items, type }) => {
                     disableOnInteraction: false,
                 }}
                 slidesPerView={1}
+                autoHeight={true}
             >
                 {items.map((item, index) =>
                     type === 'testimonial' ? (

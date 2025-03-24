@@ -9,6 +9,8 @@ import {
 } from 'src/redux/common/selectors';
 import { getCategories, getTestimonials } from 'src/redux/common/operations';
 import Slider from 'src/components/Slider';
+import Dropdown from 'src/components/Dropdown';
+import { useState } from 'react';
 
 const HomePage = () => {
     const isCommonLoading = useSelector(selectIsCommonLoading);
@@ -18,29 +20,22 @@ const HomePage = () => {
 
     const dispatch = useDispatch();
 
-    const handleGetCategories = async () => {
-        dispatch(getCategories());
-    };
-
     useEffect(() => {
+        dispatch(getCategories());
         dispatch(getTestimonials());
     }, [dispatch]);
 
     useShowError(error);
 
+    const [selectedCategory, setSelectedCategory] = useState('');
+
     return (
         <div>
             <p>Home page</p>
 
-            <p>Categories:</p>
-            <button onClick={handleGetCategories}>Get categories</button>
             {isCommonLoading && <p>Loading getCategories...</p>}
             {!isCommonLoading && !!categories?.length && (
-                <ul>
-                    {categories?.map(category => (
-                        <li key={category.id}>{category.name}</li>
-                    ))}
-                </ul>
+                <Dropdown items={categories} label="Select a category" callback={setSelectedCategory} />
             )}
             {isCommonLoading && <p>Loading getTestimonials...</p>}
             {!isCommonLoading && !!testimonials?.length && <Slider items={testimonials} type="testimonial" />}
