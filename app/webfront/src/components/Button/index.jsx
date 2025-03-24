@@ -3,14 +3,18 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import css from './Button.module.css';
 
-const Button = ({ ariaLabel, theme = 'light', label, fullWidth, onClick, href, icon, to }) => {
-    const classes = clsx(css.component, {
-        [css.light]: theme === 'light',
-        [css.dark]: theme === 'dark',
-        [css.fullWidth]: fullWidth,
-        [css.noLabel]: icon && !label,
-        [css.withIcon]: icon && label,
-    });
+const Button = ({ ariaLabel, theme = 'light', label, fullWidth, onClick, href, icon, to, className }) => {
+    const classes = clsx(
+        css.component,
+        {
+            [css.light]: theme === 'light',
+            [css.dark]: theme === 'dark',
+            [css.fullWidth]: fullWidth,
+            [css.noLabel]: icon && !label,
+            [css.withIcon]: icon && label,
+        },
+        className
+    );
 
     if (href) {
         return (
@@ -62,6 +66,7 @@ Button.propTypes = {
     onClick: PropTypes.func,
     theme: PropTypes.oneOf(['light', 'dark']),
     to: PropTypes.string,
+    className: PropTypes.string,
 };
 
 export default Button;

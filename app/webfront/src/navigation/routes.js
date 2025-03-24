@@ -3,6 +3,7 @@ const ROUTES = {
     USER_PAGE: '/user/:id',
     ADD_RECIPE_PAGE: '/recipe/add',
     RECIPE_PAGE: '/recipe/:id',
+    CATEGORIES: '/categories',
     RECIPES: 'recipes',
     FAVORITES: 'favorites',
     FOLLOWERS: 'followers',
