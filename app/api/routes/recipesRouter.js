@@ -11,33 +11,20 @@ import {
     addRecipeToFavorites,
     removeFavorite,
     getFavoriteRecipes,
-    // getOwnerRecipes,       // Розкоментуйте коли реалізуєте
-    // getOwnerRecipesById,   // Розкоментуйте коли реалізуєте
-} from '../controllers/recipiesController.js';
+    getOwnerRecipes,
+} from '../controllers/recipesController.js';
+import controllerWrapper from '../decorators/controllerWrapper.js';
 
-const recipiesRouter = express.Router();
+const recipesRouter = express.Router();
 
-// Публічні маршрути (без аутентифікації)
-recipiesRouter.get('/', listRecipes);
-recipiesRouter.get('/popular', getPopularRecipes);
+recipesRouter.get('/', controllerWrapper(listRecipes));
+recipesRouter.post('/', authMiddleware, validateBody(createRecipeSchema), controllerWrapper(createRecipe));
+recipesRouter.get('/popular', controllerWrapper(getPopularRecipes));
+recipesRouter.get('/favorites', authMiddleware, controllerWrapper(getFavoriteRecipes));
+recipesRouter.get('/owner/:id', authMiddleware, controllerWrapper(getOwnerRecipes));
+recipesRouter.get('/:id', controllerWrapper(getRecipeById));
+recipesRouter.delete('/:id', authMiddleware, controllerWrapper(deleteRecipeById));
+recipesRouter.post('/:id/favorite', authMiddleware, controllerWrapper(addRecipeToFavorites));
+recipesRouter.delete('/:id/favorite', authMiddleware, controllerWrapper(removeFavorite));
 
-// Необхідна аутентифікація для наступних маршрутів
-recipiesRouter.use(authMiddleware);
-
-// 1. Специфічні маршрути без параметрів
-recipiesRouter.get('/favorite', getFavoriteRecipes);
-// recipiesRouter.get('/owner', getOwnerRecipes);  // Маршрут для отримання власних рецептів
-
-// 2. Специфічні маршрути з параметрами
-recipiesRouter.post('/favorite/:recipeId', addRecipeToFavorites);
-recipiesRouter.delete('/favorite/:recipeId', removeFavorite);
-// recipiesRouter.get('/owner/:id', getOwnerRecipesById);  // Маршрут для отримання рецептів конкретного користувача
-
-// 3. Загальні маршрути з параметрами
-recipiesRouter.get('/:id', getRecipeById);
-recipiesRouter.delete('/:id', deleteRecipeById);
-
-// 4. POST/PUT запити
-recipiesRouter.post('/', validateBody(createRecipeSchema), createRecipe);
-
-export default recipiesRouter;
+export default recipesRouter;

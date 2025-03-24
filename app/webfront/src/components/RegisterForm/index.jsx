@@ -71,7 +71,7 @@ export default function RegisterForm({ onClose }) {
                     <input type={showPassword ? 'text' : 'password'} {...register('password')} />
                     <button
                         type="button"
-                        onClick={() => setShowPassword((prev) => !prev)}
+                        onClick={() => setShowPassword(prev => !prev)}
                         className={styles.eyeButton}
                         aria-label="Toggle password visibility"
                     >

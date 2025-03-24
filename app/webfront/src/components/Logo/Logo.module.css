@@ -1,24 +1,27 @@
 @import '../../index.css';
 
 .logo {
-  color: var(--white, #FFF);
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 800;
-  line-height: 24px; /* 120% */
-  letter-spacing: -0.4px;
-  text-transform: lowercase;
-  text-decoration: none;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 24px; /* 120% */
+    letter-spacing: -0.4px;
+    text-transform: lowercase;
+    text-decoration: none;
 }
 
-.black {
-  color: var(--extra-black, #000);
+.light {
+    color: var(--extra-black, #000);
+}
+
+.dark {
+    color: var(--white, #fff);
 }
 
 @media only screen and (min-width: 768px) {
-  .logo {
-    font-size: 24px;
-    line-height: 28px; /* 116.667% */
-    letter-spacing: -0.48px;
-  }
+    .logo {
+        font-size: 24px;
+        line-height: 28px; /* 116.667% */
+        letter-spacing: -0.48px;
+    }
 }

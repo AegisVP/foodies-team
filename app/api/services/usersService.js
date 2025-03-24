@@ -1,3 +1,4 @@
+import { FavoriteRecipe } from '../models/favoriteRecipes.js';
 import { User, Follow } from '../models/users.js';
 
 async function registerUser(id, name, email, password, avatar) {
@@ -35,11 +36,11 @@ async function userWithFollowers(userId) {
 }
 
 // To get users that the user follows
-async function userWithFollowing(userId) {
+async function userWithFollowees(userId) {
     return await User.findByPk(userId, {
         include: {
             model: User,
-            as: 'following',
+            as: 'followees',
             through: { attributes: [] },
             attributes: ['id', 'name', 'avatar', 'email'],
         },
@@ -47,26 +48,30 @@ async function userWithFollowing(userId) {
     });
 }
 
+async function countUserFavorites(userId) {
+    return await FavoriteRecipe.count({ where: { userId } });
+}
+
 // Counts the number of users that follow the given userId.
 async function countFollowers(userId) {
-    return await Follow.count({ where: { followingId: userId } });
+    return await Follow.count({ where: { followeeId: userId } });
 }
 
 //  Counts the number of users that the given userId is following.
-async function countFollowing(userId) {
+async function countFollowees(userId) {
     return await Follow.count({ where: { followerId: userId } });
 }
 
-async function followFindOne(followerId, followingId) {
-    return await Follow.findOne({ where: { followerId, followingId } });
+async function followFindOne(followerId, followeeId) {
+    return await Follow.findOne({ where: { followerId, followeeId } });
 }
 
-async function followAdd(followerId, followingId) {
-    return await Follow.create({ followerId, followingId });
+async function followAdd(followerId, followeeId) {
+    return await Follow.create({ followerId, followeeId });
 }
 
-async function followDelete(followerId, followingId) {
-    return await Follow.destroy({ where: { followerId, followingId } });
+async function followDelete(followerId, followeeId) {
+    return await Follow.destroy({ where: { followerId, followeeId } });
 }
 
 export default {
@@ -76,9 +81,10 @@ export default {
     updateUserToken,
     updateUserAvatar,
     userWithFollowers,
-    userWithFollowing,
+    userWithFollowees,
+    countUserFavorites,
     countFollowers,
-    countFollowing,
+    countFollowees,
     followFindOne,
     followAdd,
     followDelete,

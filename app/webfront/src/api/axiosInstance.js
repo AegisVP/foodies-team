@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = "/api";
+const baseURL = '/api';
 
 const axiosPrivateInstance = axios.create({
     baseURL,
@@ -9,21 +9,22 @@ const axiosPrivateInstance = axios.create({
     },
 });
 
-axiosPrivateInstance.interceptors.request.use(async (config) => {
-    const accessToken = localStorage.getItem("token");
-    if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-    } else {
-        delete config.headers.Authorization;
-    }
-    return config;
+axiosPrivateInstance.interceptors.request.use(
+    async config => {
+        const accessToken = localStorage.getItem('token');
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        } else {
+            delete config.headers.Authorization;
+        }
+        return config;
     },
-    (error) => Promise.reject(error)
+    error => Promise.reject(error)
 );
 
 axiosPrivateInstance.interceptors.response.use(
-    (response) => response.data,
-    (error) => Promise.reject(error)
+    response => response.data,
+    error => Promise.reject(error)
 );
 
 export default axiosPrivateInstance;
