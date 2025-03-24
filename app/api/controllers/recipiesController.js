@@ -208,15 +208,31 @@ export const getFavoriteRecipes = async (req, res, next) => {
     try {
         const { page = 1, limit = 12 } = req.query;
         const userId = req.user.id;
-        
+
         const recipes = await recipesService.getFavoriteRecipes(
             userId,
             Number(limit),
             Number(page)
         );
-        
+
         res.json(recipes);
     } catch (error) {
         next(error);
     }
+};
+
+export const getOwnerRecipes = async (req, res, next) => {
+	try {
+		const userId = req.user.id;
+		const { page = 1, limit = 12 } = req.query;
+
+		const recipes = await recipesService.getOwnerRecipes(
+			userId,
+			Number(limit),
+			Number(page),
+		);
+		res.json(recipes);
+	} catch (error) {
+		next(error);
+	}
 };

@@ -411,7 +411,7 @@ paths:
             tags:
                 - recipes
             summary: Get my recipes
-            operationId: listMyRecipes
+            operationId: getOwnerRecipes
             responses:
                 '200':
                     $ref: '#/components/responses/recipeSearchResponse'

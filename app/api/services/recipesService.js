@@ -10,10 +10,10 @@ import HttpError from '../helpers/HttpError.js';
 
 async function listRecipes(limit = 12, page = 1, whereCondition = null) {
     const recipes = await sequelize.query(
-        `SELECT "recipes".*, 
-                "user"."id" AS "user_id", 
-                "user"."name" AS "user_name", 
-                "user"."avatar" AS "user_avatar", 
+        `SELECT "recipes".*,
+                "user"."id" AS "user_id",
+                "user"."name" AS "user_name",
+                "user"."avatar" AS "user_avatar",
                 "user"."email" AS "user_email" FROM "recipes" AS "recipes" LEFT OUTER JOIN "users" AS "user" ON "recipes"."owner" = "user"."id" ${
                     whereCondition ? `WHERE ${whereCondition}` : ''
                 } LIMIT ${limit} OFFSET ${(page - 1) * limit}`,
@@ -80,7 +80,7 @@ async function getPopularRecipes(limit = 10, page = 1) {
     // Використовуємо SQL запит напряму, щоб уникнути проблем з регістром
     const popularRecipes = await sequelize.query(
         `
-        SELECT 
+        SELECT
             r.id,
             r.title,
             r.description,
@@ -90,15 +90,15 @@ async function getPopularRecipes(limit = 10, page = 1) {
             u.name as user_name,
             u.avatar as user_avatar,
             COUNT(fr.id) as favorite_count
-        FROM 
+        FROM
             recipes r
-        LEFT JOIN 
+        LEFT JOIN
             users u ON r.owner = u.id
-        LEFT JOIN 
+        LEFT JOIN
             favorite_recipes fr ON r.id = fr.recipe_id
-        GROUP BY 
+        GROUP BY
             r.id, u.id
-        ORDER BY 
+        ORDER BY
             favorite_count DESC
         LIMIT :limit OFFSET :offset
     `,
@@ -156,7 +156,7 @@ async function getFavoriteRecipes(userId, limit = 12, page = 1) {
 
     const favoriteRecipes = await sequelize.query(
         `
-        SELECT 
+        SELECT
             r.id,
             r.title,
             r.description,
@@ -164,13 +164,13 @@ async function getFavoriteRecipes(userId, limit = 12, page = 1) {
             u.id as user_id,
             u.name as user_name,
             u.avatar as user_avatar
-        FROM 
+        FROM
             recipes r
-        JOIN 
+        JOIN
             favorite_recipes fr ON r.id = fr.recipe_id
-        JOIN 
+        JOIN
             users u ON r.owner = u.id
-        WHERE 
+        WHERE
             fr.user_id = :userId
         LIMIT :limit OFFSET :offset
     `,
@@ -194,7 +194,10 @@ async function getFavoriteRecipes(userId, limit = 12, page = 1) {
     }));
 }
 
-
+async function getOwnerRecipes(userId, limit = 12, page = 1) {
+	const whereCondition = `"recipes"."owner" = '${userId}'`;
+	return await listRecipes(limit, page, whereCondition);
+}
 
 export default {
     listRecipes,
@@ -206,4 +209,5 @@ export default {
     createRecipe,
     addRecipeToFavorites,
     getFavoriteRecipes,
+    getOwnerRecipes,
 };
