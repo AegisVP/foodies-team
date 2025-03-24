@@ -9,29 +9,35 @@ import { v4 as uuidv4 } from 'uuid';
 import HttpError from '../helpers/HttpError.js';
 
 async function listRecipes(whereCondition = null) {
-    let query = `
-    SELECT "recipes".*, "user"."id" AS "owner"
-    FROM "recipes" AS "recipes"
-    LEFT OUTER JOIN "users" AS "user" ON "recipes"."owner" = "user"."id"`;
-
-    if (whereCondition) {
-        query += ` WHERE ${whereCondition}`;
-    }
-
-    console.log({ query });
-
-    const recipes = await sequelize.query(query, { type: QueryTypes.SELECT });
+    const recipes = await sequelize.query(
+        `
+    SELECT
+        "recipes".*,
+        "user"."id" AS "user_id",
+        "user"."name" AS "user_name",
+        "user"."avatar" AS "user_avatar"
+    FROM
+        "recipes" AS "recipes"
+    LEFT OUTER JOIN "users" AS "user"
+        ON "recipes"."owner" = "user"."id"${
+            whereCondition
+                ? `
+    WHERE ${whereCondition}`
+                : ''
+        }`,
+        { type: QueryTypes.SELECT }
+    );
 
     return recipes.map(recipe => ({
         id: recipe.id,
+        title: recipe.title,
+        description: recipe.description,
+        thumb: recipe.thumb,
         owner: {
             id: recipe.user_id,
             name: recipe.user_name,
             avatar: recipe.user_avatar,
         },
-        title: recipe.title,
-        description: recipe.description,
-        thumb: recipe.thumb,
     }));
 }
 
@@ -76,36 +82,30 @@ async function deleteFavorite(userId, recipeId) {
         where: { user_id: userId, recipe_id: recipeId },
     });
 }
-async function getPopularRecipes(limit = 10, page = 1) {
-    const offset = (page - 1) * limit;
-
+async function getPopularRecipes() {
     // Використовуємо SQL запит напряму, щоб уникнути проблем з регістром
     const popularRecipes = await sequelize.query(
         `
-        SELECT 
+        SELECT
             r.id,
             r.title,
             r.description,
             r.thumb,
             r.time,
             u.id as user_id,
-            u.name as user_name,
-            u.avatar as user_avatar,
             COUNT(fr.id) as favorite_count
-        FROM 
+        FROM
             recipes r
-        LEFT JOIN 
+        LEFT JOIN
             users u ON r.owner = u.id
-        LEFT JOIN 
+        LEFT JOIN
             favorite_recipes fr ON r.id = fr.recipe_id
-        GROUP BY 
+        GROUP BY
             r.id, u.id
-        ORDER BY 
+        ORDER BY
             favorite_count DESC
-        LIMIT :limit OFFSET :offset
-    `,
+        LIMIT 12;`,
         {
-            replacements: { limit, offset },
             type: QueryTypes.SELECT,
         }
     );
@@ -118,11 +118,7 @@ async function getPopularRecipes(limit = 10, page = 1) {
         thumb: recipe.thumb,
         time: recipe.time,
         favoriteCount: parseInt(recipe.favorite_count, 10) || 0,
-        owner: {
-            id: recipe.user_id,
-            name: recipe.user_name,
-            avatar: recipe.user_avatar,
-        },
+        owner: recipe.user_id,
     }));
 }
 
@@ -155,41 +151,34 @@ async function createRecipe(recipeData, userId) {
     return await getRecipeById(recipe.id);
 }
 
-async function getFavoriteRecipes(userId, limit = 12, page = 1) {
-    const offset = (page - 1) * limit;
-
-    const favoriteRecipes = await sequelize.query(
+async function getFavoriteRecipes(userId) {
+    const recipes = await sequelize.query(
         `
-        SELECT 
-            r.id,
-            r.title,
-            r.description,
-            r.thumb,
+        SELECT
+            r.*,
             u.id as user_id,
             u.name as user_name,
             u.avatar as user_avatar
-        FROM 
-            recipes r
-        JOIN 
-            favorite_recipes fr ON r.id = fr.recipe_id
-        JOIN 
-            users u ON r.owner = u.id
-        WHERE 
+        FROM
+            recipes AS r
+        JOIN
+            favorite_recipes AS fr ON r.id = fr.recipe_id
+        JOIN
+            users AS u ON r.owner = u.id
+        WHERE
             fr.user_id = :userId
-        LIMIT :limit OFFSET :offset
     `,
         {
-            replacements: { userId, limit, offset },
+            replacements: { userId },
             type: QueryTypes.SELECT,
         }
     );
 
-    return favoriteRecipes.map(recipe => ({
+    return recipes.map(recipe => ({
         id: recipe.id,
         title: recipe.title,
         description: recipe.description,
         thumb: recipe.thumb,
-        time: recipe.time,
         owner: {
             id: recipe.user_id,
             name: recipe.user_name,

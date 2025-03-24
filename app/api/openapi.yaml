@@ -337,11 +337,33 @@ paths:
                 - recipes
             summary: Get my favorite recipes
             operationId: listMyFavoriteRecipes
+            parameters:
+                - $ref: '#/components/parameters/page_query'
+                - $ref: '#/components/parameters/limit_query'
             responses:
                 '200':
                     $ref: '#/components/responses/recipeSearchResponse'
                 '401':
                     $ref: '#/components/responses/notAuthorisedResponse'
+                '500':
+                    $ref: '#/components/responses/serverErrorResponse'
+    /recipes/owner/{id}:
+        get:
+            security:
+                - bearerAuth: []
+            tags:
+                - recipes
+            summary: Get recipes by owner
+            operationId: listRecipesByOwner
+            parameters:
+                - $ref: '#/components/parameters/id_path'
+                - $ref: '#/components/parameters/page_query'
+                - $ref: '#/components/parameters/limit_query'
+            responses:
+                '200':
+                    $ref: '#/components/responses/recipeSearchResponse'
+                '400':
+                    $ref: '#/components/responses/invalidRequestResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
     /recipes/{id}:
@@ -361,7 +383,7 @@ paths:
                     $ref: '#/components/responses/notFoundResponse'
                 '500':
                     $ref: '#/components/responses/serverErrorResponse'
-    /recipes/{id}/favorites:
+    /recipes/{id}/favorite:
         post:
             security:
                 - bearerAuth: []
@@ -372,10 +394,8 @@ paths:
             parameters:
                 - $ref: '#/components/parameters/id_path'
             responses:
-                '200':
-                    $ref: '#/components/responses/recipeSearchResponse'
-                '400':
-                    $ref: '#/components/responses/invalidRequestResponse'
+                '204':
+                    description: No content
                 '401':
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
@@ -388,11 +408,7 @@ paths:
             summary: Remove recipe from favorite
             operationId: removeFavoriteRecipes
             parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
+                - $ref: '#/components/parameters/id_path'
             responses:
                 '204':
                     description: No content
@@ -534,7 +550,19 @@ components:
                             recipes:
                                 type: array
                                 items:
-                                    $ref: '#/components/schemas/recipeShort'
+                                    allOf:
+                                        - $ref: '#/components/schemas/recipeShort'
+                                        - type: object
+                                          properties:
+                                              owner:
+                                                  type: object
+                                                  properties:
+                                                      id:
+                                                          type: string
+                                                      name:
+                                                          type: string
+                                                      avatar:
+                                                          type: string
         recipeInformationResponse:
             description: Successfully received recipe
             content:
@@ -672,8 +700,6 @@ components:
                     type: string
                 name:
                     type: string
-                description:
-                    type: string
                 image:
                     type: string
         fullUser:
@@ -695,8 +721,6 @@ components:
                 title:
                     type: string
                 description:
-                    type: string
-                owner:
                     type: string
                 thumb:
                     type: string
@@ -722,6 +746,8 @@ components:
                                     properties:
                                         measure:
                                             type: string
+                      owner:
+                          type: string
         error:
             type: object
             properties:
