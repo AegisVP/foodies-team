@@ -162,11 +162,13 @@ export const addRecipeToFavorites = async (req, res, next) => {
     const { id: userId } = req.user;
     const { id } = req.params;
 
-    if (!(await recipesService.addRecipeToFavorites(userId, id))) {
+    const recipe = await recipesService.addRecipeToFavorites(userId, id);
+
+    if (!recipe) {
         return next(HttpError(500, 'Failed to add recipe to favorites'));
     }
 
-    res.status(204).send();
+    res.status(201).json(recipe);
 };
 
 export const removeFavorite = async (req, res, next) => {
