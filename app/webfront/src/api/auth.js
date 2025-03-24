@@ -14,3 +14,8 @@ export const logoutUser = async () => {
     const response = await axiosPrivateInstance.post('/users/logout');
     return response;
 };
+
+export const getCurrentUser = async () => {
+    const response = await axiosPrivateInstance.get('/users/current');
+    return response;
+};

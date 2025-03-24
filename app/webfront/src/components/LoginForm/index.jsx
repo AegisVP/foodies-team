@@ -44,8 +44,6 @@ export default function LoginForm({ onClose }) {
 
     return (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-            <h2>Sign In</h2>
-
             <label>
                 Email
                 <input type="email" {...register('email')} />
