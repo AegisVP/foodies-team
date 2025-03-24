@@ -394,8 +394,8 @@ paths:
             parameters:
                 - $ref: '#/components/parameters/id_path'
             responses:
-                '204':
-                    description: No content
+                '201':
+                    $ref: '#/components/responses/recipeInformationResponse'
                 '401':
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
