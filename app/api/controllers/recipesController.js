@@ -3,17 +3,8 @@ import ingredientsServices from '../services/ingredientsServices.js';
 import categoriesServices from '../services/categoriesServices.js';
 import areasServices from '../services/areasServices.js';
 import HttpError from '../helpers/HttpError.js';
-import controllerWrapper from '../decorators/controllerWrapper.js';
 import usersService from '../services/usersService.js';
-
-const paginateRecipes = (sentPage = 1, limit = 12, recipes) => {
-    const pages = Math.ceil(recipes.length / limit);
-    const page = Math.min(pages, sentPage);
-    const startIdx = (page - 1) * limit;
-    const endIdx = Math.min(startIdx + limit, recipes.length);
-
-    return { page, pages, total: recipes.length, recipes: recipes.slice(startIdx, endIdx) };
-};
+import { paginateItems } from '../helpers/paginate.js';
 
 const populateIngredients = (ingIds, ingData) =>
     ingIds.map(({ id, measure }) => {
@@ -50,9 +41,10 @@ export const listRecipes = async (req, res) => {
         whereCondition.push(`recipes.owner = '${req.query.owner}'`);
     }
 
-    const recipes = await recipesService.listRecipes(whereCondition.join(' AND '));
+    const allRecipes = await recipesService.listRecipes(whereCondition.join(' AND '));
+    const { page, pages, total, items: recipes } = paginateItems(req.query.page, req.query.limit, allRecipes);
 
-    res.json(paginateRecipes(req.query.page, req.query.limit, recipes));
+    res.json({ page, pages, total, recipes });
 };
 
 export const getRecipeById = async (req, res, next) => {
@@ -79,7 +71,7 @@ export const getRecipeById = async (req, res, next) => {
     });
 };
 
-export const createRecipe = controllerWrapper(async (req, res, next) => {
+export const createRecipe = async (req, res, next) => {
     const { id: userId } = req.user;
     const { category, area, ingredients } = req.body;
 
@@ -133,7 +125,7 @@ export const createRecipe = controllerWrapper(async (req, res, next) => {
         instructions: recipe.instructions,
         thumb: recipe.thumb,
     });
-});
+};
 
 export const deleteRecipeById = async (req, res, next) => {
     const { id } = req.params;
@@ -153,9 +145,10 @@ export const getPopularRecipes = async (req, res) => {
 };
 
 export const getFavoriteRecipes = async (req, res) => {
-    const recipes = await recipesService.getFavoriteRecipes(req.user.id);
+    const allRecipes = await recipesService.getFavoriteRecipes(req.user.id);
+    const { page, pages, total, items: recipes } = paginateItems(req.query.page, req.query.limit, allRecipes);
 
-    res.json(paginateRecipes(req.query.page, req.query.limit, recipes));
+    res.json({ page, pages, total, recipes });
 };
 
 export const addRecipeToFavorites = async (req, res, next) => {

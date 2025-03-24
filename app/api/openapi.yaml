@@ -195,6 +195,8 @@ paths:
                   required: false
                   schema:
                       type: string
+                - $ref: '#/components/parameters/page_query'
+                - $ref: '#/components/parameters/limit_query'
             responses:
                 '200':
                     $ref: '#/components/responses/followersResponse'
@@ -210,6 +212,9 @@ paths:
                 - users
             summary: Get list of people authorized user is following
             operationId: getFollowees
+            parameters:
+                - $ref: '#/components/parameters/page_query'
+                - $ref: '#/components/parameters/limit_query'
             responses:
                 '200':
                     $ref: '#/components/responses/followersResponse'
