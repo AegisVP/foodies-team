@@ -11,7 +11,7 @@ import {
     addRecipeToFavorites,
     removeFavorite,
     getFavoriteRecipes,
-    // getOwnerRecipes,       // Розкоментуйте коли реалізуєте
+    getOwnerRecipes,
     // getOwnerRecipesById,   // Розкоментуйте коли реалізуєте
 } from '../controllers/recipiesController.js';
 
@@ -26,7 +26,7 @@ recipiesRouter.use(authMiddleware);
 
 // 1. Специфічні маршрути без параметрів
 recipiesRouter.get('/favorite', getFavoriteRecipes);
-// recipiesRouter.get('/owner', getOwnerRecipes);  // Маршрут для отримання власних рецептів
+recipiesRouter.get('/owner', authMiddleware, getOwnerRecipes);
 
 // 2. Специфічні маршрути з параметрами
 recipiesRouter.post('/favorite/:recipeId', addRecipeToFavorites);
