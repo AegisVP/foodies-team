@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useLocation, matchPath } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 import Logo from '../Logo';
 import NavBar from '../NavBar';
-import UserMenu from '../UserMenu';
-import AuthenticationButtons from '../AuthenticationButtons';
 import css from './Header.module.css';
 import ROUTES from '../../navigation/routes.js';
+import Profile from '../Profile';
 
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(document.querySelector('body').getBoundingClientRect().width < 768);
@@ -22,6 +22,7 @@ const useIsMobile = () => {
 };
 
 const Header = () => {
+  const isAuthenticated = useSelector(state => state.authUser.isAuthenticated);
   const location = useLocation();
   const isHome = matchPath(ROUTES.HOME, location.pathname);
   const isAddRecipe = matchPath(ROUTES.ADD_RECIPE_PAGE, location.pathname);
@@ -36,7 +37,6 @@ const Header = () => {
     },
   );
   const theme = isDarkTheme ? 'dark' : 'light';
-  const isAuthorised = true; // TODO replace with data from redux
 
   return (
     <header className={classes}>
@@ -52,11 +52,9 @@ const Header = () => {
 
 
       <div className={css.right}>
-        {!isAuthorised && <AuthenticationButtons isMobile={isMobile} />}
+        <Profile isMobile={isMobile} />
 
-        {isAuthorised && <UserMenu />}
-
-        {isMobile && isAuthorised &&
+        {isMobile && isAuthenticated &&
           <NavBar
             theme={theme}
             isMobile={true}

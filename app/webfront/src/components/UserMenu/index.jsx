@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import css from './UserMenu.module.css';
 import defaultAvatar from 'src/images/default-avatar.svg';
 import spriteArrow from 'src/images/icons.svg#arrow';
 import spriteChevronDown from 'src/images/icons.svg#chevron-down';
 import spriteChevronUp from 'src/images/icons.svg#chevron-up';
+import Spinner from '../Spinner';
 
-const UserMenu = () => {
+const UserMenu = ({ onLogoutOpen }) => {
+  const user = useSelector(state => state.authUser.user);
+  const loadingUser = useSelector(state => state.authUser.isLoading);
+
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const toggleMenu = () => {
@@ -29,20 +34,22 @@ const UserMenu = () => {
     };
   }, [isOpen]);
 
-  return (
+  if (loadingUser) {
+    return <Spinner />;
+  }
+
+  return ( loadingUser === false &&
     <div className={css.component} ref={menuRef}>
       <button
         type="button"
         className={css.button}
         onClick={toggleMenu}>
-        {/* TODO replace with data from redux */}
         <img
           alt="User avatar"
           className={css.avatar}
-          src={defaultAvatar} />
+          src={user?.avatar || defaultAvatar} />
 
-        {/* TODO replace with data from redux */}
-        <span className={css.name}>victoria</span> 
+        <span className={css.name}>{user?.name}</span>
 
         <svg className={css.chevron}>
           <use href={isOpen ?spriteChevronUp : spriteChevronDown } />
@@ -53,12 +60,11 @@ const UserMenu = () => {
         <nav className={css.menu}>
           <ul>
             <li>
-              {/* TODO replace with data from redux */}
-              <NavLink to={`/user/${1}`}>Profile</NavLink>
+              <NavLink to={`/user/${user?.id}`}>Profile</NavLink>
             </li>
 
-            <li>
-              <NavLink to="/logout">
+            <li onClick={onLogoutOpen}>
+              <NavLink>
                 Logout
                 <svg>
                   <use href={spriteArrow} />
