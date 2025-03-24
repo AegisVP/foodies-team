@@ -19,19 +19,18 @@ const Footer = () => {
                         <Button
                             href="https://www.facebook.com/goITclub/"
                             ariaLabel="Go IT Facebook"
-                            icon={spriteFacebook} />
+                            icon={spriteFacebook}
+                        />
                     </li>
                     <li className={css.socialLinkItemContainer}>
                         <Button
                             href="https://www.instagram.com/goitclub/"
                             ariaLabel="Go IT Instagram"
-                            icon={spriteInstagram} />
+                            icon={spriteInstagram}
+                        />
                     </li>
                     <li className={css.socialLinkItemContainer}>
-                        <Button
-                            href="https://www.youtube.com/c/GoIT"
-                            ariaLabel="Go IT Youtube"
-                            icon={spriteYoutube} />
+                        <Button href="https://www.youtube.com/c/GoIT" ariaLabel="Go IT Youtube" icon={spriteYoutube} />
                     </li>
                 </ul>
             </div>

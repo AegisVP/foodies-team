@@ -16,25 +16,24 @@ const app = express();
 const SERVER_PORT = process.env.PORT || process.env.SERVER_PORT || 3000;
 const basePath = path.join(process.cwd(), '..', 'httpdocs');
 
+// Middleware
 app.use(morgan('dev'));
 app.use(cors());
-app.use(express.static(basePath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Routes
 app.use('/avatars', express.static('public/avatars'));
-
 app.use('/api-docs', controllerWrapper(openapiRouter));
-
 app.use('/api', controllerWrapper(apiRouter));
+
+// Webfront
+app.use(express.static(basePath));
 app.use('/*', (_, res) => res.sendFile(path.join(basePath, 'index.html')));
 
+// Error handling and 404 fallback
 app.use(handleErrors);
-app.use((req, res) =>
-    res
-        .header('Content-Type', req.headers['content-type'] ?? 'text/html')
-        .status(404)
-        .send(req.headers['content-type'] === 'application/json' ? { message: 'Not found' } : 'Not found')
-);
+app.use((_, res) => res.header('Content-Type', 'text/html').status(404).send('Not found'));
 
 const preparationJobs = [];
 preparationJobs.push(

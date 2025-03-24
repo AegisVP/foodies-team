@@ -12,6 +12,7 @@ test-results/
 
 # production
 /build
+**/public/avatars
 dist/
 
 # misc
