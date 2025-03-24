@@ -3,13 +3,10 @@ import clsx from 'clsx';
 import css from './Logo.module.css';
 
 const Logo = ({ theme }) => {
-    const classes = clsx(
-        css.logo,
-        {
-          [css.light]: theme === 'light',
-          [css.dark]: theme === 'dark',
-        },
-      );
+    const classes = clsx(css.logo, {
+        [css.light]: theme === 'light',
+        [css.dark]: theme === 'dark',
+    });
 
     return (
         <a href="/" className={classes} aria-label="Foodies">
@@ -19,7 +16,7 @@ const Logo = ({ theme }) => {
 };
 
 Logo.propTypes = {
-  theme: PropTypes.oneOf(['light', 'dark']),
+    theme: PropTypes.oneOf(['light', 'dark']),
 };
 
 export default Logo;

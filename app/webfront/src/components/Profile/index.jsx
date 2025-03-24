@@ -11,7 +11,7 @@ import RegisterForm from '../RegisterForm';
 import styles from './Profile.module.css';
 
 export default function Profile() {
-    const isAuthenticated = useSelector((state) => state.authUser.isAuthenticated);
+    const isAuthenticated = useSelector(state => state.authUser.isAuthenticated);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -22,22 +22,22 @@ export default function Profile() {
 
     const handleLogout = () => {
         logoutUser()
-        .then((response) => {
-            if (response.status !== undefined && response.status !== 200) {
-                console.error('Logout error:', response);
-            } else {
-                dispatch(logout());
-                setShowLoginModal(false);
-                setDropdownOpen(false);
-                navigate('/');
-            }
-        })
-        .catch((error) => {
-            console.error('Logout error:', error);
-        });
+            .then(response => {
+                if (response.status !== undefined && response.status !== 200) {
+                    console.error('Logout error:', response);
+                } else {
+                    dispatch(logout());
+                    setShowLoginModal(false);
+                    setDropdownOpen(false);
+                    navigate('/');
+                }
+            })
+            .catch(error => {
+                console.error('Logout error:', error);
+            });
     };
 
-    const handleClickOutside = (e) => {
+    const handleClickOutside = e => {
         if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
             setDropdownOpen(false);
         }
@@ -69,9 +69,7 @@ export default function Profile() {
                     {showLoginModal && (
                         <Modal onClose={() => setShowLoginModal(false)}>
                             <h2>SIGN IN</h2>
-                            <LoginForm
-                                onClose={() => setShowLoginModal(false)}
-                            />
+                            <LoginForm onClose={() => setShowLoginModal(false)} />
                             <p className={styles.switchText}>
                                 Don&apos;t have an account?
                                 <button type="button" onClick={onSwitchToRegister} className={styles.switchBtn}>
@@ -100,7 +98,7 @@ export default function Profile() {
     return (
         <div>
             <div className={styles.profileWrapper} ref={dropdownRef}>
-                <button onClick={() => setDropdownOpen((prev) => !prev)}>Profile ⌄</button>
+                <button onClick={() => setDropdownOpen(prev => !prev)}>Profile ⌄</button>
                 {dropdownOpen && (
                     <ul className={styles.dropdown}>
                         <li>

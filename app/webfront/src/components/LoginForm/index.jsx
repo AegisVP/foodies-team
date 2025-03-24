@@ -26,7 +26,6 @@ export default function LoginForm({ onClose }) {
     });
 
     const onSubmit = async ({ email, password }) => {
-
         setServerError(null);
         try {
             const res = await loginUser({ email, password });

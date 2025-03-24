@@ -3,7 +3,7 @@ import styles from './Modal.module.css';
 
 export default function Modal({ children, onClose }) {
     useEffect(() => {
-        const handleKeyDown = (e) => {
+        const handleKeyDown = e => {
             if (e.key === 'Escape') {
                 onClose();
             }
@@ -12,7 +12,7 @@ export default function Modal({ children, onClose }) {
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [onClose]);
 
-    const handleBackdropClick = (e) => {
+    const handleBackdropClick = e => {
         if (e.target === e.currentTarget) {
             onClose();
         }

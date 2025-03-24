@@ -35,9 +35,9 @@ export const createRecipeSchema = Joi.object({
                 id: Joi.alternatives().try(Joi.string().required(), Joi.number().required()).messages({
                     'any.required': 'Ingredient ID is required',
                 }),
-                quantity: Joi.string().required().messages({
-                    'string.empty': 'Ingredient quantity is required',
-                    'any.required': 'Ingredient quantity is required',
+                measure: Joi.string().required().messages({
+                    'string.empty': 'Ingredient measure is required',
+                    'any.required': 'Ingredient measure is required',
                 }),
             })
         )
