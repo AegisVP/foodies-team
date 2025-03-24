@@ -152,14 +152,17 @@ export const getUserInformation = async (req, res, next) => {
 
 export const getUsersFollowers = async (req, res) => {
     const requestedUserId = req.query.id ?? req.user.id;
-    const followers = await usersService.userWithFollowers(requestedUserId);
-    res.json(followers);
+    const allFollowers = await usersService.userWithFollowers(requestedUserId);
+    const { page, pages, total, items: followers } = paginateItems(req.query.page, req.query.limit, allFollowers);
+
+    res.json({ page, pages, total, followers });
 };
 
 export const getUsersFollowees = async (req, res) => {
     const authUserId = req.user.id;
-    const followees = await usersService.userWithFollowees(authUserId);
-    res.json(followees);
+    const allFollowees = await usersService.userWithFollowees(authUserId);
+    const { page, pages, total, items: followees } = paginateItems(req.query.page, req.query.limit, allFollowees);
+    res.json({ page, pages, total, followees });
 };
 
 export const addUserToFollow = async (req, res, next) => {
