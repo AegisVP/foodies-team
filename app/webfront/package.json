@@ -5,6 +5,7 @@
     "type": "module",
     "scripts": {
         "dev:node": "cd ../api && npm run dev > /dev/null & cd ../webfront && npm run dev",
+        "dev:org": "vite",
         "dev": "vite build --emptyOutDir --watch",
         "build": "vite build --emptyOutDir",
         "lint": "eslint .",
