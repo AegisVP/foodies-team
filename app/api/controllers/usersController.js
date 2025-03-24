@@ -137,7 +137,7 @@ export const getUserInformation = async (req, res, next) => {
     };
 
     if (authUserId === requestedUserId) {
-        const favoriteCount = 'TBD'; //await Favorite.count({ where: { userId: authUserId } });
+        const favoriteCount = await usersService.countUserFavorites(authUserId);
         const followeesCount = await usersService.countFollowees(authUserId);
 
         response = {

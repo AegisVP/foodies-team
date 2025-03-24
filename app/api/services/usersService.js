@@ -1,3 +1,4 @@
+import { FavoriteRecipe } from '../models/favoriteRecipes.js';
 import { User, Follow } from '../models/users.js';
 
 async function registerUser(id, name, email, password, avatar) {
@@ -47,6 +48,10 @@ async function userWithFollowees(userId) {
     });
 }
 
+async function countUserFavorites(userId) {
+    return await FavoriteRecipe.count({ where: { userId } });
+}
+
 // Counts the number of users that follow the given userId.
 async function countFollowers(userId) {
     return await Follow.count({ where: { followeeId: userId } });
@@ -77,6 +82,7 @@ export default {
     updateUserAvatar,
     userWithFollowers,
     userWithFollowees,
+    countUserFavorites,
     countFollowers,
     countFollowees,
     followFindOne,
