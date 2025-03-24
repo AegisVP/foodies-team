@@ -52,15 +52,17 @@ const NavBar = ({ isAddRecipe, isHome, isMobile, theme }) => {
           </div>
         }
 
-        <ul className={css['nav-list']}>
-          <li className={clsx(css['nav-item'], { [css.active]: isHome })}>
-            <NavLink to={ROUTES.HOME}>Home</NavLink>
-          </li>
-          
-          <li className={clsx(css['nav-item'], { [css.active]: isAddRecipe })}>
-            <NavLink to={ROUTES.ADD_RECIPE_PAGE}>Add recipe</NavLink>
-          </li>
-        </ul>
+        <nav>
+          <ul className={css['nav-list']}>
+            <li className={clsx(css['nav-item'], { [css.active]: isHome })}>
+              <NavLink to={ROUTES.HOME}>Home</NavLink>
+            </li>
+            
+            <li className={clsx(css['nav-item'], { [css.active]: isAddRecipe })}>
+              <NavLink to={ROUTES.ADD_RECIPE_PAGE}>Add recipe</NavLink>
+            </li>
+          </ul>
+        </nav>
       </div>
     </nav>
   );

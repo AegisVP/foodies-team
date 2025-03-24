@@ -36,7 +36,7 @@ const Header = () => {
     },
   );
   const theme = isDarkTheme ? 'dark' : 'light';
-  const isAuthorised = false; // TODO replace with data from redux
+  const isAuthorised = true; // TODO replace with data from redux
 
   return (
     <header className={classes}>

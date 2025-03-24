@@ -50,7 +50,7 @@ const UserMenu = () => {
       </button>
 
       {isOpen &&
-        <div className={css.menu}>
+        <nav className={css.menu}>
           <ul>
             <li>
               {/* TODO replace with data from redux */}
@@ -66,7 +66,7 @@ const UserMenu = () => {
               </NavLink>
             </li>
           </ul>
-        </div>
+        </nav>
       }
     </div>
   );
