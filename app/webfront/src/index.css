@@ -15,10 +15,6 @@
     overflow: hidden;
 }
 
-body {
-    height: 100vh;
-}
-
 body,
 header,
 footer {
