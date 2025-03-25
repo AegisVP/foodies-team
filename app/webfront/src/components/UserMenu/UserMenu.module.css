@@ -71,7 +71,7 @@
   }
 
   svg {
-    fill: var(--white);
+    stroke: var(--white);
     width: 17px;
   }
 }

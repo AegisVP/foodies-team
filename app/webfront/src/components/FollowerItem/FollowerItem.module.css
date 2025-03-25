@@ -1,0 +1,81 @@
+.component {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--gray);
+  }
+}
+
+.user {
+  align-items: flex-start;
+  display: flex;
+  gap: 16px;
+}
+
+.avatar,
+.username,
+.recipe {
+  transition: opacity .3s;
+
+  &:hover,
+  &:focus {
+    opacity: .8;
+  }
+}
+
+.avatar {
+  border-radius: 50%;
+  
+  img {
+    display: block;
+    object-fit: cover;
+  }
+}
+
+.username {
+  color: var(--extra-black);
+  font-size: 16px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.recipes-count {
+  color: var(--gray);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.recipes {
+  display: flex;
+  gap: 12px;
+}
+
+.recipe {
+  border-radius: 15px;
+
+  img {
+    display: block;
+    height: 100px;
+    object-fit: cover;
+    width: 100px;
+  }
+}
+
+@media (min-width: 768px) {
+  .avatar img {
+    height: 85px;
+    width: 85px;
+  }
+
+  .username {
+    font-size: 20px;
+  }
+
+  .recipes-count {
+    font-size: 14px;
+  }
+}

@@ -1,10 +1,25 @@
-import { Suspense } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Suspense, useEffect } from 'react';
+import { Link, Outlet, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFollowers, getFollowees } from 'src/redux/user/operations.js';
+import FollowerItem from 'src/components/FollowerItem';
 import ROUTES from 'src/navigation/routes.js';
 
 import { Loader } from 'src/components';
 
 const UserPage = () => {
+    const dispatch = useDispatch();
+    const followers = useSelector((state) => state.user.followers);
+    const followees = useSelector((state) => state.user.followees);
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (id) {
+            dispatch(getFollowers(id));
+            dispatch(getFollowees(id));
+        }
+    }, [dispatch, id]);
+
     return (
         <div>
             <h1>My Profile</h1>
