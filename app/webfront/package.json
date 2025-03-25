@@ -7,6 +7,7 @@
         "dev:node": "cd ../api && npm run dev > /dev/null & cd ../webfront && npm run dev",
         "dev:org": "vite",
         "dev": "vite build --emptyOutDir --watch",
+        "vite": "vite --host --open",
         "build": "vite build --emptyOutDir",
         "lint": "eslint .",
         "preview": "vite preview"
