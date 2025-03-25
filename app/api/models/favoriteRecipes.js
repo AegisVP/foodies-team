@@ -45,8 +45,3 @@ export const FavoriteRecipe = sequelize.define(
         ],
     }
 );
-
-FavoriteRecipe.belongsTo(User, { foreignKey: 'userId', targetKey: 'id' });
-FavoriteRecipe.belongsTo(Recipe, { foreignKey: 'recipeId', targetKey: 'id' });
-Recipe.hasMany(FavoriteRecipe, { foreignKey: 'recipeId', sourceKey: 'id' });
-User.hasMany(FavoriteRecipe, { foreignKey: 'userId', sourceKey: 'id' });

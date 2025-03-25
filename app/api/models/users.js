@@ -71,17 +71,3 @@ export const Follow = sequelize.define(
         primaryKey: ['followerId', 'followeeId'], // Composite primary key to prevent duplicates
     }
 );
-
-User.belongsToMany(User, {
-    through: Follow,
-    as: 'followers', // Users that follow this user
-    foreignKey: 'followeeId',
-    otherKey: 'followerId',
-});
-
-User.belongsToMany(User, {
-    through: Follow,
-    as: 'followees', // Users that this user follows
-    foreignKey: 'followerId',
-    otherKey: 'followeeId',
-});
