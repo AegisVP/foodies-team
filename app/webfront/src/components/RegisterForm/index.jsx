@@ -54,37 +54,39 @@ export default function RegisterForm({ onClose }) {
 
     return (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-            <label>
-                Name
-                <input type="text" {...register('name')} />
-                {errors.name && <p className={styles.error}>{errors.name.message}</p>}
-            </label>
-
-            <label>
-                Email
-                <input type="email" {...register('email')} />
-                {errors.email && <p className={styles.error}>{errors.email.message}</p>}
-            </label>
-
-            <label>
-                Password
-                <div className={styles.passwordField}>
-                    <input type={showPassword ? 'text' : 'password'} {...register('password')} />
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword(prev => !prev)}
-                        className={styles.eyeButton}
-                        aria-label="Toggle password visibility"
-                    >
-                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </button>
+            <div className={styles.inputFieldsWrapper}>
+                {serverError && <div className={styles.serverError}>{serverError}</div>}
+                <div className={styles.inputWrapper}>
+                    <input type="text" {...register('name')} placeholder="Name*" className={styles.inputField} />
+                    {errors.name && <p className={styles.error}>{errors.name.message}</p>}
                 </div>
-                {errors.password && <p className={styles.error}>{errors.password.message}</p>}
-            </label>
 
+                <div className={styles.inputWrapper}>
+                    <input type="email" {...register('email')} placeholder="Email*" className={styles.inputField} />
+                    {errors.email && <p className={styles.error}>{errors.email.message}</p>}
+                </div>
+
+                <div className={styles.inputWrapper}>
+                    <div className={styles.inputWithIcon}>
+                        <input
+                            type={showPassword ? 'text' : 'password'}
+                            {...register('password')}
+                            placeholder="Password*"
+                            className={styles.inputField}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(prev => !prev)}
+                            className={styles.eyeButton}
+                            aria-label="Toggle password visibility"
+                        >
+                            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        </button>
+                    </div>
+                    {errors.password && <p className={styles.error}>{errors.password.message}</p>}
+                </div>
+            </div>
             <Button type="submit" disabled={isSubmitting} label="Create" />
-
-            {serverError && <div className={styles.serverError}>{serverError}</div>}
         </form>
     );
 }

@@ -24,17 +24,16 @@
 }
 
 .switchText {
-    margin-top: 20px;
     text-align: center;
     font-size: 14px;
     font-weight: 500;
     line-height: 18px;
-    color: #1a1a1a;
+    color: var(--black);
 }
 
 .switchBtn {
     background: none;
-    color: #050505;
+    color: var(--extra-black);
     border: none;
     cursor: pointer;
     font-weight: 500;

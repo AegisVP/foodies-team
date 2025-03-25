@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../api/auth';
 import { loginSuccess } from '../../redux/authUser/slice';
+import { Eye, EyeOff } from 'lucide-react';
 import styles from './LoginForm.module.css';
 import Button from '../Button';
 
@@ -16,6 +17,7 @@ const schema = yup.object().shape({
 export default function LoginForm({ onClose }) {
     const dispatch = useDispatch();
     const [serverError, setServerError] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     const {
         register,
@@ -45,21 +47,40 @@ export default function LoginForm({ onClose }) {
 
     return (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-            <label>
-                Email
-                <input type="email" {...register('email')} />
-                {errors.email && <p className={styles.error}>{errors.email.message}</p>}
-            </label>
+            <div className={styles.inputFieldsWrapper}>
+                {serverError && <div className={styles.serverError}>{serverError}</div>}
+                <div>
+                    <input
+                        type="email"
+                        {...register('email')}
+                        placeholder="Email*"
+                        className={styles.inputField}
+                    />
+                    {errors.email && <p className={styles.error}>{errors.email.message}</p>}
+                </div>
 
-            <label>
-                Password
-                <input type="password" {...register('password')} />
-                {errors.password && <p className={styles.error}>{errors.password.message}</p>}
-            </label>
+                <div className={styles.inputWrapper}>
+                    <div className={styles.inputWithIcon}>
+                        <input
+                            type={showPassword ? 'text' : 'password'}
+                            {...register('password')}
+                            placeholder="Password*"
+                            className={styles.inputField}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(prev => !prev)}
+                            className={styles.eyeButton}
+                            aria-label="Toggle password visibility"
+                        >
+                            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        </button>
+                    </div>
+                    {errors.password && <p className={styles.error}>{errors.password.message}</p>}
+                </div>
+            </div>
 
             <Button type="submit" disabled={isSubmitting} label="Sign In" />
-
-            {serverError && <div className={styles.serverError}>{serverError}</div>}
         </form>
     );
 }

@@ -13,7 +13,7 @@
 
 .modal {
     position: relative;
-    background: white;
+    background: var(--white);
     padding: 80px;
     border-radius: 30px;
     max-width: 560px;
