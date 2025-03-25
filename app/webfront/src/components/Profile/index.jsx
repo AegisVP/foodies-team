@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import clsx from 'clsx';
 import { logoutUser } from '../../api/auth';
 import { logout } from '../../redux/authUser/slice';
 import Modal from '../Modal';
@@ -9,6 +10,7 @@ import RegisterForm from '../RegisterForm';
 import styles from './Profile.module.css';
 import AuthenticationButtons from '../AuthenticationButtons';
 import UserMenu from '../UserMenu';
+import Button from '../Button';
 
 export default function Profile({ isMobile }) {
     const isAuthenticated = useSelector(state => state.authUser.isAuthenticated);
@@ -54,7 +56,7 @@ export default function Profile({ isMobile }) {
                 <div>
                     {showLoginModal && (
                         <Modal onClose={() => setShowLoginModal(false)}>
-                            <h2>SIGN IN</h2>
+                            <h2 className={styles.modalTitle}>SIGN IN</h2>
                             <LoginForm onClose={() => setShowLoginModal(false)} />
                             <p className={styles.switchText}>
                                 Don&apos;t have an account?
@@ -66,7 +68,7 @@ export default function Profile({ isMobile }) {
                     )}
                     {showRegisterModal && (
                         <Modal onClose={() => setShowRegisterModal(false)}>
-                            <h2>SIGN UP</h2>
+                            <h2 className={styles.modalTitle}>SIGN UP</h2>
                             <RegisterForm onClose={() => setShowRegisterModal(false)} />
                             <p className={styles.switchText}>
                                 Already have an account?
@@ -83,13 +85,13 @@ export default function Profile({ isMobile }) {
 
     return (
         <div>
-            <UserMenu onLogoutOpen={() => setShowLogoutModal(true)}/>
+            <UserMenu onLogoutOpen={() => setShowLogoutModal(true)} />
             {showLogoutModal && (
                 <Modal onClose={() => setShowLogoutModal(false)}>
-                    <h2>ARE YOU LOGGING OUT?</h2>
-                    <p>You can log back in at any time.</p>
-                    <button onClick={handleLogout}>Logout</button>
-                    <button onClick={() => setShowLogoutModal(false)}>Cancel</button>
+                    <h2 className={clsx(styles.modalTitle,styles.center,styles.modalTitleLogout)}>ARE YOU LOGGING OUT?</h2>
+                    <p className={clsx(styles.modalText,styles.center)}>You can log back in at any time.</p>
+                    <Button onClick={handleLogout} label="Logout" theme="dark" fullWidth className={styles.logoutButton} />
+                    <Button onClick={() => setShowLogoutModal(false)} label="Cancel" fullWidth />
                 </Modal>
             )}
         </div>

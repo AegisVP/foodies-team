@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import css from './Button.module.css';
 
-const Button = ({ ariaLabel, theme = 'light', label, fullWidth, onClick, href, icon, to, className }) => {
+const Button = ({ ariaLabel, theme = 'light', label, fullWidth, onClick, href, icon, to, className, type = 'button', disabled = false }) => {
     const classes = clsx(
         css.component,
         {
@@ -45,7 +45,7 @@ const Button = ({ ariaLabel, theme = 'light', label, fullWidth, onClick, href, i
     }
 
     return (
-        <button aria-label={ariaLabel} className={classes} type="button" onClick={onClick}>
+        <button aria-label={ariaLabel} className={classes} type={type} onClick={onClick} disabled={disabled}>
             {label}
 
             {icon && (
@@ -67,6 +67,8 @@ Button.propTypes = {
     theme: PropTypes.oneOf(['light', 'dark']),
     to: PropTypes.string,
     className: PropTypes.string,
+    type: PropTypes.string,
+    disabled: PropTypes.bool,
 };
 
 export default Button;
