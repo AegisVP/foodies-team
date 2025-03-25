@@ -1,3 +1,4 @@
+import { Sequelize } from 'sequelize';
 import { FavoriteRecipe } from '../models/favoriteRecipes.js';
 import { Recipe } from '../models/recipes.js';
 import { User, Follow } from '../models/users.js';
@@ -30,14 +31,23 @@ async function userWithFollowers(userId) {
             model: User,
             as: 'followers',
             through: { attributes: [] },
-            attributes: ['id', 'name', 'avatar', 'email'],
+            attributes: [
+                'id',
+                'name',
+                'email',
+                'avatar',
+                [
+                    Sequelize.literal(`(SELECT COUNT(*) FROM recipes WHERE recipes.owner = "followers"."id")`),
+                    'recipeCount',
+                ],
+            ],
             include: {
                 model: Recipe,
                 attributes: ['id', 'thumb'],
                 limit: 4,
             },
         },
-        attributes: ['id', 'name', 'avatar', 'email'],
+        attributes: ['id', 'name', 'email', 'avatar'],
     });
 }
 
@@ -48,14 +58,25 @@ async function userWithFollowees(userId) {
             model: User,
             as: 'followees',
             through: { attributes: [] },
-            attributes: ['id', 'name', 'avatar', 'email'],
-            include: {
-                model: Recipe,
-                attributes: ['id', 'thumb'],
-                limit: 4,
-            },
+            attributes: [
+                'id',
+                'name',
+                'email',
+                'avatar',
+                [
+                    Sequelize.literal(`(SELECT COUNT(*) FROM recipes WHERE recipes.owner = "followees"."id")`),
+                    'recipeCount',
+                ],
+            ],
+            include: [
+                {
+                    model: Recipe,
+                    attributes: ['id', 'thumb'],
+                    limit: 4,
+                },
+            ],
         },
-        attributes: ['id', 'name', 'avatar', 'email'],
+        attributes: ['id', 'name', 'email', 'avatar'],
     });
 }
 
