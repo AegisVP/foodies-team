@@ -1,4 +1,5 @@
 import { FavoriteRecipe } from '../models/favoriteRecipes.js';
+import { Recipe } from '../models/recipes.js';
 import { User, Follow } from '../models/users.js';
 
 async function registerUser(id, name, email, password, avatar) {
@@ -30,6 +31,11 @@ async function userWithFollowers(userId) {
             as: 'followers',
             through: { attributes: [] },
             attributes: ['id', 'name', 'avatar', 'email'],
+            include: {
+                model: Recipe,
+                attributes: ['id', 'thumb'],
+                limit: 4,
+            },
         },
         attributes: ['id', 'name', 'avatar', 'email'],
     });
@@ -43,6 +49,11 @@ async function userWithFollowees(userId) {
             as: 'followees',
             through: { attributes: [] },
             attributes: ['id', 'name', 'avatar', 'email'],
+            include: {
+                model: Recipe,
+                attributes: ['id', 'thumb'],
+                limit: 4,
+            },
         },
         attributes: ['id', 'name', 'avatar', 'email'],
     });

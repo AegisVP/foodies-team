@@ -1,4 +1,4 @@
-const syncCondition = { alter: false, force: false };
+const syncCondition = { alter: true, force: false };
 const doSync = false;
 
 import { User, Follow } from '../models/users.js';
@@ -10,7 +10,8 @@ import { Area } from '../models/areas.js';
 import { Category } from '../models/categories.js';
 
 import { Recipe } from '../models/recipes.js';
-Recipe.belongsTo(User, { foreignKey: 'owner', targetKey: 'id', as: 'user' });
+// Recipe.belongsTo(User, { foreignKey: 'owner', targetKey: 'id', as: 'user' });
+User.hasMany(Recipe, { foreignKey: 'owner', sourceKey: 'id' });
 Recipe.belongsTo(Category, { foreignKey: 'category', targetKey: 'id', as: 'category_association' });
 Recipe.belongsTo(Area, { foreignKey: 'area', targetKey: 'id', as: 'area_association' });
 
