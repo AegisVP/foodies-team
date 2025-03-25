@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { loginUser } from '../../api/auth';
 import { loginSuccess } from '../../redux/authUser/slice';
 import styles from './LoginForm.module.css';
+import Button from '../Button';
 
 const schema = yup.object().shape({
     email: yup.string().email('Invalid email').required('Email is required'),
@@ -56,9 +57,7 @@ export default function LoginForm({ onClose }) {
                 {errors.password && <p className={styles.error}>{errors.password.message}</p>}
             </label>
 
-            <button type="submit" disabled={isSubmitting}>
-                Sign In
-            </button>
+            <Button type="submit" disabled={isSubmitting} label="Sign In" />
 
             {serverError && <div className={styles.serverError}>{serverError}</div>}
         </form>

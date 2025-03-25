@@ -1,3 +1,28 @@
+.modalTitle {
+    margin-bottom: 40px;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.modalTitleLogout {
+    margin-bottom: 20px;
+}
+
+.modalText {
+    margin-bottom: 40px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.center {
+    align-items: center;
+    text-align: center;
+}
+
+.logoutButton {
+    margin-bottom: 20px;
+}
+
 .switchText {
     margin-top: 1rem;
     text-align: center;

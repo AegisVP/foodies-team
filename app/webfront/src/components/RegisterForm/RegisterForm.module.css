@@ -29,15 +29,6 @@ input {
     cursor: pointer;
 }
 
-button[type='submit'] {
-    padding: 0.75rem;
-    font-weight: bold;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
 .error {
     color: red;
     font-size: 0.875rem;

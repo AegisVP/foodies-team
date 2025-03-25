@@ -8,6 +8,7 @@ import { registerUser, loginUser } from '../../api/auth';
 import styles from './RegisterForm.module.css';
 
 import { Eye, EyeOff } from 'lucide-react'; // eye icons
+import Button from '../Button';
 
 const schema = yup.object().shape({
     name: yup.string().required('Name is required'),
@@ -81,9 +82,7 @@ export default function RegisterForm({ onClose }) {
                 {errors.password && <p className={styles.error}>{errors.password.message}</p>}
             </label>
 
-            <button type="submit" disabled={isSubmitting}>
-                Create
-            </button>
+            <Button type="submit" disabled={isSubmitting} label="Create" />
 
             {serverError && <div className={styles.serverError}>{serverError}</div>}
         </form>
