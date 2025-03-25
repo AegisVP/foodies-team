@@ -7,6 +7,7 @@ import fs from 'node:fs/promises';
 import usersService from '../services/usersService.js';
 import recipesService from '../services/recipesService.js';
 import HttpError from '../helpers/HttpError.js';
+import { paginateItems } from '../helpers/paginate.js';
 
 const avatarsDir = path.resolve('public/avatars');
 
