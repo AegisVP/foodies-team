@@ -67,6 +67,8 @@ Button.propTypes = {
     theme: PropTypes.oneOf(['light', 'dark']),
     to: PropTypes.string,
     className: PropTypes.string,
+    type: PropTypes.string,
+    disabled: PropTypes.bool,
 };
 
 export default Button;
