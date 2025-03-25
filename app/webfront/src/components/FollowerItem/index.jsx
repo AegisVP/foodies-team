@@ -11,6 +11,7 @@ const FollowerItem = ({
   isMobile,
   isTablet,
   recipes,
+  recipesCount,
   username,
 }) => {
   function onButtonClick() {
@@ -23,10 +24,10 @@ const FollowerItem = ({
     }
 
     if (isTablet) {
-      return recipes.slice(0, 3);
+      return recipes?.slice(0, 3);
     }
 
-    return recipes.slice(0, 4);
+    return recipes?.slice(0, 4);
   }
 
   return (
@@ -50,17 +51,18 @@ const FollowerItem = ({
           </h3>
           
 
-          <p className={css['recipes-count']}>Own recipes: {recipes.length}</p>
+          <p className={css['recipes-count']}>Own recipes: {recipesCount}</p>
 
           <Button
             ariaLabel={isFollowing ? `Unfollow ${username}` : `Follow ${username}`}
             label={isFollowing ? 'Following' : 'Follow'}
+            size="small"
             onClick={onButtonClick} />
         </div>
       </div>
 
       <div className={css.recipes}>
-        {recipesToDisplay().map((recipe) => (
+        {recipesToDisplay()?.map((recipe) => (
           <NavLink
             className={css.recipe}
             key={recipe.id}
@@ -94,6 +96,7 @@ FollowerItem.propTypes = {
     id: PropTypes.string.isRequired,
     thumbnail: PropTypes.string.isRequired,
   })),
+  recipesCount: PropTypes.number.isRequired,
   username: PropTypes.string.isRequired,
 };
 

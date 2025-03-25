@@ -6,10 +6,18 @@
     font-size: 16px;
     font-weight: 700;
     justify-content: center;
+    letter-spacing: -0.02em;
     padding: 15px 40px;
     text-decoration: none;
     text-transform: uppercase;
     transition: all 0.3s;
+}
+
+.large {
+    padding: 15px 40px;
+}
+.small {
+    padding: 10px 25px;
 }
 
 .light {
@@ -52,6 +60,7 @@
 
 svg {
     height: 20px;
+    transition: all 0.3s;
     width: 20px;
 }
 

@@ -29,6 +29,7 @@
 
 .avatar {
   border-radius: 50%;
+  overflow: hidden;
   
   img {
     display: block;
@@ -37,10 +38,14 @@
 }
 
 .username {
-  color: var(--extra-black);
-  font-size: 16px;
   margin-bottom: 4px;
-  text-transform: uppercase;
+
+  a {
+    color: var(--extra-black);
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
 }
 
 .recipes-count {
@@ -56,12 +61,26 @@
 
 .recipe {
   border-radius: 15px;
+  overflow: hidden;
 
   img {
     display: block;
     height: 100px;
     object-fit: cover;
     width: 100px;
+  }
+}
+
+.action {
+  svg {
+    stroke: var(--extra-black);
+  }
+
+  &:hover,
+  &:focus {
+    svg {
+      stroke: var(--white);
+    }
   }
 }
 
