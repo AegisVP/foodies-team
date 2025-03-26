@@ -9,6 +9,7 @@ const Button = ({ ariaLabel, theme = 'light', label, fullWidth, onClick, href, i
         {
             [css.light]: theme === 'light',
             [css.dark]: theme === 'dark',
+            [css.lightTransparent]: theme === 'light-transparent',
             [css.fullWidth]: fullWidth,
             [css.noLabel]: icon && !label,
             [css.withIcon]: icon && label,
@@ -64,7 +65,7 @@ Button.propTypes = {
     icon: PropTypes.string,
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func,
-    theme: PropTypes.oneOf(['light', 'dark']),
+    theme: PropTypes.oneOf(['light', 'dark', 'light-transparent']),
     to: PropTypes.string,
     className: PropTypes.string,
     type: PropTypes.string,

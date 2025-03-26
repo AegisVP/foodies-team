@@ -2,24 +2,11 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 64px;
-  padding: 8px 8px 0 8px;
-}
-
-.dark {
-  background-color: var(--extra-black);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  min-height: 38px;
 }
 
 .right {
   align-items: center;
   display: flex;
   gap: 6px;
-}
-
-@media (min-width: 1440px) {
-  .component {
-    margin-bottom: 80px;
-  }
 }

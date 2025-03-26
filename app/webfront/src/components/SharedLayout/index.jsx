@@ -1,4 +1,4 @@
-import Header from '../Header';
+// import Header from '../Header';
 import Footer from '../Footer';
 import css from './SharedLayout.module.css';
 
@@ -6,7 +6,7 @@ const SharedLayout = ({ children }) => {
     return (
         <div className={css.container}>
             <div className={css.paddingContainer}>
-                <Header />
+                {/* <Header /> */}
                 <main className={css.main}>{children}</main>
             </div>
             <Footer />
