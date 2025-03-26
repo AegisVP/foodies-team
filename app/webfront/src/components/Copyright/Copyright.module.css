@@ -1,0 +1,31 @@
+.contentContainer {
+    padding: 0 16px;
+}
+
+.copyriteContent {
+    font-size: 14px;
+    line-height: 1.429;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Tablet Layout: Starts adapting at 768px */
+@media only screen and (min-width: 768px) {
+    .contentContainer {
+        padding: 0 32px;
+    }
+
+    .copyriteContent {
+        font-size: 16px;
+        line-height: 1.5;
+        letter-spacing: -0.02em;
+    }
+}
+
+/* Desktop Layout: Starts adapting at 1440px */
+@media only screen and (min-width: 1440px) {
+    .contentContainer {
+        padding: 0 80px;
+    }
+}

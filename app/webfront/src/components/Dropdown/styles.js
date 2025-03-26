@@ -1,11 +1,12 @@
-export const styles = () => {
+export const styles = isForSearch => {
     const isTablet = typeof window !== 'undefined' && window.innerWidth >= 768;
+    const isPC = typeof window !== 'undefined' && window.innerWidth >= 1440;
 
     return {
         control: provided => ({
             ...provided,
-            width: isTablet ? '315px' : '100%',
-            maxWidth: isTablet ? '315px' : '343px',
+            width: isForSearch ? (isPC ? '330px' : isTablet ? '345px' : '100%') : isTablet ? '315px' : '100%',
+            maxWidth: isForSearch ? (isPC ? '330px' : isTablet ? '345px' : '343px') : isTablet ? '315px' : '343px',
             padding: isTablet ? '16px 18px' : '14px',
             border: `1px solid var(--gray)`,
             borderRadius: '30px',

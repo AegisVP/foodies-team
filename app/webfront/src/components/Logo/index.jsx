@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import css from './Logo.module.css';
+import { NavLink } from 'react-router-dom';
 
 const Logo = ({ theme }) => {
     const classes = clsx(css.logo, {
@@ -9,9 +10,9 @@ const Logo = ({ theme }) => {
     });
 
     return (
-        <a href="/" className={classes} aria-label="Foodies">
-            Foodies
-        </a>
+        <NavLink to="/" aria-label="Foodies" className={classes}>
+            foodies
+        </NavLink>
     );
 };
 
