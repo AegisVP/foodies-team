@@ -21,7 +21,7 @@ const useIsMobile = () => {
   return isMobile;
 };
 
-const Header = () => {
+const Header = ({ className }) => {
   const isAuthenticated = useSelector(state => state.authUser.isAuthenticated);
   const location = useLocation();
   const isHome = matchPath(ROUTES.HOME, location.pathname);
@@ -35,6 +35,7 @@ const Header = () => {
       [css.light]: !isDarkTheme,
       [css.dark]: isDarkTheme,
     },
+    className
   );
   const theme = isDarkTheme ? 'dark' : 'light';
 
