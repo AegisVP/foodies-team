@@ -1,16 +1,37 @@
-import { styles } from './styles';
+import { stylesPC, stylesTablet, stylesMobile } from './styles';
 import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { fetchRecipes } from 'src/redux/recipes/operations';
-import { selectSelectedArea, selectSelectedIngredients, selectSelectedCategory } from 'src/redux/common/selectors';
+import {
+    selectSelectedArea,
+    selectSelectedIngredients,
+    selectSelectedCategory,
+    selectScreenWidth,
+} from 'src/redux/common/selectors';
 import { setPage } from 'src/redux/recipes/slice';
+import { setScreenWidth } from 'src/redux/common/slice';
 
 const Dropdown = ({ items, label, callback, selectedValue, isMulti = false, isForSearch = true }) => {
     const selectedArea = useSelector(selectSelectedArea);
     const selectedCategory = useSelector(selectSelectedCategory);
     const selectedIngredients = useSelector(selectSelectedIngredients);
+    const screenWidth = useSelector(selectScreenWidth);
 
     const dispatch = useDispatch();
+
+    const handleResize = () => {
+        const width = window.innerWidth;
+        dispatch(setScreenWidth(width));
+    };
+
+    useEffect(() => {
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const options = items.map(item => ({
         value: item.id,
@@ -53,7 +74,13 @@ const Dropdown = ({ items, label, callback, selectedValue, isMulti = false, isFo
             options={options}
             placeholder={label}
             isSearchable={true}
-            styles={styles(isForSearch)}
+            styles={
+                screenWidth < 768
+                    ? stylesMobile()
+                    : screenWidth < 1440
+                    ? stylesTablet({ isForSearch: true, screenWidth: screenWidth })
+                    : stylesPC({ isForSearch: true })
+            }
         />
     );
 };

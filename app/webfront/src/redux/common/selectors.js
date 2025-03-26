@@ -7,3 +7,4 @@ export const selectSelectedIngredients = state => state.common.selectedIngredien
 export const selectSelectedArea = state => state.common.selectedArea;
 export const selectIsCommonLoading = state => state.common.isLoading;
 export const selectCommonError = state => state.common.error;
+export const selectScreenWidth = state => state.common.screenWidth;

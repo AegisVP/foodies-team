@@ -1,4 +1,5 @@
 .recipeListContainer {
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 32px;
@@ -10,6 +11,15 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        width: 704px;
         gap: 40px 20px;
+    }
+}
+
+/* Desktop Layout: Starts adapting at 1440px */
+@media only screen and (min-width: 1440px) {
+    .recipeListContainer {
+        margin: 0;
+        width: 100%;
     }
 }

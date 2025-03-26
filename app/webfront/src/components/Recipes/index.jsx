@@ -33,11 +33,15 @@ const Recipes = () => {
                     <p>Back</p>
                 </button>
                 <MainTitle title={selectedCategory.name} />
-                <Subtitle subtitle="Go on a taste journey, where every sip is a sophisticated creative chord, and every dessert is an expression of the most refined gastronomic desires." />
+                <Subtitle subtitle={selectedCategory.description} />
             </div>
-            <RecipeFilters />
-            <RecipeList />
-            <RecipePagination />
+            <div className={css.recipesListFiltersContainer}>
+                <RecipeFilters />
+                <div className={css.recipesListContainer}>
+                    <RecipeList />
+                    <RecipePagination />
+                </div>
+            </div>
         </div>
     );
 };

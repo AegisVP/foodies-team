@@ -18,6 +18,7 @@ const commonSlice = createSlice({
         //
         isLoading: false,
         error: null,
+        screenWidth: 375,
     },
     reducers: {
         setSelectedCategory: (state, action) => {
@@ -28,6 +29,9 @@ const commonSlice = createSlice({
         },
         setSelectedArea: (state, action) => {
             state.selectedArea = action.payload;
+        },
+        setScreenWidth: (state, action) => {
+            state.screenWidth = action.payload;
         },
     },
     extraReducers: builder => {
@@ -66,5 +70,5 @@ const commonSlice = createSlice({
     },
 });
 
-export const { setSelectedCategory, setSelectedIngredients, setSelectedArea } = commonSlice.actions;
+export const { setSelectedCategory, setSelectedIngredients, setSelectedArea, setScreenWidth } = commonSlice.actions;
 export const commonReducer = commonSlice.reducer;
