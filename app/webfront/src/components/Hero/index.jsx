@@ -2,12 +2,13 @@ import Header from 'src/components/Header';
 import css from './Hero.module.css';
 import Button from '../Button';
 import ROUTES from 'src/navigation/routes.js';
+import clsx from 'clsx';
 
 
-const Hero = () => {
+const Hero = ({ className }) => {
 
   return (
-    <div className={css.component}>
+    <div className={clsx(css.component, className)}>
       <Header />
 
       <h1 className={css.title}>Improve Your Culinary Talents</h1>

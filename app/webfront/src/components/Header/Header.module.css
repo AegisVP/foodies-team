@@ -3,6 +3,7 @@
   display: flex;
   justify-content: space-between;
   min-height: 38px;
+  position: relative;
 }
 
 .right {

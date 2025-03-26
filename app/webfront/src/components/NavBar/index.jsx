@@ -52,7 +52,7 @@ const NavBar = ({ isAddRecipe, isHome, isMobile, theme }) => {
           </div>
         }
 
-        <nav>
+        <nav className={css.nav}>
           <ul className={css['nav-list']}>
             <li className={clsx(css['nav-item'], { [css.active]: isHome })}>
               <NavLink
@@ -61,7 +61,7 @@ const NavBar = ({ isAddRecipe, isHome, isMobile, theme }) => {
                 Home
               </NavLink>
             </li>
-            
+
             <li className={clsx(css['nav-item'], { [css.active]: isAddRecipe })}>
               <NavLink
                 to={ROUTES.ADD_RECIPE_PAGE}

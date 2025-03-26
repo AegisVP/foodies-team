@@ -13,6 +13,7 @@ import Testimonials from 'src/components/Testimonials';
 import Categories from 'src/components/Categories';
 import Recipes from 'src/components/Recipes';
 import Hero from 'src/components/Hero';
+import css from './HomePage.module.css';
 
 const HomePage = () => {
     const isCommonLoading = useSelector(selectIsCommonLoading);
@@ -38,7 +39,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <Hero />
+            <Hero className={css.hero} />
             {!isCommonLoading && selectedCategory && <Recipes />}
             {!isCommonLoading && !!categories?.length && !selectedCategory && <Categories items={categories} />}
             {!isCommonLoading && !!testimonials?.length && <Testimonials items={testimonials} type="testimonial" />}
