@@ -21,6 +21,8 @@
 @media only screen and (min-width: 1440px) {
     .paddingContainer {
         padding: 20px 20px 0 20px;
+        max-width: 1600px;
+        margin: 0 auto;
     }
 }
 
