@@ -2,16 +2,16 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import FollowerItem from 'src/components/FollowerItem';
-import { isMobile as isMobileSelector, isTablet as isTabletSelector } from 'src/redux/common/selectors.js';
+import { selectIsMobile, selectIsTablet } from 'src/redux/common/selectors.js';
 import { getFollowees } from 'src/redux/user/operations.js';
-import { followees as userFollowees } from 'src/redux/user/selectors.js';
+import { selectFollowees } from 'src/redux/user/selectors.js';
 
 const FollowingPage = () => {
     const dispatch = useDispatch();
-    const followees = useSelector(userFollowees());
+    const followees = useSelector(selectFollowees);
+    const isMobile = useSelector(selectIsMobile);
+    const isTablet = useSelector(selectIsTablet);
     const { id } = useParams();
-    const isMobile = useSelector(isMobileSelector());
-    const isTablet = useSelector(isTabletSelector());
 
     useEffect(() => {
         if (id) {
