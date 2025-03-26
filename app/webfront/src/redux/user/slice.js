@@ -14,11 +14,11 @@ const userSlice = createSlice({
             total: 0,
             followers: [],
         },
-        folowees: {
+        followees: {
             page: 0,
             pages: 0,
             total: 0,
-            folowees: [],
+            followees: [],
         },
         isLoading: false,
         error: null,
@@ -29,7 +29,7 @@ const userSlice = createSlice({
                 state.followers = action.payload;
             })
             .addCase(getFollowees.fulfilled, (state, action) => {
-                state.folowees = action.payload;
+                state.followees = action.payload;
             })
             .addMatcher(
                 action => action.type.endsWith('/rejected'),
