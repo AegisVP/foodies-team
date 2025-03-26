@@ -60,11 +60,15 @@ const UserMenu = ({ onLogoutOpen }) => {
         <nav className={css.menu}>
           <ul>
             <li>
-              <NavLink to={`/user/${user?.id}`}>Profile</NavLink>
+              <NavLink
+                to={`/user/${user?.id}`}
+                onClick={toggleMenu}>
+                Profile
+              </NavLink>
             </li>
 
             <li onClick={onLogoutOpen}>
-              <NavLink>
+              <NavLink onClick={toggleMenu}>
                 Logout
                 <svg>
                   <use href={spriteArrow} />

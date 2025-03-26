@@ -1,9 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getCategories, getTestimonials } from './operations';
+import { getAreas, getCategories, getIngredients, getTestimonials } from './operations';
 
 const commonSlice = createSlice({
-    name: 'recipes',
+    name: 'common',
     initialState: {
+        selectedCategory: null,
+        selectedIngredients: [],
+        selectedArea: null,
         categories: [],
         areas: [],
         ingredients: [],
@@ -15,11 +18,32 @@ const commonSlice = createSlice({
         //
         isLoading: false,
         error: null,
+        screenWidth: 375,
+    },
+    reducers: {
+        setSelectedCategory: (state, action) => {
+            state.selectedCategory = action.payload;
+        },
+        setSelectedIngredients: (state, action) => {
+            state.selectedIngredients = action.payload;
+        },
+        setSelectedArea: (state, action) => {
+            state.selectedArea = action.payload;
+        },
+        setScreenWidth: (state, action) => {
+            state.screenWidth = action.payload;
+        },
     },
     extraReducers: builder => {
         builder
             .addCase(getCategories.fulfilled, (state, action) => {
                 state.categories = action.payload;
+            })
+            .addCase(getIngredients.fulfilled, (state, action) => {
+                state.ingredients = action.payload;
+            })
+            .addCase(getAreas.fulfilled, (state, action) => {
+                state.areas = action.payload;
             })
             .addCase(getTestimonials.fulfilled, (state, action) => {
                 state.testimonials = action.payload;
@@ -46,4 +70,5 @@ const commonSlice = createSlice({
     },
 });
 
+export const { setSelectedCategory, setSelectedIngredients, setSelectedArea, setScreenWidth } = commonSlice.actions;
 export const commonReducer = commonSlice.reducer;

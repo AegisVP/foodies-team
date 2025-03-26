@@ -1,8 +1,8 @@
-import css from './MealCard.module.css';
+import css from './RecipeCard.module.css';
 import heart from '../../images/heart.svg';
 import arrow from '../../images/arrow.svg';
 
-const MealCard = ({ mealImage, title, description, userAvatar, userName }) => {
+const RecipeCard = ({ mealImage, title, description, userAvatar, userName }) => {
     return (
         <div className={css.card}>
             <img src={mealImage} alt="meal" className={css.cardImg} />
@@ -26,4 +26,4 @@ const MealCard = ({ mealImage, title, description, userAvatar, userName }) => {
     );
 };
 
-export default MealCard;
+export default RecipeCard;

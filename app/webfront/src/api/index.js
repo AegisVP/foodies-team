@@ -1,6 +1,6 @@
 import { loginUser } from './auth';
 import { getRecipes, addRecipe, deleteRecipe } from './recipes';
-import { getCategories, getTestimonials } from './common';
+import { getCategories, getIngredients, getAreas, getTestimonials } from './common';
 
 // TODO add all api methods here for reexport
 export default {
@@ -12,5 +12,7 @@ export default {
     deleteRecipe,
     //common
     getCategories,
+    getIngredients,
+    getAreas,
     getTestimonials,
 };

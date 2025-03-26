@@ -5,6 +5,16 @@ export const getCategories = async () => {
     return categories;
 };
 
+export const getIngredients = async () => {
+    const ingredients = await axios.get('/ingredients');
+    return ingredients;
+};
+
+export const getAreas = async () => {
+    const areas = await axios.get('/areas');
+    return areas;
+};
+
 export const getTestimonials = async () => {
     const testimonials = await axios.get('/testimonials');
     return testimonials;

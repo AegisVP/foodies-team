@@ -1,0 +1,17 @@
+.title {
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1.14286;
+    letter-spacing: -0.02em;
+    color: var(--extra-black);
+}
+
+/* Tablet Layout: Starts adapting at 768px */
+@media only screen and (min-width: 768px) {
+    .title {
+        font-size: 40px;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+    }
+}
