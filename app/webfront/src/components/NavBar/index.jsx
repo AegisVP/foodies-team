@@ -55,11 +55,19 @@ const NavBar = ({ isAddRecipe, isHome, isMobile, theme }) => {
         <nav>
           <ul className={css['nav-list']}>
             <li className={clsx(css['nav-item'], { [css.active]: isHome })}>
-              <NavLink to={ROUTES.HOME}>Home</NavLink>
+              <NavLink
+                to={ROUTES.HOME}
+                onClick={isMobile && toggleMenu}>
+                Home
+              </NavLink>
             </li>
             
             <li className={clsx(css['nav-item'], { [css.active]: isAddRecipe })}>
-              <NavLink to={ROUTES.ADD_RECIPE_PAGE}>Add recipe</NavLink>
+              <NavLink
+                to={ROUTES.ADD_RECIPE_PAGE}
+                onClick={isMobile && toggleMenu}>
+                Add recipe
+              </NavLink>
             </li>
           </ul>
         </nav>
