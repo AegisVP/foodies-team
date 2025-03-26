@@ -1,4 +1,6 @@
 export const routes = {
-  GET_FOLLOWERS: 'user/getFollowers',
-  GET_FOLLOWEES: 'user/getFollowees',
+  GET_FOLLOWERS: 'users/getFollowers',
+  GET_FOLLOWEES: 'users/getFollowees',
+  FOLLOW_USER: 'users/followUser',
+  UNFOLLOW_USER: 'users/unfollowUser',
 };

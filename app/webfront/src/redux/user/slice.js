@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getFollowers, getFollowees } from './operations.js';
+import { getFollowers, getFollowees, followUser, unfollowUser } from './operations.js';
 
 // add getProfile, getRecipes, getFollowers
 // unauthorized user with short profile
@@ -30,6 +30,12 @@ const userSlice = createSlice({
             })
             .addCase(getFollowees.fulfilled, (state, action) => {
                 state.followees = action.payload;
+            })
+            .addCase(followUser.fulfilled, (state, action) => {
+                state.followers.followers.find(follower => follower.id === action.payload).isFollowing = true;
+            })
+            .addCase(unfollowUser.fulfilled, (state, action) => {
+                state.followees.followees.find(followee => followee.id === action.payload).isFollowing = false;
             })
             .addMatcher(
                 action => action.type.endsWith('/rejected'),

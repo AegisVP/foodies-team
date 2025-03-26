@@ -43,8 +43,8 @@ async function userWithFollowers(userId, currentUserId) {
                 [
                     Sequelize.literal(`(
                         SELECT COUNT(*) > 0 FROM follows 
-                        WHERE followerId = :currentUserId 
-                        AND followeeId = "followers"."id"
+                        WHERE "followerId" = :currentUserId 
+                        AND "followeeId" = "followers"."id"
                     )`),
                     'isFollowing',
                 ],
@@ -78,9 +78,11 @@ async function userWithFollowees(userId, currentUserId) {
                 ],
                 [
                     Sequelize.literal(`(
-                        SELECT COUNT(*) > 0 FROM follows 
-                        WHERE followerId = :currentUserId 
-                        AND followeeId = "followees"."id"
+                        SELECT EXISTS (
+                            SELECT 1 FROM follows 
+                            WHERE "followerId" = :currentUserId 
+                            AND "followeeId" = "followees"."id"
+                        )
                     )`),
                     'isFollowing',
                 ],

@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Button from 'src/components/Button';
 import iconArrow from 'src/images/icons.svg#arrow';
+import { followUser, unfollowUser } from 'src/redux/user/operations.js';
 import css from './FollowerItem.module.css';
 
 const FollowerItem = ({
@@ -14,8 +17,17 @@ const FollowerItem = ({
   recipesCount,
   username,
 }) => {
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const dispatch = useDispatch();
   function onButtonClick() {
-    // TODO
+    setButtonDisabled(true);
+
+    if (isFollowing) {
+      dispatch(unfollowUser(id));
+      return;
+    }
+
+    dispatch(followUser(id));
   }
 
   function recipesToDisplay() {
@@ -31,7 +43,7 @@ const FollowerItem = ({
   }
 
   return (
-    <div className={css.component}>
+    <li className={css.component}>
       <div className={css.user}>
         <NavLink
           className={css.avatar}
@@ -57,6 +69,7 @@ const FollowerItem = ({
             ariaLabel={isFollowing ? `Unfollow ${username}` : `Follow ${username}`}
             label={isFollowing ? 'Following' : 'Follow'}
             size="small"
+            disabled={buttonDisabled}
             onClick={onButtonClick} />
         </div>
       </div>
@@ -71,7 +84,7 @@ const FollowerItem = ({
               alt="Thumbnail"
               className={css.thumbnail}
               height="100"
-              src={recipe.thumbnail}
+              src='https://www.foodandwine.com/thmb/kuakUXBI867NCXNKErdjriQTkDM=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/FAW-recipes-pasta-sausage-basil-and-mustard-ingredients-1b50ce143bb74823a1622d738da10b66.jpg'
               width="100" />
           </NavLink>
         ))}
@@ -82,7 +95,7 @@ const FollowerItem = ({
         ariaLabel="View full recipe"
         icon={iconArrow}
         to={`/recipes/${id}`} />
-    </div>
+    </li>
   );
 };
 
