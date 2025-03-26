@@ -8,8 +8,18 @@ const userSlice = createSlice({
     initialState: {
         profile: null,
         recipes: [],
-        followers: [],
-        folowees: [],
+        followers: {
+            page: 0,
+            pages: 0,
+            total: 0,
+            followers: [],
+        },
+        folowees: {
+            page: 0,
+            pages: 0,
+            total: 0,
+            folowees: [],
+        },
         isLoading: false,
         error: null,
     },
@@ -21,6 +31,24 @@ const userSlice = createSlice({
             .addCase(getFollowees.fulfilled, (state, action) => {
                 state.folowees = action.payload;
             })
+            .addMatcher(
+                action => action.type.endsWith('/rejected'),
+                (state, action) => {
+                    state.error = action.payload;
+                }
+            )
+            .addMatcher(
+                action => action.type.endsWith('/pending'),
+                state => {
+                    state.isLoading = true;
+                }
+            )
+            .addMatcher(
+                action => action.type.endsWith('/fulfilled'),
+                state => {
+                    state.isLoading = false;
+                }
+            );
     },
 });
 

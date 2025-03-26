@@ -25,7 +25,7 @@ async function updateUserAvatar(userId, avatar) {
 }
 
 // To get followers of a user
-async function userWithFollowers(userId) {
+async function userWithFollowers(userId, currentUserId) {
     return await User.findByPk(userId, {
         include: {
             model: User,
@@ -40,6 +40,14 @@ async function userWithFollowers(userId) {
                     Sequelize.literal(`(SELECT COUNT(*) FROM recipes WHERE recipes.owner = "followers"."id")`),
                     'recipeCount',
                 ],
+                [
+                    Sequelize.literal(`(
+                        SELECT COUNT(*) > 0 FROM follows 
+                        WHERE followerId = :currentUserId 
+                        AND followeeId = "followers"."id"
+                    )`),
+                    'isFollowing',
+                ],
             ],
             include: {
                 model: Recipe,
@@ -48,11 +56,12 @@ async function userWithFollowers(userId) {
             },
         },
         attributes: ['id', 'name', 'email', 'avatar'],
+        replacements: { currentUserId },
     });
 }
 
 // To get users that the user follows
-async function userWithFollowees(userId) {
+async function userWithFollowees(userId, currentUserId) {
     return await User.findByPk(userId, {
         include: {
             model: User,
@@ -67,6 +76,14 @@ async function userWithFollowees(userId) {
                     Sequelize.literal(`(SELECT COUNT(*) FROM recipes WHERE recipes.owner = "followees"."id")`),
                     'recipeCount',
                 ],
+                [
+                    Sequelize.literal(`(
+                        SELECT COUNT(*) > 0 FROM follows 
+                        WHERE followerId = :currentUserId 
+                        AND followeeId = "followees"."id"
+                    )`),
+                    'isFollowing',
+                ],
             ],
             include: [
                 {
@@ -77,6 +94,7 @@ async function userWithFollowees(userId) {
             ],
         },
         attributes: ['id', 'name', 'email', 'avatar'],
+        replacements: { currentUserId },
     });
 }
 
