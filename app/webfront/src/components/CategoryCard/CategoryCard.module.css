@@ -27,6 +27,7 @@
     height: 40px;
     padding: 8px 12px;
     color: var(--white);
+    font-weight: 700;
     border: 1px solid var(--white);
     border-radius: 30px;
 }
@@ -56,4 +57,36 @@
 .arrow {
     stroke: currentColor;
     fill: transparent;
+}
+
+/* Tablet Layout: Starts adapting at 768px */
+@media only screen and (min-width: 768px) {
+    .imageContainer {
+        border-radius: 30px;
+        height: 369px;
+    }
+    .buttonsContainer {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        display: flex;
+        gap: 4px;
+    }
+    .forwardButton {
+        width: 44px;
+        height: 44px;
+    }
+    .label {
+        position: relative;
+        height: 44px;
+        padding: 10px 14px;
+        font-size: 20px;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+    }
+    .forwardButton {
+        width: 44px;
+        height: 44px;
+        padding: 12px;
+    }
 }

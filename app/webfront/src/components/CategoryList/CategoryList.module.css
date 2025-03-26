@@ -25,3 +25,56 @@
     width: 100%;
     height: 100%;
 }
+
+/* Tablet Layout: Starts adapting at 768px */
+@media only screen and (min-width: 768px) {
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .gallery li:nth-child(5n-2) {
+        grid-column: span 2;
+    }
+
+    .gallery li:last-child {
+        grid-column: span 2;
+    }
+
+    .allCategoriesContainer {
+        height: 369px;
+    }
+
+    .allCategoriesLink {
+        font-size: 20px;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+    }
+}
+
+/* Desktop Layout: Starts adapting at 1440px */
+@media only screen and (min-width: 1440px) {
+    .gallery {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .gallery li:nth-child(6n-3),
+    .gallery li:nth-child(6n-2) {
+        width: calc((100% - 40px) / 3.8154 * 1.8154);
+    }
+
+    .gallery li:nth-child(6n-5),
+    .gallery li:nth-child(6n-4),
+    .gallery li:nth-child(6n-1),
+    .gallery li:nth-child(6n) {
+        width: calc((100% - 40px) / 3.8154);
+    }
+
+    .gallery li:last-child {
+        min-width: 1280px;
+        width: 100%;
+    }
+}

@@ -5,6 +5,8 @@ import { setSelectedCategory } from 'src/redux/common/slice';
 import { fetchRecipes } from 'src/redux/recipes/operations';
 import { selectSelectedArea, selectSelectedIngredients } from 'src/redux/common/selectors';
 import { setPage } from 'src/redux/recipes/slice';
+import { Cloudinary } from '@cloudinary/url-gen';
+import { dpr } from '@cloudinary/url-gen/actions/delivery';
 
 const CategoryCard = ({ item }) => {
     const selectedArea = useSelector(selectSelectedArea);
@@ -25,9 +27,25 @@ const CategoryCard = ({ item }) => {
         );
     };
 
+    const cloud = new Cloudinary({
+        cloud: {
+            cloudName: 'dsgrbahi8',
+        },
+    });
+
+    const getImageUrlResized = (publicId, { pixelRatio = 1 }) =>
+        cloud.image(publicId).delivery(dpr(pixelRatio)).toURL();
+
     return (
         <div className={css.imageContainer} aria-label={item.name}>
-            <img src={`src/images/${item.name}.png`} alt={item.name} className={css.image} />
+            <img
+                src={getImageUrlResized(item.image, { isRetina: 1 })}
+                srcSet={`${getImageUrlResized(item.image, { isRetina: 1 })} 1x, ${getImageUrlResized(item.image, {
+                    isRetina: 2,
+                })} 2x`}
+                alt={item.name}
+                className={css.image}
+            />
             <div className={css.buttonsContainer}>
                 <p className={css.label}>{item.name}</p>
                 <button aria-label={item.name} className={css.forwardButton} onClick={handleClick}>
