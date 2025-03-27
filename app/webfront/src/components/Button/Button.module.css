@@ -17,13 +17,20 @@
     text-transform: uppercase;
 }
 
+.large {
+    padding: 15px 40px;
+}
+.small {
+    padding: 10px 25px;
+}
+
 .light {
     background-color: transparent;
     border-color: var(--black);
     color: var(--black);
 
-    &:hover,
-    &:focus {
+    &:hover:not(:disabled),
+    &:focus:not(:disabled) {
         background-color: var(--extra-black);
         border-color: var(--extra-black);
         color: var(--white);
@@ -31,6 +38,12 @@
         svg {
             fill: var(--white);
         }
+    }
+
+    &:disabled {
+        border-color: var(--gray);
+        color: var(--gray);
+        cursor: not-allowed;
     }
 }
 
@@ -67,6 +80,7 @@
 
 svg {
     height: 20px;
+    transition: all 0.3s;
     width: 20px;
 }
 

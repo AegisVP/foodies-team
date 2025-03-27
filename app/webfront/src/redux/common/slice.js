@@ -11,6 +11,8 @@ const commonSlice = createSlice({
         areas: [],
         ingredients: [],
         testimonials: [],
+        isMobile: false,
+        isTablet: false,
         // TODO revise do we need it here (for data from public endpoints)
         recipes: [],
         recipeDetails: null,
@@ -32,6 +34,12 @@ const commonSlice = createSlice({
         },
         setScreenWidth: (state, action) => {
             state.screenWidth = action.payload;
+        },
+        setIsMobile: (state, action) => {
+            state.isMobile = action.payload;
+        },
+        setIsTablet: (state, action) => {
+            state.isTablet = action.payload;
         },
     },
     extraReducers: builder => {
@@ -70,5 +78,5 @@ const commonSlice = createSlice({
     },
 });
 
-export const { setSelectedCategory, setSelectedIngredients, setSelectedArea, setScreenWidth } = commonSlice.actions;
+export const { setIsMobile, setIsTablet, setSelectedCategory, setSelectedIngredients, setSelectedArea, setScreenWidth } = commonSlice.actions;
 export const commonReducer = commonSlice.reducer;
