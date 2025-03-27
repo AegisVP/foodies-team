@@ -23,20 +23,20 @@ const Hero = ({ className }) => {
 
       <div className={css.images}>
         <img
-          src="/images/hero-dish-1.jpg"
+          src="/images/hero-dish-1.png"
           srcSet="
-            /images/hero-dish-1.jpg 1x,
-            /images/hero-dish-1@2x.jpg 2x,
-            /images/hero-dish-1@3x.jpg 3x
+            /images/hero-dish-1.png 1x,
+            /images/hero-dish-1@2x.png 2x,
+            /images/hero-dish-1@3x.png 3x
           "
           alt="Delicious dish"
         />
         <img
-          src="/images/hero-dish-2.jpg"
+          src="/images/hero-dish-2.png"
           srcSet="
-            /images/hero-dish-2.jpg 1x,
-            /images/hero-dish-2@2x.jpg 2x,
-            /images/hero-dish-2@3x.jpg 3x
+            /images/hero-dish-2.png 1x,
+            /images/hero-dish-2@2x.png 2x,
+            /images/hero-dish-2@3x.png 3x
           "
           alt="Another tasty meal"
         />
