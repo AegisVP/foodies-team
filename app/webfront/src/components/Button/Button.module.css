@@ -1,16 +1,20 @@
 .component {
     align-items: center;
-    border: 1px solid;
+    font-family: Mulish;
+    border-width: 1px;
+    border-style: solid;
     border-radius: 30px;
     display: inline-flex;
     font-size: 16px;
     font-weight: 700;
     justify-content: center;
-    letter-spacing: -0.02em;
-    padding: 15px 40px;
+    padding: 16px 32px;
     text-decoration: none;
     text-transform: uppercase;
     transition: all 0.3s;
+    line-height: 24px; /* 150% */
+    letter-spacing: -0.32px;
+    text-transform: uppercase;
 }
 
 .large {
@@ -40,6 +44,16 @@
         border-color: var(--gray);
         color: var(--gray);
         cursor: not-allowed;
+    }
+}
+
+.lightTransparent {
+    background-color: transparent;
+    border-color: var(--white);
+    color: var(--white);
+
+    svg {
+        fill: var(--white);
     }
 }
 

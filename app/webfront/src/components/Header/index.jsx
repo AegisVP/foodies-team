@@ -9,7 +9,7 @@ import { selectIsAuthenticated } from 'src/redux/authUser/selectors.js';
 import { selectIsMobile } from 'src/redux/common/selectors.js';
 import css from './Header.module.css';
 
-const Header = () => {
+const Header = ({ className }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const isMobile = useSelector(selectIsMobile);
   const location = useLocation();
@@ -23,6 +23,7 @@ const Header = () => {
       [css.light]: !isDarkTheme,
       [css.dark]: isDarkTheme,
     },
+    className
   );
   const theme = isDarkTheme ? 'dark' : 'light';
 

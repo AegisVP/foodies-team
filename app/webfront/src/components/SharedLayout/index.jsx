@@ -1,12 +1,19 @@
-import Header from '../Header';
-import Footer from '../Footer';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { matchPath, useLocation } from 'react-router-dom';
+import Header from '../Header';
+import Footer from '../Footer';
+import ROUTES from '../../navigation/routes.js';
 import { setIsMobile, setIsTablet } from '../../redux/common/slice';
 import css from './SharedLayout.module.css';
 
 const SharedLayout = ({ children }) => {
+    const location = useLocation();
     const dispatch = useDispatch();
+
+    const isHome = matchPath(ROUTES.HOME, location.pathname);
+    const isCategory = matchPath(ROUTES.CATEGORIES, location.pathname);
+    const hideHeader = isHome || isCategory;
 
     useEffect(() => {
         const handleResize = () => {
@@ -22,7 +29,8 @@ const SharedLayout = ({ children }) => {
     return (
         <div className={css.container}>
             <div className={css.paddingContainer}>
-                <Header />
+                {!hideHeader && <Header />}
+
                 <main className={css.main}>{children}</main>
             </div>
             <Footer />
