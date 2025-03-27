@@ -1,0 +1,35 @@
+.container {
+    padding: 0 8px;
+    margin-bottom: 64px;
+
+    border: var(--debug);
+}
+
+.title {
+    color: var(--extra-black);
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.14;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+
+    @media screen and (min-width: 768px) {
+        font-size: 40px;
+        line-height: 1.1;
+    }
+}
+
+.description {
+    color: var(--gray);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.43;
+    margin-bottom: 32px;
+
+    @media screen and (min-width: 768px) {
+        color: var(--black);
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 40px;
+    }
+}
