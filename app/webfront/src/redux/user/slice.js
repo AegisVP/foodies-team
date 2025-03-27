@@ -1,17 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+    profile: null,
+    recipes: [],
+    followers: [],
+    isLoading: false,
+    error: null,
+};
+
 // add getProfile, getRecipes, getFollowers
 // unauthorized user with short profile
 const userSlice = createSlice({
     name: 'user',
-    initialState: {
-        profile: null,
-        recipes: [],
-        followers: [],
-        isLoading: false,
-        error: null,
+    initialState,
+    reducers: {
+        setIsLoading: (state, { payload }) => {
+            state.isLoading = payload;
+        },
+        setProfile: (_, { payload }) => {
+            return payload;
+        },
     },
-    extraReducers: () => {},
 });
 
+export const { setProfile } = userSlice.actions;
 export const userReducer = userSlice.reducer;

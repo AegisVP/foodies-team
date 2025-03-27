@@ -5,12 +5,12 @@ export const getRecipes = async () => {
     return recipes;
 };
 
-export const addRecipe = async (data) => {
+export const addRecipe = async data => {
     const recipe = await axios.post('/recipes', data);
     return recipe;
 };
 
-export const deleteRecipe = async (id) => {
+export const deleteRecipe = async id => {
     const recipe = await axios.delete(`/recipes/${id}`);
     return recipe;
 };

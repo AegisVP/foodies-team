@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { updateUserAvatar } from './operations';
 
-// login, logout, getUser, change Avatar
 const token = localStorage.getItem('token');
 
 const initialState = {
@@ -23,10 +23,8 @@ const authUserSlice = createSlice({
             localStorage.setItem('token', action.payload.token);
         },
         logout: state => {
-            state.isAuthenticated = false;
-            state.token = null;
-            state.user = null;
             localStorage.removeItem('token');
+            return initialState;
         },
         setUser: (state, action) => {
             state.user = action.payload;
@@ -34,6 +32,33 @@ const authUserSlice = createSlice({
         setIsLoading: (state, action) => {
             state.isLoading = action.payload;
         },
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(updateUserAvatar.fulfilled, (state, action) => {
+                console.log('updateUserAvatar', action.payload);
+                // state.user.avatar = action.payload;
+            })
+            .addMatcher(
+                action => action.type.endsWith('/rejected'),
+                (state, action) => {
+                    state.error = action.payload;
+                    state.isLoading = false;
+                }
+            )
+            .addMatcher(
+                action => action.type.endsWith('/pending'),
+                state => {
+                    state.error = null;
+                    state.isLoading = true;
+                }
+            )
+            .addMatcher(
+                action => action.type.endsWith('/fulfilled'),
+                state => {
+                    state.isLoading = false;
+                }
+            );
     },
 });
 
