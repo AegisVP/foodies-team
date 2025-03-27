@@ -5,6 +5,7 @@ import areasServices from '../services/areasServices.js';
 import HttpError from '../helpers/HttpError.js';
 import usersService from '../services/usersService.js';
 import { paginateItems } from '../helpers/paginate.js';
+import { saveFile } from '../helpers/storageCloudinary.js';
 
 const populateIngredients = (ingIds, ingData) =>
     ingIds.map(({ id, measure }) => {
@@ -72,8 +73,13 @@ export const getRecipeById = async (req, res, next) => {
 };
 
 export const createRecipe = async (req, res, next) => {
+    if (!req.file) {
+        return next(HttpError(400, 'Thumbnail is required'));
+    }
+
     const { id: userId } = req.user;
-    const { category, area, ingredients } = req.body;
+    const { category, area, ingredients: ingredientsReq } = req.body;
+    const ingredients = JSON.parse(ingredientsReq);
 
     // Verify category exists
     const categoryExists = await categoriesServices.listCategories({ id: category });
@@ -106,6 +112,7 @@ export const createRecipe = async (req, res, next) => {
         return next(HttpError(404, `Ingredients with ids ${missingIds.join(', ')} not found`));
     }
 
+    req.body.thumb = await saveFile(req.file);
     const recipe = await recipesService.createRecipe(req.body, userId);
     if (!recipe) {
         return next(HttpError(500, 'Failed to create recipe'));

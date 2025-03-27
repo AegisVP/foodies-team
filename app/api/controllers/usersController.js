@@ -2,14 +2,11 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import gravatar from 'gravatar';
 import { nanoid } from 'nanoid';
-import path from 'node:path';
-import fs from 'node:fs/promises';
 import usersService from '../services/usersService.js';
 import recipesService from '../services/recipesService.js';
 import HttpError from '../helpers/HttpError.js';
 import { paginateItems } from '../helpers/paginate.js';
-
-const avatarsDir = path.resolve('public/avatars');
+import { saveFile } from '../helpers/storageCloudinary.js';
 
 export const registerNewUser = async (req, res, next) => {
     const { name, email, password } = req.body;
@@ -103,14 +100,9 @@ export const updateAvatar = async (req, res, next) => {
     if (!req.file) {
         return next(HttpError(400, 'No file uploaded'));
     }
-
-    const { path: tempPath, filename } = req.file;
-    const newAvatarName = `${req.user.id}-${Date.now()}${path.extname(filename)}`;
-    const newAvatarPath = path.join(avatarsDir, newAvatarName);
-
-    await fs.rename(tempPath, newAvatarPath);
-
-    const avatar = `/avatars/${newAvatarName}`;
+    const avatar = await saveFile(req.file, {
+        transformation: { gravity: 'face', height: 240, width: 240, zoom: '0.7', crop: 'thumb' },
+    });
     await usersService.updateUserAvatar(req.user.id, avatar);
 
     res.json({ avatar });
