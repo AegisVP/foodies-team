@@ -1,4 +1,4 @@
-const ROUTES = {
+export const ROUTES = {
     HOME: '/',
     USER_PAGE: '/user/:id?',
     ADD_RECIPE_PAGE: '/recipe/add',
