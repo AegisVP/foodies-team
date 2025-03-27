@@ -1,5 +1,5 @@
 import { loginUser } from './auth';
-import { getRecipes, addRecipe, deleteRecipe } from './recipes';
+import { getRecipes, getOwnerRecipes, addRecipe, deleteRecipe } from './recipes';
 import { getCategories, getIngredients, getAreas, getTestimonials } from './common';
 import { getFollowers, getFollowees, followUser, unfollowUser } from './profile';
 
@@ -9,6 +9,7 @@ export default {
     loginUser,
     //recipes
     getRecipes,
+    getOwnerRecipes,
     addRecipe,
     deleteRecipe,
     //common

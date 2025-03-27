@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'src/api/index.js';
 import { selectLimit } from './selectors';
-import { FETCH_RECIPES, ADD_RECIPE, DELETE_RECIPE } from './constants.js';
+import { selectUserId } from 'src/redux/authUser/selectors';
+import { FETCH_RECIPES, FETCH_OWNER_RECIPES, ADD_RECIPE, DELETE_RECIPE } from './constants.js';
 
 export const fetchRecipes = createAsyncThunk(
     FETCH_RECIPES,
@@ -18,6 +19,31 @@ export const fetchRecipes = createAsyncThunk(
             if (ingredients && ingredients.length > 0) queryParams.append('ingredients', ingredients.join(','));
 
             const recipes = await api.getRecipes(queryParams.toString());
+
+            return recipes;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const fetchOwnerRecipes = createAsyncThunk(
+    FETCH_OWNER_RECIPES,
+    async ({ page = 1 }, { rejectWithValue, getState }) => {
+        try {
+            const queryParams = new URLSearchParams();
+            const state = getState();
+            const limit = selectLimit(state);
+            const userId = selectUserId(state);
+
+            if (!userId) {
+                return rejectWithValue('User ID not found');
+            }
+
+            queryParams.append('limit', limit);
+            if (page) queryParams.append('page', page);
+
+            const recipes = await api.getOwnerRecipes(userId, queryParams.toString());
 
             return recipes;
         } catch (error) {

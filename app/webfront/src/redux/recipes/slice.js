@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchRecipes, addRecipe, deleteRecipe } from './operations';
+import { fetchRecipes, fetchOwnerRecipes, addRecipe, deleteRecipe } from './operations';
 
 // TODO add recipe details if needed
 
@@ -44,11 +44,16 @@ const recipesSlice = createSlice({
                 state.page = action.payload.page;
                 state.totalPages = action.payload.pages;
             })
+            .addCase(fetchOwnerRecipes.fulfilled, (state, action) => {
+                state.recipes = action.payload.recipes;
+                state.page = action.payload.page;
+                state.totalPages = action.payload.pages;
+            })
             .addCase(addRecipe.fulfilled, (state, action) => {
                 state.recipes.push(action.payload);
             })
             .addCase(deleteRecipe.fulfilled, (state, action) => {
-                const index = state.findIndex(recipe => recipe.id === action.payload);
+                const index = state.recipes.findIndex(recipe => recipe.id === action.payload);
                 state.recipes.splice(index, 1);
             })
             .addMatcher(
