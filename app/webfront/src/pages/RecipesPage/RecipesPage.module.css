@@ -41,7 +41,7 @@
 
 @media screen and (min-width: 1280px) {
     .container {
-        padding: 40px;
+        padding: 0;
     }
     
     .title {
