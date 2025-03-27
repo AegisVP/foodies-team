@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchRecipes, addRecipe, deleteRecipe } from './operations';
+import { fetchRecipes, addRecipe, deleteRecipe, getRecipeById } from './operations';
 
 // TODO add recipe details if needed
 
@@ -51,15 +51,20 @@ const recipesSlice = createSlice({
                 const index = state.findIndex(recipe => recipe.id === action.payload);
                 state.recipes.splice(index, 1);
             })
+            .addCase(getRecipeById.fulfilled, (state, action) => {
+                state.recipeDetails = action.payload;
+            })
             .addMatcher(
                 action => action.type.endsWith('/rejected'),
                 (state, action) => {
                     state.error = action.payload;
+                    state.isLoading = false;
                 }
             )
             .addMatcher(
                 action => action.type.endsWith('/pending'),
                 state => {
+                    state.error = null;
                     state.isLoading = true;
                 }
             )
