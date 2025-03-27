@@ -92,9 +92,9 @@ const FollowerItem = ({
 
       <Button
         className={css.action}
-        ariaLabel="View full recipe"
+        ariaLabel="View profile"
         icon={iconArrow}
-        to={`/recipes/${id}`} />
+        to={`/user/${id}`} />
     </li>
   );
 };

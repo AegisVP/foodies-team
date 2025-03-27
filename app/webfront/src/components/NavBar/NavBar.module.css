@@ -1,8 +1,5 @@
 .component {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
+  position: relative;
 }
 
 .open-button {
@@ -101,6 +98,13 @@
 }
 
 @media (min-width: 768px) {
+  .component {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+  }
+
   .menu {
     background-color: transparent;
     background-image: none;
