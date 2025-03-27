@@ -1,0 +1,20 @@
+.filtersContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* Tablet Layout: Starts adapting at 768px */
+@media only screen and (min-width: 768px) {
+    .filtersContainer {
+        flex-direction: row;
+    }
+}
+
+/* Desktop Layout: Starts adapting at 1440px */
+@media only screen and (min-width: 1440px) {
+    .filtersContainer {
+        flex-direction: column;
+        flex-grow: 1;
+    }
+}

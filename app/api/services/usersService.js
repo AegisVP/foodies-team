@@ -1,4 +1,6 @@
+import { Sequelize } from 'sequelize';
 import { FavoriteRecipe } from '../models/favoriteRecipes.js';
+import { Recipe } from '../models/recipes.js';
 import { User, Follow } from '../models/users.js';
 
 async function registerUser(id, name, email, password, avatar) {
@@ -23,28 +25,78 @@ async function updateUserAvatar(userId, avatar) {
 }
 
 // To get followers of a user
-async function userWithFollowers(userId) {
+async function userWithFollowers(userId, currentUserId) {
     return await User.findByPk(userId, {
         include: {
             model: User,
             as: 'followers',
             through: { attributes: [] },
-            attributes: ['id', 'name', 'avatar', 'email'],
+            attributes: [
+                'id',
+                'name',
+                'email',
+                'avatar',
+                [
+                    Sequelize.literal(`(SELECT COUNT(*) FROM recipes WHERE recipes.owner = "followers"."id")`),
+                    'recipeCount',
+                ],
+                [
+                    Sequelize.literal(`(
+                        SELECT COUNT(*) > 0 FROM follows 
+                        WHERE "followerId" = :currentUserId 
+                        AND "followeeId" = "followers"."id"
+                    )`),
+                    'isFollowing',
+                ],
+            ],
+            include: {
+                model: Recipe,
+                attributes: ['id', 'thumb'],
+                limit: 4,
+            },
         },
-        attributes: ['id', 'name', 'avatar', 'email'],
+        attributes: ['id', 'name', 'email', 'avatar'],
+        replacements: { currentUserId },
     });
 }
 
 // To get users that the user follows
-async function userWithFollowees(userId) {
+async function userWithFollowees(userId, currentUserId) {
     return await User.findByPk(userId, {
         include: {
             model: User,
             as: 'followees',
             through: { attributes: [] },
-            attributes: ['id', 'name', 'avatar', 'email'],
+            attributes: [
+                'id',
+                'name',
+                'email',
+                'avatar',
+                [
+                    Sequelize.literal(`(SELECT COUNT(*) FROM recipes WHERE recipes.owner = "followees"."id")`),
+                    'recipeCount',
+                ],
+                [
+                    Sequelize.literal(`(
+                        SELECT EXISTS (
+                            SELECT 1 FROM follows 
+                            WHERE "followerId" = :currentUserId 
+                            AND "followeeId" = "followees"."id"
+                        )
+                    )`),
+                    'isFollowing',
+                ],
+            ],
+            include: [
+                {
+                    model: Recipe,
+                    attributes: ['id', 'thumb'],
+                    limit: 4,
+                },
+            ],
         },
-        attributes: ['id', 'name', 'avatar', 'email'],
+        attributes: ['id', 'name', 'email', 'avatar'],
+        replacements: { currentUserId },
     });
 }
 

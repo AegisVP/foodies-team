@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import ROUTES from './routes.js';
 
 import { Loader } from 'src/components';
+import ProtectedRoute from 'src/components/ProtectedRoute/index.jsx';
 
 const HomePage = lazy(() => import('src/pages/HomePage'));
 const UserPage = lazy(() => import('src/pages/UserPage/index.jsx'));
@@ -19,7 +20,14 @@ const AppNavigator = () => {
         <Suspense fallback={<Loader />}>
             <Routes>
                 <Route path={ROUTES.HOME} element={<HomePage />} />
-                <Route path={ROUTES.USER_PAGE} element={<UserPage />}>
+                <Route
+                    path={ROUTES.USER_PAGE}
+                    element={
+                        <ProtectedRoute>
+                            <UserPage />
+                        </ProtectedRoute>
+                    }
+                >
                     <Route index element={<RecipesPage />} />
                     <Route path={ROUTES.RECIPES} element={<RecipesPage />} />
                     <Route path={ROUTES.FAVORITES} element={<MyFavoritesPage />} />

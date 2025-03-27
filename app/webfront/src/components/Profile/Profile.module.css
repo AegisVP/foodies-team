@@ -1,14 +1,41 @@
-.switchText {
-    margin-top: 1rem;
+.modalTitle {
+    margin-bottom: 40px;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.modalTitleLogout {
+    margin-bottom: 20px;
+}
+
+.modalText {
+    margin-bottom: 40px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.center {
+    align-items: center;
     text-align: center;
 }
 
+.logoutButton {
+    margin-bottom: 20px;
+}
+
+.switchText {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    color: var(--black);
+}
+
 .switchBtn {
-    margin-left: 0.5rem;
     background: none;
-    color: #007bff;
+    color: var(--extra-black);
     border: none;
     cursor: pointer;
-    font-weight: bold;
-    text-decoration: underline;
+    font-weight: 500;
+    text-decoration: none;
 }

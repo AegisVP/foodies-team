@@ -1,5 +1,21 @@
 import Joi from 'joi';
 
+const customJSON = Joi.extend(joi => {
+    return {
+        type: 'array',
+        base: joi.array(),
+        coerce(value, schema) {
+            if (typeof value !== 'string' || (value[0] !== '[' && !/^\s*\[/.test(value))) {
+                return;
+            }
+
+            try {
+                return { value: JSON.parse(value) };
+            } catch (ignoreErr) {}
+        },
+    };
+});
+
 export const createRecipeSchema = Joi.object({
     title: Joi.string().required().messages({
         'string.empty': 'Recipe title is required',
@@ -21,15 +37,12 @@ export const createRecipeSchema = Joi.object({
         'string.empty': 'Description is required',
         'any.required': 'Description is required',
     }),
-    thumb: Joi.string().required().messages({
-        'string.empty': 'Thumbnail URL is required',
-        'any.required': 'Thumbnail URL is required',
-    }),
     time: Joi.string().required().messages({
         'string.empty': 'Cooking time is required',
         'any.required': 'Cooking time is required',
     }),
-    ingredients: Joi.array()
+    ingredients: customJSON
+        .array()
         .items(
             Joi.object({
                 id: Joi.alternatives().try(Joi.string().required(), Joi.number().required()).messages({

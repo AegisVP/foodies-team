@@ -1,12 +1,12 @@
-import Testimonial from '../Testimonial';
+import TestimonialCard from '../TestimonialCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
-import css from './Slider.module.css';
+import css from './Testimonials.module.css';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-const Slider = ({ items, type }) => {
+const Testimonials = ({ items, type }) => {
     return (
         <div className={css.sliderContainer}>
             <Swiper
@@ -22,7 +22,7 @@ const Slider = ({ items, type }) => {
                 {items.map((item, index) =>
                     type === 'testimonial' ? (
                         <SwiperSlide key={item.id || index}>
-                            <Testimonial item={item} />
+                            <TestimonialCard item={item} />
                         </SwiperSlide>
                     ) : null
                 )}
@@ -32,4 +32,4 @@ const Slider = ({ items, type }) => {
     );
 };
 
-export default Slider;
+export default Testimonials;

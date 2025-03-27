@@ -217,7 +217,7 @@ paths:
                 - $ref: '#/components/parameters/limit_query'
             responses:
                 '200':
-                    $ref: '#/components/responses/followersResponse'
+                    $ref: '#/components/responses/followeesResponse'
                 '401':
                     $ref: '#/components/responses/notAuthorisedResponse'
                 '500':
@@ -473,7 +473,7 @@ components:
             description: Create recipe request
             required: true
             content:
-                application/json:
+                multipart/form-data:
                     schema:
                         type: object
                         properties:
@@ -489,10 +489,13 @@ components:
                                 type: string
                             thumb:
                                 type: string
+                                format: binary
                             time:
                                 type: string
                             ingredients:
                                 type: array
+                                format: json
+                                description: 'Array of objects in formatted as JSON: [ { "id": "string", "measure": "string" } ]'
                                 items:
                                     type: object
                                     properties:
@@ -543,31 +546,26 @@ components:
             content:
                 application/json:
                     schema:
-                        type: object
-                        properties:
-                            page:
-                                type: integer
-                            pages:
-                                type: integer
-                            total:
-                                type: integer
-                                description: Total count of recipes
-                            recipes:
-                                type: array
-                                items:
-                                    allOf:
-                                        - $ref: '#/components/schemas/recipeShort'
-                                        - type: object
-                                          properties:
-                                              owner:
-                                                  type: object
-                                                  properties:
-                                                      id:
-                                                          type: string
-                                                      name:
-                                                          type: string
-                                                      avatar:
-                                                          type: string
+                        allOf:
+                            - $ref: '#/components/schemas/pagination'
+                            - type: object
+                              properties:
+                                  recipes:
+                                      type: array
+                                      items:
+                                          allOf:
+                                              - $ref: '#/components/schemas/recipeShort'
+                                              - type: object
+                                                properties:
+                                                    owner:
+                                                        type: object
+                                                        properties:
+                                                            id:
+                                                                type: string
+                                                            name:
+                                                                type: string
+                                                            avatar:
+                                                                type: string
         recipeInformationResponse:
             description: Successfully received recipe
             content:
@@ -580,13 +578,22 @@ components:
                 application/json:
                     schema:
                         allOf:
-                            - $ref: '#/components/schemas/fullUser'
+                            - $ref: '#/components/schemas/pagination'
                             - type: object
                               properties:
                                   followers:
-                                      type: array
-                                      items:
-                                          $ref: '#/components/schemas/fullUser'
+                                      $ref: '#/components/schemas/followexsList'
+        followeesResponse:
+            description: Successfully logged in
+            content:
+                application/json:
+                    schema:
+                        allOf:
+                            - $ref: '#/components/schemas/pagination'
+                            - type: object
+                              properties:
+                                  followees:
+                                      $ref: '#/components/schemas/followexsList'
         userResponse:
             description: User information
             content:
@@ -682,6 +689,34 @@ components:
                         $ref: '#/components/schemas/error'
 
     schemas:
+        followexsList:
+            type: array
+            items:
+                allOf:
+                    - $ref: '#/components/schemas/fullUser'
+                    - type: object
+                      properties:
+                          recipeCount:
+                              type: integer
+                          recipes:
+                              type: array
+                              items:
+                                  type: object
+                                  properties:
+                                      id:
+                                          type: string
+                                      thumb:
+                                          type: string
+        pagination:
+            type: object
+            properties:
+                page:
+                    type: integer
+                pages:
+                    type: integer
+                total:
+                    type: integer
+                    description: Total count of items
         simpleObject:
             type: object
             properties:

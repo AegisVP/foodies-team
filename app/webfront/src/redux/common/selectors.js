@@ -1,4 +1,12 @@
 export const selectCategories = state => state.common.categories;
+export const selectIngredients = state => state.common.ingredients;
+export const selectAreas = state => state.common.areas;
 export const selectTestimonials = state => state.common.testimonials;
+export const selectSelectedCategory = state => state.common.selectedCategory;
+export const selectSelectedIngredients = state => state.common.selectedIngredients;
+export const selectSelectedArea = state => state.common.selectedArea;
 export const selectIsCommonLoading = state => state.common.isLoading;
 export const selectCommonError = state => state.common.error;
+export const selectScreenWidth = state => state.common.screenWidth;
+export const selectIsMobile = state => state.common.isMobile;
+export const selectIsTablet = state => state.common.isTablet;

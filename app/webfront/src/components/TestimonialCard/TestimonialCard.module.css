@@ -37,7 +37,13 @@
 }
 
 .reviewContent {
-    display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: calc(1.3333em * 3); /* 3 рядки по line-height */
+
     font-weight: 500;
     font-size: 18px;
     line-height: 1.3333;

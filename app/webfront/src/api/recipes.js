@@ -1,7 +1,7 @@
 import axios from './axiosInstance.js';
 
-export const getRecipes = async () => {
-    const recipes = await axios.get('/recipes');
+export const getRecipes = async queryParams => {
+    const recipes = await axios.get(`/recipes?${queryParams}`);
     return recipes;
 };
 

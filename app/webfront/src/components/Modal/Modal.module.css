@@ -13,24 +13,23 @@
 
 .modal {
     position: relative;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 500px;
+    background: var(--white);
+    padding: 80px;
+    border-radius: 30px;
+    max-width: 560px;
     width: 100%;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .closeButton {
     position: absolute;
-    top: 8px;
-    right: 12px;
-    font-size: 20px;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
     background: none;
     border: none;
     cursor: pointer;
 }
 
 .content {
-    margin-top: 20px;
+    margin-top: 0px;
 }

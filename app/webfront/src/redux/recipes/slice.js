@@ -9,6 +9,9 @@ const recipesSlice = createSlice({
     name: 'recipes',
     initialState: {
         recipes: [],
+        page: 1,
+        totalPages: 1,
+        limit: 8,
         // TODO revise if it needed (if not extra details could be taken from the list by id)
         recipeDetails: null,
         isLoading: false,
@@ -17,6 +20,15 @@ const recipesSlice = createSlice({
     // example of synchronous actions creation
     // TODO delete if not needed
     reducers: {
+        clearRecipes(state) {
+            state.recipes = [];
+        },
+        setPage(state, action) {
+            state.page = action.payload;
+        },
+        setLimit(state, action) {
+            state.limit = action.payload;
+        },
         updateRecipeDetails(state, action) {
             state.recipeDetails = {
                 ...state.recipeDetails,
@@ -25,33 +37,35 @@ const recipesSlice = createSlice({
         },
     },
     // example of asynchronous actions creation
-    extraReducers: (builder) => {
+    extraReducers: builder => {
         builder
             .addCase(fetchRecipes.fulfilled, (state, action) => {
-                state.recipes = action.payload;
+                state.recipes = action.payload.recipes;
+                state.page = action.payload.page;
+                state.totalPages = action.payload.pages;
             })
             .addCase(addRecipe.fulfilled, (state, action) => {
                 state.recipes.push(action.payload);
             })
             .addCase(deleteRecipe.fulfilled, (state, action) => {
-                const index = state.findIndex((recipe) => recipe.id === action.payload);
+                const index = state.findIndex(recipe => recipe.id === action.payload);
                 state.recipes.splice(index, 1);
             })
             .addMatcher(
-                (action) => action.type.endsWith('/rejected'),
+                action => action.type.endsWith('/rejected'),
                 (state, action) => {
                     state.error = action.payload;
                 }
             )
             .addMatcher(
-                (action) => action.type.endsWith('/pending'),
-                (state) => {
+                action => action.type.endsWith('/pending'),
+                state => {
                     state.isLoading = true;
                 }
             )
             .addMatcher(
-                (action) => action.type.endsWith('/fulfilled'),
-                (state) => {
+                action => action.type.endsWith('/fulfilled'),
+                state => {
                     state.isLoading = false;
                 }
             );
@@ -60,4 +74,4 @@ const recipesSlice = createSlice({
 
 export const recipesReducer = recipesSlice.reducer;
 
-export const { updateRecipeDetails } = recipesSlice.actions;
+export const { updateRecipeDetails, clearRecipes, setPage, setLimit } = recipesSlice.actions;

@@ -1,5 +1,8 @@
 .component {
-    position: relative;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
 }
 
 .open-button {
@@ -14,7 +17,7 @@
         width: 100%;
 
         &:not(:last-child) {
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
     }
 }
