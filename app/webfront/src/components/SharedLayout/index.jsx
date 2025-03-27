@@ -12,7 +12,7 @@ const SharedLayout = ({ children }) => {
         const handleResize = () => {
             const width = document.querySelector('body').getBoundingClientRect().width;
             dispatch(setIsMobile(width < 768));
-            dispatch(setIsTablet(width <= 768 && width < 1440));
+            dispatch(setIsTablet(width >= 768 && width < 1440));
         };
     
         window.addEventListener('resize', handleResize);
