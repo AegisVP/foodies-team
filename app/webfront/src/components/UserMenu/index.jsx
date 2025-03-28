@@ -9,77 +9,71 @@ import spriteChevronUp from 'src/images/icons.svg#chevron-up';
 import Spinner from '../Spinner';
 
 const UserMenu = ({ onLogoutOpen }) => {
-  const user = useSelector(state => state.authUser.user);
-  const loadingUser = useSelector(state => state.authUser.isLoading);
+    const user = useSelector(state => state.authUser.user);
+    const loadingUser = useSelector(state => state.authUser.isLoading);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef(null);
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
+    const [isOpen, setIsOpen] = useState(false);
+    const menuRef = useRef(null);
+    const toggleMenu = () => {
+        setIsOpen(prev => !prev);
     };
 
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+    useEffect(() => {
+        const handleClickOutside = event => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen]);
+
+    if (loadingUser) {
+        return <Spinner size="sm" />;
     }
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen]);
+    return (
+        loadingUser === false && (
+            <div className={css.component} ref={menuRef}>
+                <button type="button" className={css.button} onClick={toggleMenu}>
+                    <img alt="User avatar" className={css.avatar} src={user?.avatar || defaultAvatar} />
 
-  if (loadingUser) {
-    return <Spinner />;
-  }
+                    <span className={css.name}>{user?.name}</span>
 
-  return ( loadingUser === false &&
-    <div className={css.component} ref={menuRef}>
-      <button
-        type="button"
-        className={css.button}
-        onClick={toggleMenu}>
-        <img
-          alt="User avatar"
-          className={css.avatar}
-          src={user?.avatar || defaultAvatar} />
+                    <svg className={css.chevron}>
+                        <use href={isOpen ? spriteChevronUp : spriteChevronDown} />
+                    </svg>
+                </button>
 
-        <span className={css.name}>{user?.name}</span>
+                {isOpen && (
+                    <nav className={css.menu}>
+                        <ul>
+                            <li>
+                                <NavLink to={`/user/${user?.id}`} onClick={toggleMenu}>
+                                    Profile
+                                </NavLink>
+                            </li>
 
-        <svg className={css.chevron}>
-          <use href={isOpen ?spriteChevronUp : spriteChevronDown } />
-        </svg>
-      </button>
-
-      {isOpen &&
-        <nav className={css.menu}>
-          <ul>
-            <li>
-              <NavLink
-                to={`/user/${user?.id}`}
-                onClick={toggleMenu}>
-                Profile
-              </NavLink>
-            </li>
-
-            <li onClick={onLogoutOpen}>
-              <NavLink onClick={toggleMenu}>
-                Logout
-                <svg>
-                  <use href={spriteArrow} />
-                </svg>
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
-      }
-    </div>
-  );
+                            <li onClick={onLogoutOpen}>
+                                <NavLink onClick={toggleMenu}>
+                                    Logout
+                                    <svg>
+                                        <use href={spriteArrow} />
+                                    </svg>
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </nav>
+                )}
+            </div>
+        )
+    );
 };
 
 export default UserMenu;
