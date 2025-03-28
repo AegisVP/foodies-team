@@ -6,7 +6,9 @@ export const getRecipes = async queryParams => {
 };
 
 export const addRecipe = async data => {
-    const recipe = await axios.post('/recipes', data);
+    const recipe = await axios.post('/recipes', data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return recipe;
 };
 

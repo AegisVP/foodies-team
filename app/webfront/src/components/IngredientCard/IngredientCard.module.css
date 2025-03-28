@@ -1,0 +1,36 @@
+.row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 90px;
+    border: 1px solid var(--gray);
+    border-radius: 15px;
+}
+
+.image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gray {
+    color: var(--gray);
+}
+
+.deleteBtn {
+    cursor: pointer;
+    align-self: start;
+}

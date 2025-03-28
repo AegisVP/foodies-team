@@ -21,10 +21,13 @@ export const createRecipeSchema = Joi.object({
         'string.empty': 'Description is required',
         'any.required': 'Description is required',
     }),
-    thumb: Joi.string().required().messages({
-        'string.empty': 'Thumbnail URL is required',
-        'any.required': 'Thumbnail URL is required',
-    }),
+    thumb: Joi.string()
+        .pattern(/^data:image\/(png|jpeg|jpg|gif|webp);base64,.+$/)
+        .required()
+        .messages({
+            'string.pattern.base': 'Invalid Base64 image format. It should start with "data:image/{format};base64,"',
+            'string.empty': 'Thumb (Base64 string) is required.',
+        }),
     time: Joi.string().required().messages({
         'string.empty': 'Cooking time is required',
         'any.required': 'Cooking time is required',
