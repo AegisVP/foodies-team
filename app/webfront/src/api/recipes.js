@@ -5,6 +5,11 @@ export const getRecipes = async queryParams => {
     return recipes;
 };
 
+export const getOwnerRecipes = async (userId, queryParams) => {
+    const recipes = await axios.get(`/recipes/owner/${userId}?${queryParams}`);
+    return recipes;
+};
+
 export const addRecipe = async data => {
     const recipe = await axios.post('/recipes', data, {
         headers: { 'Content-Type': 'multipart/form-data' },

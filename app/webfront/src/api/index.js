@@ -1,6 +1,7 @@
 import { loginUser } from './auth';
-import { getRecipes, addRecipe, deleteRecipe } from './recipes';
+import { getRecipes, getOwnerRecipes, addRecipe, deleteRecipe } from './recipes';
 import { getCategories, getIngredients, getAreas, getTestimonials } from './common';
+import { getFollowers, getFollowees, followUser, unfollowUser } from './profile';
 
 // TODO add all api methods here for reexport
 export default {
@@ -8,6 +9,7 @@ export default {
     loginUser,
     //recipes
     getRecipes,
+    getOwnerRecipes,
     addRecipe,
     deleteRecipe,
     //common
@@ -15,4 +17,8 @@ export default {
     getIngredients,
     getAreas,
     getTestimonials,
+    getFollowers,
+    getFollowees,
+    followUser,
+    unfollowUser,
 };

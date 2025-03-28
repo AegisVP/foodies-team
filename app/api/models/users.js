@@ -49,14 +49,6 @@ export const Follow = sequelize.define(
                 key: 'id',
             },
         },
-        followingId: {
-            type: DataTypes.STRING(36),
-            allowNull: true,
-            references: {
-                model: User,
-                key: 'id',
-            },
-        },
         followeeId: {
             type: DataTypes.STRING(36),
             allowNull: false,

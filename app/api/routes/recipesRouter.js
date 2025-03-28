@@ -14,11 +14,18 @@ import {
     getOwnerRecipes,
 } from '../controllers/recipesController.js';
 import controllerWrapper from '../decorators/controllerWrapper.js';
+import upload from '../middlewares/upload.js';
 
 const recipesRouter = express.Router();
 
 recipesRouter.get('/', controllerWrapper(listRecipes));
-recipesRouter.post('/', authMiddleware, validateBody(createRecipeSchema), controllerWrapper(createRecipe));
+recipesRouter.post(
+    '/',
+    authMiddleware,
+    upload.single('thumb'),
+    validateBody(createRecipeSchema),
+    controllerWrapper(createRecipe)
+);
 recipesRouter.get('/popular', controllerWrapper(getPopularRecipes));
 recipesRouter.get('/favorites', authMiddleware, controllerWrapper(getFavoriteRecipes));
 recipesRouter.get('/owner/:id', authMiddleware, controllerWrapper(getOwnerRecipes));

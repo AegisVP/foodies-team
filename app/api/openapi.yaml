@@ -473,7 +473,7 @@ components:
             description: Create recipe request
             required: true
             content:
-                application/json:
+                multipart/form-data:
                     schema:
                         type: object
                         properties:
@@ -489,10 +489,13 @@ components:
                                 type: string
                             thumb:
                                 type: string
+                                format: binary
                             time:
                                 type: string
                             ingredients:
                                 type: array
+                                format: json
+                                description: 'Array of objects in formatted as JSON: [ { "id": "string", "measure": "string" } ]'
                                 items:
                                     type: object
                                     properties:
