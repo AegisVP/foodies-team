@@ -1,0 +1,147 @@
+.card {
+    width: 100%;
+    min-width: 846px;
+    max-height: 100px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 26px 26px 26px 0;
+    background: #fff;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.imageContainer {
+    padding-left: 0;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+}
+
+.image {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.02em;
+    color: var(--extra-black);
+    text-transform: uppercase;
+}
+
+.description {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--extra-black);
+    letter-spacing: -0.02em;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    flex-grow: 1;
+}
+
+.actions {
+    top: 0;
+    right: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.actionButton {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--extra-black);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.actionButton:hover {
+    background: var(--extra-black);
+}
+
+.actionButton img {
+    width: 16px;
+    height: 16px;
+}
+
+.actionButton:hover img {
+    filter: brightness(10);
+}
+
+.seeButton {
+    align-self: flex-end;
+    color: #FFFFFF;
+    border: 1px solid var(--extra-black);
+    border-radius: 100px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.seeButton:hover {
+    background-color: var(--extra-black);
+}
+
+@media screen and (max-width: 767px) {
+    .card {
+        flex-direction: column;
+        padding: 16px;
+        gap: 20px;
+    }
+    
+    .imageContainer {
+        width: 100%;
+        height: 200px;
+    }
+    
+    .title {
+        font-size: 20px;
+    }
+    
+    .description {
+        font-size: 14px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1279px) {
+    .card {
+        padding: 20px;
+        gap: 24px;
+    }
+    
+    .imageContainer {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .title {
+        font-size: 22px;
+    }
+}

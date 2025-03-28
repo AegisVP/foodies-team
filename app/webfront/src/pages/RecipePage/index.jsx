@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ROUTES from 'src/navigation/routes';
+import RecipeInfo from '../../components/RecipeInfo';
 
 const RecipePage = ({ setCustomBreadcrumbs }) => {
     const { id } = useParams();
@@ -14,8 +15,11 @@ const RecipePage = ({ setCustomBreadcrumbs }) => {
             { label: id, path: ROUTES.RECIPE_PAGE.replace(':id', id) },
         ]);
     }, [id, setCustomBreadcrumbs]);
-
-    return <p>Recipe `{id}` Details</p>;
+    return (
+        <>
+            <RecipeInfo />
+        </>
+    );
 };
 
 export default RecipePage;
