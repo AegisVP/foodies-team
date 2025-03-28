@@ -32,16 +32,17 @@ export const useBreadcrumbs = customBreadcrumbs => {
             return breadcrumbs;
         }
 
-        // Recipe Page
+        // Recipe Page - should be only custom breadcrumbs that have recipe name
         if (matchPath(ROUTES.RECIPE_PAGE, location.pathname)) {
-            const match = matchPath(ROUTES.RECIPE_PAGE, location.pathname);
-            breadcrumbs.push({ label: 'Recipe', path: null });
-            return breadcrumbs;
+            // const match = matchPath(ROUTES.RECIPE_PAGE, location.pathname);
+            // breadcrumbs.push({ label: 'Recipe', path: null });
+            // return breadcrumbs;
+            return [];
         }
 
         // User Page and nested routes
-        if (matchPath(ROUTES.USER_PAGE, location.pathname)) {
-            const match = matchPath(ROUTES.USER_PAGE, location.pathname);
+        if (matchPath({ path: ROUTES.USER_PAGE, end: false }, location.pathname)) {
+            const match = matchPath({ path: ROUTES.USER_PAGE, end: false }, location.pathname);
             breadcrumbs.push({ label: 'Profile', path: `/user/${match.params.id}` });
 
             return breadcrumbs;

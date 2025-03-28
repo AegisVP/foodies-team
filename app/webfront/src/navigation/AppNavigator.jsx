@@ -15,7 +15,7 @@ const FollowersPage = lazy(() => import('src/pages/FollowersPage/index.jsx'));
 const FollowingPage = lazy(() => import('src/pages/FollowingPage/index.jsx'));
 const NotFoundPage = lazy(() => import('src/pages/NotFoundPage'));
 
-const AppNavigator = () => {
+const AppNavigator = ({ setCustomBreadcrumbs }) => {
     return (
         <Suspense fallback={<Loader />}>
             <Routes>
@@ -34,7 +34,7 @@ const AppNavigator = () => {
                     <Route path={ROUTES.FOLLOWING} element={<FollowingPage />} />
                 </Route>
                 <Route path={ROUTES.ADD_RECIPE_PAGE} element={<AddRecipePage />} />
-                <Route path={ROUTES.RECIPE_PAGE} element={<RecipePage />} />
+                <Route path={ROUTES.RECIPE_PAGE} element={<RecipePage setCustomBreadcrumbs={setCustomBreadcrumbs} />} />
                 <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
             </Routes>
         </Suspense>
