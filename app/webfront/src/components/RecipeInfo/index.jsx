@@ -9,8 +9,9 @@ import { addToFavorites, removeFromFavorites, getFavoriteRecipes } from 'src/red
 import { getRecipeById } from 'src/redux/recipes/operations';
 
 import Button from '../Button';
+import ROUTES from 'src/navigation/routes';
 
-const RecipeInfo = () => {
+const RecipeInfo = ({ setCustomBreadcrumbs }) => {
     const { id } = useParams();
     const isRecipesLoading = useSelector(selectIsRecipesLoading);
     const recipe = useSelector(selectRecipeDetails);
@@ -22,7 +23,15 @@ const RecipeInfo = () => {
             dispatch(getRecipeById(id));
             dispatch(getFavoriteRecipes());
         }
-    }, [dispatch, recipe, id, isRecipesLoading]);
+
+        if (recipe && setCustomBreadcrumbs) {
+            setCustomBreadcrumbs([
+                { label: 'Home', path: ROUTES.HOME },
+                { label: 'Recipes', path: ROUTES.RECIPES },
+                { label: recipe.title, path: ROUTES.RECIPE_PAGE.replace(':id', id) },
+            ]);
+        }
+    }, [dispatch, recipe, id, isRecipesLoading, setCustomBreadcrumbs]);
 
     const addTofavorite = () => {
         if (recipe) {
