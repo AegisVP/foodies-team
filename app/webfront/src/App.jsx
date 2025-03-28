@@ -1,20 +1,21 @@
 import { SharedLayout, Toaster } from 'src/components';
 import AppNavigator from 'src/navigation/AppNavigator';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getCurrentUser } from './api/auth';
 import { setUser, setIsLoading, logout } from './redux/authUser/slice';
 
 function App() {
     const dispatch = useDispatch();
+    const [customBreadcrumbs, setCustomBreadcrumbs] = useState(null);
 
     useEffect(() => {
         const initAuth = async () => {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    dispatch(setIsLoading(true))
+                    dispatch(setIsLoading(true));
                     const userData = await getCurrentUser();
                     dispatch(setUser(userData));
                     dispatch(setIsLoading(false));
@@ -28,8 +29,8 @@ function App() {
     }, [dispatch]);
 
     return (
-        <SharedLayout>
-            <AppNavigator />
+        <SharedLayout customBreadcrumbs={customBreadcrumbs}>
+            <AppNavigator setCustomBreadcrumbs={setCustomBreadcrumbs} />
             <Toaster />
         </SharedLayout>
     );

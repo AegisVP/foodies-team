@@ -1,9 +1,9 @@
 import RecipeInfo from '../../components/RecipeInfo';
 
-const RecipePage = () => {
+const RecipePage = ({ setCustomBreadcrumbs }) => {
     return (
         <>
-            <RecipeInfo />
+            <RecipeInfo setCustomBreadcrumbs={setCustomBreadcrumbs} />
         </>
     );
 };
