@@ -1,5 +1,11 @@
+import RecipeInfo from '../../components/RecipeInfo';
+
 const RecipePage = () => {
-    return <p>Recipe Details</p>;
+    return (
+        <>
+            <RecipeInfo />
+        </>
+    );
 };
 
 export default RecipePage;
