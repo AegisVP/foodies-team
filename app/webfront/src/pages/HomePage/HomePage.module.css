@@ -1,15 +1,15 @@
 .hero {
-  margin-bottom: 64px;
+    margin-bottom: 64px;
 }
 
 @media only screen and (min-width: 768px) {
-  .hero {
-    margin-bottom: 100px;
-  }
+    .hero {
+        margin-bottom: 100px;
+    }
 }
 
 @media only screen and (min-width: 1440px) {
-  .hero {
-    margin-bottom: 120px;
-  }
+    .hero {
+        margin-bottom: 120px;
+    }
 }

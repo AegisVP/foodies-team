@@ -1,30 +1,43 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getFollowers, getFollowees, followUser, unfollowUser } from './operations.js';
+import { getFollowers, getFollowees, followUser, unfollowUser, getUserProfile } from './operations.js';
+
+const initialState = {
+    profile: null,
+    recipes: [],
+    followers: {
+        page: 0,
+        pages: 0,
+        total: 0,
+        followers: [],
+    },
+    followees: {
+        page: 0,
+        pages: 0,
+        total: 0,
+        followees: [],
+    },
+    isLoading: false,
+    error: null,
+};
 
 // add getProfile, getRecipes, getFollowers
 // unauthorized user with short profile
 const userSlice = createSlice({
     name: 'user',
-    initialState: {
-        profile: null,
-        recipes: [],
-        followers: {
-            page: 0,
-            pages: 0,
-            total: 0,
-            followers: [],
+    initialState,
+    reducers: {
+        setIsLoading: (state, { payload }) => {
+            state.isLoading = payload;
         },
-        followees: {
-            page: 0,
-            pages: 0,
-            total: 0,
-            followees: [],
+        setProfile: (_, { payload }) => {
+            return payload;
         },
-        isLoading: false,
-        error: null,
     },
-    extraReducers: (builder) => {
+    extraReducers: builder => {
         builder
+            .addCase(getUserProfile.fulfilled, (state, action) => {
+                state.profile = action.payload;
+            })
             .addCase(getFollowers.fulfilled, (state, action) => {
                 state.followers = action.payload;
             })
@@ -58,4 +71,5 @@ const userSlice = createSlice({
     },
 });
 
+export const { setProfile } = userSlice.actions;
 export const userReducer = userSlice.reducer;

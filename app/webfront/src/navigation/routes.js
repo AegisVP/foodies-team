@@ -1,6 +1,6 @@
-const ROUTES = {
+export const ROUTES = {
     HOME: '/',
-    USER_PAGE: '/user/:id',
+    USER_PAGE: '/user/:id?',
     ADD_RECIPE_PAGE: '/recipe/add',
     RECIPE_PAGE: '/recipe/:id',
     CATEGORIES: '/categories',

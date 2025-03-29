@@ -10,49 +10,38 @@ import { selectIsMobile } from 'src/redux/common/selectors.js';
 import css from './Header.module.css';
 
 const Header = ({ className }) => {
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-  const isMobile = useSelector(selectIsMobile);
-  const location = useLocation();
-  const isHome = matchPath(ROUTES.HOME, location.pathname);
-  const isAddRecipe = matchPath(ROUTES.ADD_RECIPE_PAGE, location.pathname);
-  const isCategory = matchPath(ROUTES.CATEGORIES, location.pathname);
-  const isDarkTheme = isHome || isCategory;
-  const classes = clsx(
-    css.component,
-    {
-      [css.light]: !isDarkTheme,
-      [css.dark]: isDarkTheme,
-    },
-    className
-  );
-  const theme = isDarkTheme ? 'dark' : 'light';
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const isMobile = useSelector(selectIsMobile);
+    const location = useLocation();
+    const isHome = !!matchPath(ROUTES.HOME, location.pathname);
+    const isAddRecipe = matchPath(ROUTES.ADD_RECIPE_PAGE, location.pathname);
+    const isCategory = matchPath(ROUTES.CATEGORIES, location.pathname);
+    const isDarkTheme = isHome || isCategory;
+    const classes = clsx(
+        css.component,
+        {
+            [css.light]: !isDarkTheme,
+            [css.dark]: isDarkTheme,
+        },
+        className
+    );
+    const theme = isDarkTheme ? 'dark' : 'light';
 
-  return (
-    <header className={classes}>
-      <Logo theme={theme} />
+    return (
+        <header className={classes}>
+            <Logo theme={theme} />
 
-      {!isMobile &&
-        <NavBar
-          theme={theme}
-          isMobile={false}
-          isHome={isHome}
-          isAddRecipe={isAddRecipe} />
-      }
+            {!isMobile && <NavBar theme={theme} isMobile={false} isHome={isHome} isAddRecipe={isAddRecipe} />}
 
+            <div className={css.right}>
+                <Profile isMobile={isMobile} />
 
-      <div className={css.right}>
-        <Profile isMobile={isMobile} />
-
-        {isMobile && isAuthenticated &&
-          <NavBar
-            theme={theme}
-            isMobile={true}
-            isHome={isHome}
-            isAddRecipe={isAddRecipe} />
-        }
-      </div>
-    </header>
-  );
+                {isMobile && isAuthenticated && (
+                    <NavBar theme={theme} isMobile={true} isHome={isHome} isAddRecipe={isAddRecipe} />
+                )}
+            </div>
+        </header>
+    );
 };
 
 export default Header;

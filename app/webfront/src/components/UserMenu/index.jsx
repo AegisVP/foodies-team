@@ -1,19 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import css from './UserMenu.module.css';
 import defaultAvatar from 'src/images/default-avatar.svg';
 import spriteArrow from 'src/images/icons.svg#arrow';
 import spriteChevronDown from 'src/images/icons.svg#chevron-down';
 import spriteChevronUp from 'src/images/icons.svg#chevron-up';
 import Spinner from '../Spinner';
+import { logoutUserOperation } from 'src/redux/authUser/operations';
 
 const UserMenu = ({ onLogoutOpen }) => {
+    const dispatch = useDispatch();
     const user = useSelector(state => state.authUser.user);
     const loadingUser = useSelector(state => state.authUser.isLoading);
 
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef(null);
+
+    const handleLogout = () => {
+        dispatch(logoutUserOperation());
+        toggleMenu();
+    };
+
     const toggleMenu = () => {
         setIsOpen(prev => !prev);
     };
@@ -61,7 +69,7 @@ const UserMenu = ({ onLogoutOpen }) => {
                             </li>
 
                             <li onClick={onLogoutOpen}>
-                                <NavLink onClick={toggleMenu}>
+                                <NavLink onClick={handleLogout}>
                                     Logout
                                     <svg>
                                         <use href={spriteArrow} />

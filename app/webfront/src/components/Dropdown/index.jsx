@@ -1,7 +1,7 @@
-import { stylesPC, stylesTablet, stylesMobile } from './styles';
 import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { get, useFormContext, Controller } from 'react-hook-form';
 import { fetchRecipes } from 'src/redux/recipes/operations';
 import {
     selectSelectedArea,
@@ -12,7 +12,25 @@ import {
 import { setPage } from 'src/redux/recipes/slice';
 import { setScreenWidth } from 'src/redux/common/slice';
 
-const Dropdown = ({ items, label, callback, selectedValue, isMulti = false, isForSearch = true }) => {
+import { stylesPC, stylesTablet, stylesMobile, wrapper, error as errorStyles } from './styles';
+
+const Dropdown = ({
+    items,
+    label,
+    callback,
+    selectedValue,
+    isMulti = false,
+    isForSearch = true,
+    isControlled = false,
+    isRequired = true,
+    name = '',
+}) => {
+    const {
+        formState: { errors },
+        control,
+    } = useFormContext();
+    const error = get(errors, name, false);
+
     const selectedArea = useSelector(selectSelectedArea);
     const selectedCategory = useSelector(selectSelectedCategory);
     const selectedIngredients = useSelector(selectSelectedIngredients);
@@ -66,7 +84,38 @@ const Dropdown = ({ items, label, callback, selectedValue, isMulti = false, isFo
         }
     };
 
-    return (
+    return isControlled ? (
+        <div style={wrapper}>
+            <Controller
+                name={name}
+                control={control}
+                rules={{
+                    required: isRequired && label,
+                }}
+                render={({ field }) => (
+                    <Select
+                        isMulti={isMulti}
+                        onChange={e => {
+                            field.onChange(e);
+                            handleChange(e);
+                        }}
+                        value={field.value}
+                        options={options}
+                        placeholder={label}
+                        isSearchable={true}
+                        styles={
+                            screenWidth < 768
+                                ? stylesMobile()
+                                : screenWidth < 1440
+                                ? stylesTablet({ isForSearch: true, screenWidth: screenWidth })
+                                : stylesPC({ isForSearch: true })
+                        }
+                    />
+                )}
+            />
+            {error?.message && <p style={errorStyles}>{error.message}</p>}
+        </div>
+    ) : (
         <Select
             isMulti={isMulti}
             onChange={handleChange}
@@ -78,8 +127,8 @@ const Dropdown = ({ items, label, callback, selectedValue, isMulti = false, isFo
                 screenWidth < 768
                     ? stylesMobile()
                     : screenWidth < 1440
-                    ? stylesTablet({ isForSearch: true, screenWidth: screenWidth })
-                    : stylesPC({ isForSearch: true })
+                      ? stylesTablet({ isForSearch: true, screenWidth: screenWidth })
+                      : stylesPC({ isForSearch: true })
             }
         />
     );

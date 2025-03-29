@@ -5,7 +5,9 @@
     "type": "module",
     "scripts": {
         "dev:node": "cd ../api && npm run dev > /dev/null & cd ../webfront && npm run dev",
+        "dev:org": "vite",
         "dev": "vite build --emptyOutDir --watch",
+        "vite": "vite --host --open",
         "build": "vite build --emptyOutDir",
         "lint": "eslint .",
         "preview": "vite preview"
@@ -25,6 +27,7 @@
         "react-hot-toast": "^2.5.2",
         "react-paginate": "^8.3.0",
         "react-redux": "^9.2.0",
+        "react-responsive": "^10.0.1",
         "react-router-dom": "^7.3.0",
         "react-select": "^5.10.1",
         "swiper": "^11.2.6",

@@ -52,7 +52,7 @@ export const Recipe = sequelize.define(
         },
         thumb: {
             type: DataTypes.STRING(255),
-            allowNull: false,
+            defaultValue: 'https://res.cloudinary.com/dkwkz47hl/image/upload/v1743264947/meal_yig9fy.png',
         },
         time: {
             type: DataTypes.STRING(255),

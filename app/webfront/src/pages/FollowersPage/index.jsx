@@ -26,7 +26,7 @@ const FollowersPage = () => {
         <>
             {isLoading && <Loader />}
 
-            {!isLoading && followers.length > 0 &&
+            {!isLoading && followers.length > 0 && (
                 <ul>
                     {followers.map(follower => {
                         return (
@@ -44,11 +44,11 @@ const FollowersPage = () => {
                         );
                     })}
                 </ul>
-            }
+            )}
 
-            {!isLoading && followers.length === 0 &&
+            {!isLoading && followers.length === 0 && (
                 <Empty message="There are currently no followers on your account. Please engage our visitors with interesting content and draw their attention to your profile." />
-            }
+            )}
         </>
     );
 };

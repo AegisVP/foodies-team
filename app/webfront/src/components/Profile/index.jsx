@@ -2,8 +2,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import clsx from 'clsx';
-import { logoutUser } from '../../api/auth';
-import { logout } from '../../redux/authUser/slice';
 import Modal from '../Modal';
 import LoginForm from '../LoginForm';
 import RegisterForm from '../RegisterForm';
@@ -11,6 +9,7 @@ import styles from './Profile.module.css';
 import AuthenticationButtons from '../AuthenticationButtons';
 import UserMenu from '../UserMenu';
 import Button from '../Button';
+import { logoutUserOperation } from 'src/redux/authUser/operations';
 
 export default function Profile({ isMobile }) {
     const isAuthenticated = useSelector(state => state.authUser.isAuthenticated);
@@ -21,18 +20,9 @@ export default function Profile({ isMobile }) {
     const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const handleLogout = () => {
-        logoutUser()
-            .then(response => {
-                if (response.status !== undefined && response.status !== 200) {
-                    console.error('Logout error:', response);
-                } else {
-                    dispatch(logout());
-                    navigate('/');
-                }
-            })
-            .catch(error => {
-                console.error('Logout error:', error);
-            });
+        dispatch(logoutUserOperation());
+        setShowLogoutModal(false);
+        navigate('/');
     };
 
     const onSwitchToLogin = () => {
@@ -88,9 +78,17 @@ export default function Profile({ isMobile }) {
             <UserMenu onLogoutOpen={() => setShowLogoutModal(true)} />
             {showLogoutModal && (
                 <Modal onClose={() => setShowLogoutModal(false)}>
-                    <h2 className={clsx(styles.modalTitle,styles.center,styles.modalTitleLogout)}>ARE YOU LOGGING OUT?</h2>
-                    <p className={clsx(styles.modalText,styles.center)}>You can log back in at any time.</p>
-                    <Button onClick={handleLogout} label="Logout" theme="dark" fullWidth className={styles.logoutButton} />
+                    <h2 className={clsx(styles.modalTitle, styles.center, styles.modalTitleLogout)}>
+                        ARE YOU LOGGING OUT?
+                    </h2>
+                    <p className={clsx(styles.modalText, styles.center)}>You can log back in at any time.</p>
+                    <Button
+                        onClick={handleLogout}
+                        label="Logout"
+                        theme="dark"
+                        fullWidth
+                        className={styles.logoutButton}
+                    />
                     <Button onClick={() => setShowLogoutModal(false)} label="Cancel" fullWidth />
                 </Modal>
             )}

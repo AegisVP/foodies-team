@@ -2,6 +2,15 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'src/api/index.js';
 import { routes } from './constants.js';
 
+export const getUserProfile = createAsyncThunk('user/getUserProfile', async (id, { rejectWithValue }) => {
+    try {
+        const profile = await api.getUserInformation(id);
+        return profile;
+    } catch (error) {
+        return rejectWithValue(error.message);
+    }
+});
+
 export const getFollowers = createAsyncThunk(routes.GET_FOLLOWERS, async (id, { rejectWithValue }) => {
     try {
         const followers = await api.getFollowers(id);
@@ -13,8 +22,8 @@ export const getFollowers = createAsyncThunk(routes.GET_FOLLOWERS, async (id, { 
 
 export const getFollowees = createAsyncThunk(routes.GET_FOLLOWEES, async (id, { rejectWithValue }) => {
     try {
-        const followers = await api.getFollowees(id);
-        return followers;
+        const followees = await api.getFollowees(id);
+        return followees;
     } catch (error) {
         return rejectWithValue(error.message);
     }

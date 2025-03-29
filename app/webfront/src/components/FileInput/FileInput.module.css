@@ -1,0 +1,53 @@
+.hidden {
+    display: none;
+}
+
+.error {
+    color: var(--red);
+}
+
+.imageContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.container {
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    border: 1px dashed var(--gray);
+    border-radius: 30px;
+}
+
+.errorContainer {
+    border: 1px dashed var(--red);
+}
+
+.image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.uploadBtn {
+    width: fit-content;
+    align-self: center;
+    background-color: transparent;
+    padding: 0;
+    border-bottom: 1px solid var(--black);
+}
+
+@media only screen and (min-width: 1440px) {
+    .container {
+        width: 551px;
+    }
+
+    .image {
+        width: 551px;
+    }
+}

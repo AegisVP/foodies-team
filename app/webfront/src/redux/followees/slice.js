@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 //  get my following, follow, unfollow
-const followingSlice = createSlice({
-    name: 'following',
+const followeesSlice = createSlice({
+    name: 'followees',
     initialState: {
         following: [],
         isLoading: false,
@@ -11,4 +11,4 @@ const followingSlice = createSlice({
     extraReducers: () => {},
 });
 
-export const followingReducer = followingSlice.reducer;
+export const followeesReducer = followeesSlice.reducer;
