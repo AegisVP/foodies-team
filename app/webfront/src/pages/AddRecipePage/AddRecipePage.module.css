@@ -35,10 +35,26 @@
 
 .row {
     display: flex;
-    gap: 20px;}
+    gap: 20px;
+}
 
 .fitContent {
     width: fit-content;
+}
+
+.error {
+    color: var(--red);
+}
+
+.roundedBtn {
+    padding: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--gray);
+    background-color: transparent;
+}
+
+.roundedBtn:hover {
+    border: 1px solid var(--black);
 }
 
 @media only screen and (min-width: 768px) {

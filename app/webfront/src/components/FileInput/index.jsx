@@ -1,6 +1,7 @@
 import { useRef } from 'react';
-import { get, useFormContext } from 'react-hook-form';
 import clsx from 'clsx';
+import { get, useFormContext } from 'react-hook-form';
+import photoIcon from 'src/images/photo.svg';
 import css from './FileInput.module.css';
 
 const FileInput = ({ name, file, onImageChange }) => {
@@ -40,11 +41,16 @@ const FileInput = ({ name, file, onImageChange }) => {
             {file ? (
                 <>
                     <img className={css.image} src={file} alt="recipe photo preview" />
-                    <button onClick={onUpload}>Upload another photo</button>
+                    <button type="button" className={css.uploadBtn} onClick={onUpload}>
+                        Upload another photo
+                    </button>
                 </>
             ) : (
                 <div className={clsx(css.container, error && css['errorContainer'])}>
-                    <button onClick={onUpload}>Upload a photo</button>
+                    <img src={photoIcon} alt="upload photo" />
+                    <button type="button" className={css.uploadBtn} onClick={onUpload}>
+                        Upload a photo
+                    </button>
                 </div>
             )}
 

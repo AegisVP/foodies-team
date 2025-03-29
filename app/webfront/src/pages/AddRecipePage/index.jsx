@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import ROUTES from 'src/navigation/routes';
+import { replaceUrlParams } from 'src/utils/replaceUrlParams';
 import { useShowError } from 'src/hooks/useShowError.js';
 import { convertObjectToFormData } from 'src/utils/convertObjectToFormData';
 
@@ -29,17 +33,39 @@ import {
     selectRecipeArea,
     selectCurrentIngredient,
     selectRecipeIngredients,
+    selectIsRecipesLoading,
+    selectRecipesError,
+    selectIsRecipesSuccessful,
 } from 'src/redux/recipes/selectors';
+import { selectUserId } from 'src/redux/authUser/selectors';
 
-import { Button, FileInput, Input, TitleInput, Dropdown, Column, CookingTime, IngredientCard } from 'src/components';
+import {
+    Button,
+    FileInput,
+    Input,
+    TitleInput,
+    Dropdown,
+    Column,
+    CookingTime,
+    IngredientCard,
+    Loader,
+} from 'src/components';
 
+import trashGrey from 'src/images/trashGrey.svg';
 import css from './AddRecipePage.module.css';
 
 const AddRecipePage = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
+    //authUser
+    const userId = useSelector(selectUserId);
+
     // recipe details
     const recipeDetails = useSelector(selectRecipeDetails);
     const recipeThumb = useSelector(selectRecipeThumb);
+    const isSuccessful = useSelector(selectIsRecipesSuccessful);
+    const isLoading = useSelector(selectIsRecipesLoading);
+    const recipeCreationError = useSelector(selectRecipesError);
 
     // common
     const isCommonLoading = useSelector(selectIsCommonLoading);
@@ -58,7 +84,14 @@ const AddRecipePage = () => {
     const formMethods = useForm({
         defaultValues: recipeDetails,
     });
-    const { handleSubmit, reset, watch, setError, setValue } = formMethods;
+    const {
+        handleSubmit,
+        reset,
+        watch,
+        setError,
+        setValue,
+        formState: { isSubmitted },
+    } = formMethods;
     const quantity = watch('quantity');
 
     const onImageChange = async file => {
@@ -94,6 +127,9 @@ const AddRecipePage = () => {
     };
 
     const onSubmit = async data => {
+        if (!recipeIngredients?.length) {
+            return;
+        }
         const transformedIngredients = recipeIngredients.map(({ id, measure }) => ({ id, measure }));
 
         const recipe = {
@@ -122,9 +158,23 @@ const AddRecipePage = () => {
         }
     }, [dispatch, isCommonLoading]);
 
-    useShowError(error);
+    useEffect(() => {
+        if (isSuccessful) {
+            navigate(replaceUrlParams(ROUTES.USER_PAGE, { id: userId }));
+        }
+    }, [isSuccessful]);
+
+    // clear data on page unmount
+    useEffect(() => {
+        return () => {
+            onReset();
+        };
+    }, []);
+
+    useShowError(error || recipeCreationError);
     return (
         <div>
+            {isLoading && <Loader />}
             <h2 className={css['pageTitle']}>Add recipe</h2>
             <p className={css.subtitle}>
                 Reveal your culinary art, share your favorite recipe and create gastronomic masterpieces with us.
@@ -146,6 +196,8 @@ const AddRecipePage = () => {
                                     selectedValue={recipeCategory}
                                     callback={setRecipeCategory}
                                     isForSearch={false}
+                                    isControlled
+                                    name="category"
                                 />
                             </Column>
                             <Column title="Area">
@@ -155,6 +207,8 @@ const AddRecipePage = () => {
                                     selectedValue={recipeArea}
                                     callback={setRecipeArea}
                                     isForSearch={false}
+                                    isControlled
+                                    name="area"
                                 />
                             </Column>
                         </div>
@@ -171,6 +225,9 @@ const AddRecipePage = () => {
                             <Input name="quantity" placeholder="Enter quantity" isRequired={false} />
                         </div>
                         <Button onClick={onIngredientAdd} label="Add Ingredient" className={css.fitContent} />
+                        {!recipeIngredients.length && isSubmitted && (
+                            <p className={css.error}>{'Add at least one ingredient'}</p>
+                        )}
                         {!!recipeIngredients.length && (
                             <div className={css.row}>
                                 {recipeIngredients.map(({ id, name, image, measure }) => (
@@ -190,8 +247,11 @@ const AddRecipePage = () => {
                         </Column>
 
                         <div className={css.row}>
-                            <Button onClick={onReset} label="Reset" theme="dark" className={css.fitContent} />
+                            <button className={css.roundedBtn} onClick={onReset}>
+                                <img src={trashGrey} alt="details" />
+                            </button>
                             <Button
+                                disabled={isLoading}
                                 onClick={handleSubmit(onSubmit)}
                                 label="Publish"
                                 theme="dark"
