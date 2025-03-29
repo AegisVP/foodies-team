@@ -2,14 +2,18 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectRecipeDetails, selectIsRecipesLoading } from 'src/redux/recipes/selectors';
 import { useParams } from 'react-router-dom';
-import { selectFavoriteRecipesId } from 'src/redux/favorites/selectors';
 
-import css from './RecipeInfo.module.css';
+import { selectFavoriteRecipesId } from 'src/redux/favorites/selectors';
 import { addToFavorites, removeFromFavorites, getFavoriteRecipes } from 'src/redux/favorites/operation';
 import { getRecipeById } from 'src/redux/recipes/operations';
 
-import Button from '../Button';
 import ROUTES from 'src/navigation/routes';
+
+import RecipeMainInfo from '../RecipeMainInfo';
+import RecipeIngredients from '../RecipeIngredients';
+import RecipePreparation from '../RecipePreparation';
+
+import css from './RecipeInfo.module.css';
 
 const RecipeInfo = ({ setCustomBreadcrumbs }) => {
     const { id } = useParams();
@@ -71,52 +75,14 @@ const RecipeInfo = ({ setCustomBreadcrumbs }) => {
         <>
             {!isRecipesLoading && recipe && (
                 <div className={css.recipePageContainer}>
-                    <img src={recipe.thumb} alt="meal" className={css.recipeImg} />
+                    <img src={recipe.thumb} alt="meal" className={css.recipeImgDesktop} />
                     <div className={css.recipe}>
-                        <section className={css.recipePageHeader}>
-                            <h2 className={css.sectionTitle}>{recipe.title}</h2>
-                            <div className={css.recipeMetrics}>
-                                <p className={css.category}>{recipe.category.name}</p>
-                                <p className={css.time}>{recipe.time} min</p>
-                            </div>
-                            <p className={css.recipeDescription}>{recipe.category.description}</p>
-                            <div className={css.userBlock}>
-                                <img src={recipe.owner.avatar} alt="user" className={css.userImg} />
-                                <p className={css.userName}>
-                                    Created by: <br /> <span>{recipe.owner.name}</span>
-                                </p>
-                            </div>
-                        </section>
-                        <section className={css.ingredientsBlock}>
-                            <h2 className={css.sectionTitle}>Ingredients:</h2>
-                            <ul className={css.ingredientsList}>
-                                {recipe.ingredients.map((ingredient, index) => (
-                                    <li key={index}>
-                                        <div className={css.ingredientsItem}>
-                                            <img
-                                                src={ingredient.image}
-                                                alt="ingredient"
-                                                className={css.ingredientsImg}
-                                            />
-                                            <div className={css.ingredientsInfo}>
-                                                <p className={css.ingredientsName}>{ingredient.name}</p>
-                                                <p className={css.ingredientsMeasure}>{ingredient.measure}</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        </section>
-                        <section className={css.instructionsBlock}>
-                            <h2 className={css.sectionTitle}>Recipe Preparation</h2>
-                            <p className={css.instructionsList}>{recipe.instructions}</p>
-                        </section>
-                        <Button
-                            onClick={addTofavorite}
-                            label={favoritesIds.includes(id) ? 'Remove from favorites' : 'Add to favorites'}
-                            theme="light"
-                            fullWidth
-                            className={css.favoriteButton}
+                        <RecipeMainInfo recipe={recipe} />
+                        <RecipeIngredients ingredients={recipe.ingredients} />
+                        <RecipePreparation
+                            instructions={recipe.instructions}
+                            isFavorite={favoritesIds.includes(id)}
+                            onFavoriteToggle={addTofavorite}
                         />
                     </div>
                 </div>

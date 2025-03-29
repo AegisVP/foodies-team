@@ -1,0 +1,54 @@
+.instructionsBlock {
+    margin-bottom: 32px;
+}
+
+.sectionTitle {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 24px;
+    letter-spacing: -0.36px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.instructionsList {
+    color: var(--black);
+    font-family: Mulish;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -0.32px;
+    margin-bottom: 40px;
+}
+
+.favoriteButton {
+    padding: 14px 20px;
+    border-radius: 30px;
+    border: 1px solid var(--gray);
+    color: var(--black);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: -0.38px;
+    text-transform: uppercase;
+    width: fit-content;
+    margin-right: auto;
+    background-color: transparent;
+}
+
+@media only screen and (min-width: 768px) {
+    .sectionTitle {
+        font-size: 24px;
+        line-height: 28px;
+        letter-spacing: -0.48px;
+        margin-bottom: 20px;
+    }
+
+    .favoriteButton {
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: -0.32px;
+    }
+}
