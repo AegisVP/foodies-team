@@ -1,77 +1,77 @@
 .component {
-  position: relative;
+    position: relative;
 }
 
 .button {
-  align-items: center;
-  background-color: var(--black);
-  border: none;
-  border-radius: 30px;
-  color: var(--white);
-  cursor: pointer;
-  display: flex;
-  font-size: 12px;
-  font-weight: 700;
-  gap: 5px;
-  height: 50px;
-  max-width: 200px;
-  min-width: 105px;
-  overflow: hidden;
-  padding: 0 14px 0 0;
-  text-transform: uppercase;
+    align-items: center;
+    background-color: var(--black);
+    border: none;
+    border-radius: 30px;
+    color: var(--white);
+    cursor: pointer;
+    display: flex;
+    font-size: 12px;
+    font-weight: 700;
+    gap: 5px;
+    height: 50px;
+    max-width: 200px;
+    min-width: 105px;
+    overflow: hidden;
+    padding: 0 14px 0 0;
+    text-transform: uppercase;
 }
 
 .avatar {
-  border-radius: 30px;
-  height: 100%;
-  width: auto;
+    border-radius: 30px;
+    height: 100%;
+    width: auto;
 }
 
 .name {
-  max-width: calc(100% - 75px);
-  overflow: hidden;
-  text-overflow: ellipsis;
+    max-width: calc(100% - 75px);
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .chevron {
-  width: 15px;
+    width: 15px;
 }
 
 .menu {
-  background-color: var(--extra-black);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 15px;
-  left: 0;
-  right: 0;
-  padding: 16px;
-  position: absolute;
-  top: calc(100% + 8px);
+    background-color: var(--extra-black);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    position: absolute;
+    top: calc(100% + 8px);
 
-  ul {
-    padding: 0;
-  }
-
-  li:not(:last-child) {
-    margin-bottom: 3px;
-  }
-
-  a {
-    align-items: center;
-    color: var(--white);
-    display: inline-flex;
-    font-size: 12px;
-    font-weight: 700;
-    gap: 6px;
-    text-decoration: none;
-    text-transform: uppercase;
-
-    &:hover {
-      opacity: 0.8;
+    ul {
+        padding: 0;
     }
-  }
 
-  svg {
-    stroke: var(--white);
-    width: 17px;
-  }
+    li:not(:last-child) {
+        margin-bottom: 3px;
+    }
+
+    a {
+        align-items: center;
+        color: var(--white);
+        display: inline-flex;
+        font-size: 12px;
+        font-weight: 700;
+        gap: 6px;
+        text-decoration: none;
+        text-transform: uppercase;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    svg {
+        fill: var(--white);
+        width: 17px;
+    }
 }

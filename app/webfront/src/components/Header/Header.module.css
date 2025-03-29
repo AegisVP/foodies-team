@@ -1,13 +1,13 @@
 .component {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  min-height: 38px;
-  position: relative;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    min-height: 38px;
+    position: relative;
 }
 
 .right {
-  align-items: center;
-  display: flex;
-  gap: 6px;
+    align-items: center;
+    display: flex;
+    gap: 6px;
 }

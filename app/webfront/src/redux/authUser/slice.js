@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { updateUserAvatar } from './operations';
 
-// login, logout, getUser, change Avatar
 const token = localStorage.getItem('token');
 
 const initialState = {
@@ -16,23 +16,51 @@ const authUserSlice = createSlice({
     initialState,
     reducers: {
         loginSuccess: (state, action) => {
+            console.log({ payload: action.payload });
             state.isAuthenticated = true;
             state.token = action.payload.token;
             state.user = action.payload.user;
             localStorage.setItem('token', action.payload.token);
         },
-        logout: state => {
-            state.isAuthenticated = false;
-            state.token = null;
-            state.user = null;
+        logout: () => {
             localStorage.removeItem('token');
+            return initialState;
         },
         setUser: (state, action) => {
             state.user = action.payload;
         },
         setIsLoading: (state, action) => {
             state.isLoading = action.payload;
-        }
+        },
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(updateUserAvatar.fulfilled, (state, action) => {
+                console.log('payload avatar', action.payload.avatar);
+                console.log('state 1 avatar', state.user.avatar);
+                state.user.avatar = action.payload.avatar;
+                console.log('state 2 avatar', state.user.avatar);
+            })
+            .addMatcher(
+                action => action.type.endsWith('/rejected'),
+                (state, action) => {
+                    state.error = action.payload;
+                    state.isLoading = false;
+                }
+            )
+            .addMatcher(
+                action => action.type.endsWith('/pending'),
+                state => {
+                    state.error = null;
+                    state.isLoading = true;
+                }
+            )
+            .addMatcher(
+                action => action.type.endsWith('/fulfilled'),
+                state => {
+                    state.isLoading = false;
+                }
+            );
     },
 });
 

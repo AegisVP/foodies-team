@@ -19,3 +19,11 @@ export const getCurrentUser = async () => {
     const response = await axiosPrivateInstance.get('/users/current');
     return response;
 };
+
+export const updateAvatar = async avatar => {
+    const headers = { 'Content-Type': 'multipart/form-data' };
+    const formData = new FormData();
+    formData.append('avatar', avatar);
+    const response = await axiosPrivateInstance.patch('/users/avatar', formData, { headers });
+    return response;
+};

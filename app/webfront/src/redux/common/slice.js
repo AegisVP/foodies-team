@@ -78,5 +78,12 @@ const commonSlice = createSlice({
     },
 });
 
-export const { setIsMobile, setIsTablet, setSelectedCategory, setSelectedIngredients, setSelectedArea, setScreenWidth } = commonSlice.actions;
+export const {
+    setIsMobile,
+    setIsTablet,
+    setSelectedCategory,
+    setSelectedIngredients,
+    setSelectedArea,
+    setScreenWidth,
+} = commonSlice.actions;
 export const commonReducer = commonSlice.reducer;

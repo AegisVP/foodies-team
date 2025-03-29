@@ -1,60 +1,97 @@
+.container {
+    padding: 0 8px;
+    margin-bottom: 64px;
+
+    border: var(--debug);
+}
+
+.title {
+    color: var(--extra-black);
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.14;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+
+    @media screen and (min-width: 768px) {
+        font-size: 40px;
+        line-height: 1.1;
+    }
+}
+
+.description {
+    color: var(--gray);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.43;
+    margin-bottom: 32px;
+
+    @media screen and (min-width: 768px) {
+        color: var(--black);
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 40px;
+    }
+}
+
 .tabs {
-  border-bottom: 1px solid var(--gray);
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-  margin-bottom: 40px;
-  overflow-x: auto;
-  overflow-y: visible;
-  padding-bottom: 14px;
+    border-bottom: 1px solid var(--gray);
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin-bottom: 40px;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-bottom: 14px;
 }
 
 .tab {
-  position: relative;
-
-  a {
-    color: var(--gray);
-    font-size: 18px;
-    font-weight: 800;
-    text-decoration: none;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  &:after {
-    background-color: var(--extra-black);
-    bottom: -16px;
-    content: '';
-    display: none;
-    height: 3px;
-    left: 0;
-    position: absolute;
-    width: 100%;
-  }
-
-  &:hover,
-  &:focus,
-  &.active {
-    &:after {
-      display: block;
-    }
+    position: relative;
 
     a {
-      color: var(--extra-black);
+        color: var(--gray);
+        font-size: 18px;
+        font-weight: 800;
+        text-decoration: none;
+        text-transform: uppercase;
+        white-space: nowrap;
     }
-  }
+
+    &:after {
+        background-color: var(--extra-black);
+        bottom: -16px;
+        content: '';
+        display: none;
+        height: 3px;
+        left: 0;
+        position: absolute;
+        width: 100%;
+    }
+
+    &:hover,
+    &:focus,
+    &:has(.active),
+    &.active {
+        &:after {
+            display: block;
+        }
+
+        a {
+            color: var(--extra-black);
+        }
+    }
 }
 
 @media (min-width: 768px) {
-  .tabs {
-    gap: 40px;
-  }
+    .tabs {
+        gap: 40px;
+    }
 }
 
 @media (min-width: 1440px) {
-  .component {
-    display: grid;
-    grid-template-columns: 394px 1fr;
-    gap: 40px;
-  }
+    .component {
+        display: grid;
+        grid-template-columns: 394px 1fr;
+        gap: 40px;
+    }
 }

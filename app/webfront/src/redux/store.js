@@ -4,7 +4,7 @@ import { commonReducer } from './common/slice';
 import { recipesReducer } from './recipes/slice';
 import { favoritesReducer } from './favorites/slice';
 import { followersReducer } from './followers/slice';
-import { followingReducer } from './following/slice';
+import { followeesReducer } from './followees/slice';
 import { userReducer } from './user/slice';
 
 export const store = configureStore({
@@ -14,7 +14,7 @@ export const store = configureStore({
         recipes: recipesReducer,
         favorites: favoritesReducer,
         followers: followersReducer,
-        following: followingReducer,
+        followees: followeesReducer,
         user: userReducer,
-    },
+    }
 });

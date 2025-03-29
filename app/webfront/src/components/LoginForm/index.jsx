@@ -50,12 +50,7 @@ export default function LoginForm({ onClose }) {
             <div className={styles.inputFieldsWrapper}>
                 {serverError && <div className={styles.serverError}>{serverError}</div>}
                 <div>
-                    <input
-                        type="email"
-                        {...register('email')}
-                        placeholder="Email*"
-                        className={styles.inputField}
-                    />
+                    <input type="email" {...register('email')} placeholder="Email*" className={styles.inputField} />
                     {errors.email && <p className={styles.error}>{errors.email.message}</p>}
                 </div>
 
