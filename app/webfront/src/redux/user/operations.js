@@ -11,15 +11,6 @@ export const getUserProfile = createAsyncThunk('user/getUserProfile', async (id,
     }
 });
 
-export const getFollowees = createAsyncThunk(routes.GET_FOLLOWEES, async (id, { rejectWithValue }) => {
-    try {
-        const followees = await api.getFollowees(id);
-        return followees;
-    } catch (error) {
-        return rejectWithValue(error.message);
-    }
-});
-
 export const followUser = createAsyncThunk(routes.FOLLOW_USER, async (id, { rejectWithValue }) => {
     try {
         await api.followUser(id);

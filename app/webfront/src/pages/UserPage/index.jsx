@@ -11,7 +11,7 @@ import UserProfileCard from 'src/components/UserProfile/UserProfileCard/UserProf
 import { getUserInformation } from 'src/api/user';
 import { selectAuthUser } from 'src/redux/authUser/selectors';
 import { setProfile } from 'src/redux/user/slice';
-import { selectFollowers, selectUserProfile } from 'src/redux/user/selectors';
+import { selectFollowees, selectFollowers, selectUserProfile } from 'src/redux/user/selectors';
 import Button from 'src/components/Button';
 
 const UserPage = () => {
@@ -22,6 +22,7 @@ const UserPage = () => {
     const loggedinUser = useSelector(selectAuthUser);
     const followers = useSelector(selectFollowers);
     const [activetab, setActiveTab] = useState('recipes');
+    useSelector(selectFollowees);
 
     useEffect(() => {
         setActiveTab('recipes');
@@ -68,7 +69,7 @@ const UserPage = () => {
                 <ul className={css.tabs}>
                     <li className={clsx(css.tab, { [css.active]: activetab === 'recipes' })}>
                         <NavLink to={ROUTES.RECIPES} onClick={() => setActiveTab('recipes')}>
-                            My Recipes
+                            {ownUser && 'My'} Recipes
                         </NavLink>
                     </li>
                     {ownUser && (
