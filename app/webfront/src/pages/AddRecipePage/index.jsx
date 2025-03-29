@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useShowError } from 'src/hooks/useShowError.js';
-import { convertFileToBase64 } from 'src/utils/convertFileToBase64';
 import { convertObjectToFormData } from 'src/utils/convertObjectToFormData';
 
 import {
@@ -95,16 +94,15 @@ const AddRecipePage = () => {
     };
 
     const onSubmit = async data => {
-        const base64String = await convertFileToBase64(file);
         const transformedIngredients = recipeIngredients.map(({ id, measure }) => ({ id, measure }));
 
         const recipe = {
             title: data.title,
-            category: recipeCategory.label,
-            area: recipeArea.label,
+            category: recipeCategory.value,
+            area: recipeArea.value,
             instructions: data.instructions,
             description: data.description,
-            thumb: base64String,
+            thumb: file,
             time: data.time.toString(),
             ingredients: transformedIngredients,
         };
