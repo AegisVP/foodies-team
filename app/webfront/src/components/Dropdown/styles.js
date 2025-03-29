@@ -213,3 +213,14 @@ export const stylesPC = ({ isForSearch = false }) => {
         }),
     };
 };
+
+export const wrapper = {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    gap: '12px',
+};
+
+export const error = {
+    color: 'var(--red)',
+};

@@ -6,6 +6,7 @@ export const selectLimit = state => state.recipes.limit;
 export const selectTotalPages = state => state.recipes.totalPages;
 export const selectIsRecipesLoading = state => state.recipes.isLoading;
 export const selectRecipesError = state => state.recipes.error;
+export const selectIsRecipesSuccessful = state => state.recipes.isSuccessful;
 
 export const selectRecipeDetails = state => state.recipes.recipeDetails;
 export const selectRecipeThumb = state => state.recipes.recipeDetails.thumb;

@@ -26,6 +26,7 @@ const recipesSlice = createSlice({
         recipeDetails: recipeDetailsInitialState,
         isLoading: false,
         error: null,
+        isSuccessful: false,
     },
     // example of synchronous actions creation
     // TODO delete if not needed
@@ -79,6 +80,7 @@ const recipesSlice = createSlice({
                 state.totalPages = action.payload.pages;
             })
             .addCase(addRecipe.fulfilled, (state, action) => {
+                state.isSuccessful = true;
                 state.recipes.push(action.payload);
             })
             .addCase(deleteRecipe.fulfilled, (state, action) => {

@@ -33,7 +33,11 @@ const CookingTime = ({ name = 'time' }) => {
                     <Controller
                         name={name}
                         control={control}
-                        rules={{ required: 'Enter cooking time' }}
+                        rules={{
+                            required: 'Enter cooking time',
+                            min: { value: 1, message: 'Cooking time cannot be less than 1 minute' },
+                            max: { value: 999, message: 'Cooking time cannot be more than 999 minutes' },
+                        }}
                         render={({ field: { onChange, ...field } }) => (
                             <input
                                 type="text"

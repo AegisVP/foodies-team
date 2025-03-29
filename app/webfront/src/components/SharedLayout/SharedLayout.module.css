@@ -20,6 +20,7 @@
 /* Desktop Layout: Starts adapting at 1440px */
 @media only screen and (min-width: 1440px) {
     .paddingContainer {
+        min-width: 1440px;
         max-width: 1600px;
         box-sizing: content-box;
         margin: 0 auto;
