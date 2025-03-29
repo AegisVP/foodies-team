@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getFollowers, getFollowees, followUser, unfollowUser } from './operations.js';
+import { getFollowers, getFollowees, followUser, unfollowUser, getUserProfile } from './operations.js';
 
 const initialState = {
     profile: null,
@@ -35,6 +35,9 @@ const userSlice = createSlice({
     },
     extraReducers: builder => {
         builder
+            .addCase(getUserProfile.fulfilled, (state, action) => {
+                state.profile = action.payload;
+            })
             .addCase(getFollowers.fulfilled, (state, action) => {
                 state.followers = action.payload;
             })
