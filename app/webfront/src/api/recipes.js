@@ -17,7 +17,7 @@ export const addRecipe = async data => {
     return recipe;
 };
 
-export const deleteRecipe  = async id => {
+export const deleteRecipe = async id => {
     const recipe = await axios.delete(`/recipes/${id}`);
     return recipe;
 };
@@ -40,6 +40,6 @@ export const removeFromFavorites = async id => {
 
 export const getFavoriteRecipes = async () => {
     const recipes = await axios.get(`/recipes/favorites`);
-    console.log(("   "))
+    console.log('   ');
     return recipes;
 };

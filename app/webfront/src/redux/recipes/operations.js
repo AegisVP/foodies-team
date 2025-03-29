@@ -71,11 +71,10 @@ export const deleteRecipe = createAsyncThunk(DELETE_RECIPE, async (id, { rejectW
 });
 
 export const getRecipeById = createAsyncThunk(GET_RECIPE_BY_ID, async (id, { rejectWithValue }) => {
-      try {
+    try {
         const recipe = await api.getRecipeById(id);
         return recipe;
-      } catch (error) {
+    } catch (error) {
         return rejectWithValue(error.message);
-      }
     }
-  );
+});

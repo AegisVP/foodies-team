@@ -88,9 +88,17 @@ export default function Profile({ isMobile }) {
             <UserMenu onLogoutOpen={() => setShowLogoutModal(true)} />
             {showLogoutModal && (
                 <Modal onClose={() => setShowLogoutModal(false)}>
-                    <h2 className={clsx(styles.modalTitle,styles.center,styles.modalTitleLogout)}>ARE YOU LOGGING OUT?</h2>
-                    <p className={clsx(styles.modalText,styles.center)}>You can log back in at any time.</p>
-                    <Button onClick={handleLogout} label="Logout" theme="dark" fullWidth className={styles.logoutButton} />
+                    <h2 className={clsx(styles.modalTitle, styles.center, styles.modalTitleLogout)}>
+                        ARE YOU LOGGING OUT?
+                    </h2>
+                    <p className={clsx(styles.modalText, styles.center)}>You can log back in at any time.</p>
+                    <Button
+                        onClick={handleLogout}
+                        label="Logout"
+                        theme="dark"
+                        fullWidth
+                        className={styles.logoutButton}
+                    />
                     <Button onClick={() => setShowLogoutModal(false)} label="Cancel" fullWidth />
                 </Modal>
             )}

@@ -12,7 +12,7 @@ const RecipePage = lazy(() => import('src/pages/RecipePage/index.jsx'));
 const RecipesPage = lazy(() => import('src/pages/RecipesPage/index.jsx'));
 const MyFavoritesPage = lazy(() => import('src/pages/MyFavoritesPage'));
 const FollowersPage = lazy(() => import('src/pages/FollowersPage/index.jsx'));
-const FollowingPage = lazy(() => import('src/pages/FollowingPage/index.jsx'));
+const FolloweesPage = lazy(() => import('src/pages/FolloweesPage/index.jsx'));
 const NotFoundPage = lazy(() => import('src/pages/NotFoundPage'));
 
 const AppNavigator = ({ setCustomBreadcrumbs }) => {
@@ -28,10 +28,11 @@ const AppNavigator = ({ setCustomBreadcrumbs }) => {
                         </ProtectedRoute>
                     }
                 >
+                    <Route index element={<RecipesPage />} />
                     <Route path={ROUTES.RECIPES} element={<RecipesPage />} />
                     <Route path={ROUTES.FAVORITES} element={<MyFavoritesPage />} />
                     <Route path={ROUTES.FOLLOWERS} element={<FollowersPage />} />
-                    <Route path={ROUTES.FOLLOWING} element={<FollowingPage />} />
+                    <Route path={ROUTES.FOLLOWING} element={<FolloweesPage />} />
                 </Route>
                 <Route
                     path={ROUTES.ADD_RECIPE_PAGE}

@@ -78,8 +78,8 @@ const Dropdown = ({ items, label, callback, selectedValue, isMulti = false, isFo
                 screenWidth < 768
                     ? stylesMobile()
                     : screenWidth < 1440
-                    ? stylesTablet({ isForSearch: true, screenWidth: screenWidth })
-                    : stylesPC({ isForSearch: true })
+                      ? stylesTablet({ isForSearch: true, screenWidth: screenWidth })
+                      : stylesPC({ isForSearch: true })
             }
         />
     );

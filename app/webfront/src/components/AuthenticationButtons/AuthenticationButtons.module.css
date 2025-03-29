@@ -1,21 +1,20 @@
 .component {
-  background-color: var(--white);
-  border: 1px solid var(--white);
-  border-radius: 30px;
-  display: flex;
+    background-color: var(--white);
+    border: 1px solid var(--white);
+    border-radius: 30px;
+    display: flex;
 }
 
-
 .button {
-  font-size: 12px;
-  padding: 15px 30px;
+    font-size: 12px;
+    padding: 15px 30px;
 }
 
 .sign-in,
 .sign-up:hover {
-  border-color: var(--white);
+    border-color: var(--white);
 }
 
 .mobile {
-  padding: 10px 16px;
+    padding: 10px 16px;
 }

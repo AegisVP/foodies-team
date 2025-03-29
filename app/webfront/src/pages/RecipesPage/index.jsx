@@ -24,11 +24,9 @@ const RecipesPage = () => {
     return (
         <div className={css.container}>
             {isLoading && <Loader />}
-            
-            {!isLoading && recipes?.length === 0 && (
-                <Empty message="You haven't added any recipes yet" />
-            )}
-            
+
+            {!isLoading && recipes?.length === 0 && <Empty message="You haven't added any recipes yet" />}
+
             {!isLoading && recipes?.length > 0 && (
                 <>
                     <ul className={css.recipeList}>

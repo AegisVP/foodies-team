@@ -13,8 +13,8 @@ export const getFollowers = createAsyncThunk(routes.GET_FOLLOWERS, async (id, { 
 
 export const getFollowees = createAsyncThunk(routes.GET_FOLLOWEES, async (id, { rejectWithValue }) => {
     try {
-        const followers = await api.getFollowees(id);
-        return followers;
+        const followees = await api.getFollowees(id);
+        return followees;
     } catch (error) {
         return rejectWithValue(error.message);
     }
