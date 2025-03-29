@@ -72,10 +72,6 @@
         display: flex;
         gap: 4px;
     }
-    .forwardButton {
-        width: 44px;
-        height: 44px;
-    }
     .label {
         position: relative;
         height: 44px;

@@ -1,8 +1,8 @@
 import css from './RecipeCard.module.css';
-import heart from '../../images/heart.svg';
-import arrow from '../../images/arrow.svg';
+import spriteArrow from 'src/images/icons.svg#arrow';
+import spriteHeart from 'src/images/icons.svg#heart';
 
-const RecipeCard = ({ mealImage, title, description, userAvatar, userName }) => {
+const RecipeCard = ({ mealImage, title, description, userAvatar, userName, recipeId }) => {
     return (
         <div className={css.card}>
             <img src={mealImage} alt="meal" className={css.cardImg} />
@@ -10,15 +10,19 @@ const RecipeCard = ({ mealImage, title, description, userAvatar, userName }) => 
             <p className={css.cardDescription}>{description}</p>
             <div className={css.cardFooter}>
                 <div className={css.userInfo}>
-                    <img src={userAvatar} alt="user" className={css.userImg} />
+                    <img src={userAvatar} className={css.userImg} />
                     <p className={css.userName}>{userName}</p>
                 </div>
                 <div className={css.cardActions}>
-                    <button className={css.cardBtn}>
-                        <img src={heart} alt="favorite" />
+                    <button className={css.cardBtn} aria-label="Add to favorite">
+                        <svg>
+                            <use href={spriteHeart} className={css.arrow}></use>
+                        </svg>
                     </button>
-                    <button className={css.cardBtn}>
-                        <img src={arrow} alt="details" />
+                    <button className={css.cardBtn} aria-label="Go to details">
+                        <svg>
+                            <use href={spriteArrow} className={css.arrow}></use>
+                        </svg>
                     </button>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 .card {
     display: flex;
     width: 100%;
-    max-width: 342px;
+    max-width: 343px;
     flex-direction: column;
     align-items: flex-start;
 }
@@ -23,29 +23,31 @@
 
 .cardTitle {
     overflow: hidden;
-    color: var(--extra-black, #000);
+    color: var(--extra-black);
     text-overflow: ellipsis;
-    font-size: 18px;
     font-weight: 800;
-    line-height: 24px; /* 133.333% */
-    letter-spacing: -0.36px;
+    font-size: 18px;
+    line-height: 1.3333;
+    letter-spacing: -0.02em;
     text-transform: uppercase;
     margin-bottom: 8px;
+    width: 100%;
+    white-space: nowrap;
 }
 
 .cardDescription {
     overflow: hidden;
-    color: var(--black, #1a1a1a);
+    color: var(--black);
     text-overflow: ellipsis;
     white-space: normal;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     line-clamp: 2;
-    font-size: 14px;
     font-weight: 500;
-    line-height: 20px; /* 142.857% */
-    letter-spacing: -0.28px;
+    font-size: 14px;
+    line-height: 1.42857;
+    letter-spacing: -0.02em;
     width: 100%;
     height: 44px;
     align-self: stretch;
@@ -68,38 +70,86 @@
     width: 32px;
     height: 32px;
     align-items: flex-start;
-    margin-right: 8px;
+    margin-right: 6px;
     border-radius: 30px;
+    background: var(--extra-black);
+}
+
+.userImg[onerror] {
+    background-color: var(--extra-black);
 }
 
 .userName {
-    color: var(--black, #1a1a1a);
-    font-size: 14px;
+    color: var(--black);
     font-weight: 700;
-    line-height: 20px; /* 142.857% */
-    letter-spacing: -0.28px;
+    font-size: 14px;
+    line-height: 1.42857;
+    letter-spacing: -0.02em;
 }
 
-.cardAction {
+.cardActions {
     display: flex;
     align-items: center;
+    gap: 4px;
 }
 
 .cardBtn {
+    width: 36px;
+    height: 36px;
     padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--gray);
     border-radius: 30px;
-    border: 1px solid #e8e8e8;
-    background-color: transparent;
-    margin-right: 4px;
+    color: var(--extra-black);
+    background-color: var(--white);
+
+    &:hover,
+    &:focus {
+        color: var(--white);
+        background-color: var(--extra-black);
+        border-color: transparent;
+        transition: var(--transition);
+        transition-property: color, background-color, border-color;
+    }
 }
 
-.cardBtn:last-child {
-    margin-right: 0;
+.arrow {
+    stroke: currentColor;
+    fill: transparent;
 }
 
-.cardBtn:hover {
-    background-color: var(--black);
-    color: #bfbebe;
+@media only screen and (min-width: 768px) {
+    .card {
+        width: 342px;
+    }
+    .cardBtn {
+        width: 42px;
+        height: 42px;
+        padding: 12px;
+    }
+    .cardTitle {
+        font-size: 20px;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+    }
+    .cardDescription {
+        font-size: 16px;
+        line-height: 1.5;
+        letter-spacing: -0.02em;
+    }
+    .userName {
+        font-size: 16px;
+        line-height: 1.5;
+        letter-spacing: -0.02em;
+    }
+    .userImg {
+        width: 40px;
+        height: 40px;
+        margin-right: 8px;
+        border-radius: 30px;
+    }
 }
 
 @media only screen and (min-width: 1440px) {
@@ -112,29 +162,8 @@
         border-radius: 30px;
     }
 
-    .cardTitle {
-        font-size: 20px;
-        letter-spacing: -0.4px;
-    }
-
-    .cardDescription {
-        font-size: 16px;
-        line-height: 24px; /* 150% */
-        letter-spacing: -0.32px;
-    }
-
     .userImg {
         width: 40px;
         height: 40px;
-    }
-
-    .userName {
-        font-size: 16px;
-        line-height: 24px; /* 150% */
-        letter-spacing: -0.32px;
-    }
-
-    .cardBtn {
-        padding: 12px;
     }
 }

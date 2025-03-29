@@ -24,6 +24,7 @@ const RecipeList = () => {
                                 description={item.description}
                                 userAvatar={item.owner.avatar}
                                 userName={item.owner.name}
+                                recipeId={item.id}
                             />
                         </li>
                     ))}
