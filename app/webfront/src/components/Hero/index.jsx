@@ -17,8 +17,6 @@ const Hero = ({ className }) => {
 
             <Button label="Add Recipe" to={ROUTES.ADD_RECIPE_PAGE} theme="light-transparent" className={css.button} />
 
-            <Button label="Add Recipe" to={ROUTES.ADD_RECIPE_PAGE} theme="light-transparent" className={css.button} />
-
             <div className={css.images}>
                 <img
                     src="/images/hero-dish-1.png"
