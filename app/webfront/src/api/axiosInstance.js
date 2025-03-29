@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = '/api';
+const baseURL = import.meta.env.VITE_BASEURL ?? '/api';
 
 const axiosPrivateInstance = axios.create({
     baseURL,
@@ -12,8 +12,10 @@ const axiosPrivateInstance = axios.create({
 axiosPrivateInstance.interceptors.request.use(
     async config => {
         const accessToken = localStorage.getItem('token');
+        console.log({ accessToken });
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
+            console.log({ config });
         } else {
             delete config.headers.Authorization;
         }
