@@ -5,8 +5,8 @@ export const getFollowers = async id => {
     return followers;
 };
 
-export const getFollowees = async id => {
-    const followees = await axios.get(`users/followees?id=${id}`);
+export const getFollowees = async () => {
+    const followees = await axios.get('users/followees');
     return followees;
 };
 
