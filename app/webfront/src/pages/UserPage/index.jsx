@@ -51,8 +51,7 @@ const UserPage = () => {
             <div className={css.container}>
                 <h1 className={css.title}>Profile</h1>
                 <p className={css.description}>
-                    Reveal your culinary art, share your favorite recipe and create gastronomic masterpieces with
-                    us.{' '}
+                    Reveal your culinary art, share your favorite recipe and create gastronomic masterpieces with us.
                 </p>
                 {userProfile ? <UserProfileCard userProfile={userProfile} /> : <Spinner />}
                 {ownUser ? (
@@ -72,21 +71,25 @@ const UserPage = () => {
                             My Recipes
                         </NavLink>
                     </li>
-                    <li className={clsx(css.tab, { [css.active]: activetab === 'favorites' })}>
-                        <NavLink to={ROUTES.FAVORITES} onClick={() => setActiveTab('favorites')}>
-                            My Favorites
-                        </NavLink>
-                    </li>
+                    {ownUser && (
+                        <li className={clsx(css.tab, { [css.active]: activetab === 'favorites' })}>
+                            <NavLink to={ROUTES.FAVORITES} onClick={() => setActiveTab('favorites')}>
+                                My Favorites
+                            </NavLink>
+                        </li>
+                    )}
                     <li className={clsx(css.tab, { [css.active]: activetab === 'followers' })}>
                         <NavLink to={ROUTES.FOLLOWERS} onClick={() => setActiveTab('followers')}>
                             Followers
                         </NavLink>
                     </li>
-                    <li className={clsx(css.tab, { [css.active]: activetab === 'following' })}>
-                        <NavLink to={ROUTES.FOLLOWING} onClick={() => setActiveTab('following')}>
-                            Following
-                        </NavLink>
-                    </li>
+                    {ownUser && (
+                        <li className={clsx(css.tab, { [css.active]: activetab === 'following' })}>
+                            <NavLink to={ROUTES.FOLLOWING} onClick={() => setActiveTab('following')}>
+                                Following
+                            </NavLink>
+                        </li>
+                    )}
                 </ul>
 
                 <Suspense fallback={<Loader />}>
