@@ -42,7 +42,7 @@ const AppNavigator = () => {
                         </ProtectedRoute>
                     }
                 />
-                <Route path={ROUTES.RECIPE_PAGE} element={<RecipePage />} />
+                <Route path={ROUTES.RECIPE_PAGE} element={<RecipePage setCustomBreadcrumbs={setCustomBreadcrumbs} />} />
                 <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
             </Routes>
         </Suspense>

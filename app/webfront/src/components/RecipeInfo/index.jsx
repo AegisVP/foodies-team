@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectRecipeDetails, selectIsRecipesLoading } from 'src/redux/recipes/selectors';
 import { useParams } from 'react-router-dom';
 
 import { selectFavoriteRecipesId } from 'src/redux/favorites/selectors';
+import { selectCurrentRecipe, selectIsRecipesLoading } from 'src/redux/recipes/selectors';
 import { addToFavorites, removeFromFavorites, getFavoriteRecipes } from 'src/redux/favorites/operation';
 import { getRecipeById } from 'src/redux/recipes/operations';
+import { resetCurrentRecipe } from 'src/redux/recipes/slice';
 
 import ROUTES from 'src/navigation/routes';
 
@@ -14,11 +15,12 @@ import RecipeIngredients from '../RecipeIngredients';
 import RecipePreparation from '../RecipePreparation';
 
 import css from './RecipeInfo.module.css';
+import { Loader } from '..';
 
 const RecipeInfo = ({ setCustomBreadcrumbs }) => {
     const { id } = useParams();
     const isRecipesLoading = useSelector(selectIsRecipesLoading);
-    const recipe = useSelector(selectRecipeDetails);
+    const recipe = useSelector(selectCurrentRecipe);
     const favoritesIds = useSelector(selectFavoriteRecipesId);
     const dispatch = useDispatch();
 
@@ -36,6 +38,12 @@ const RecipeInfo = ({ setCustomBreadcrumbs }) => {
             ]);
         }
     }, [dispatch, recipe, id, isRecipesLoading, setCustomBreadcrumbs]);
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetCurrentRecipe());
+        };
+    }, [dispatch]);
 
     const addTofavorite = () => {
         if (recipe) {
@@ -73,9 +81,12 @@ const RecipeInfo = ({ setCustomBreadcrumbs }) => {
 
     return (
         <>
+            {isRecipesLoading && <Loader />}
             {!isRecipesLoading && recipe && (
                 <div className={css.recipePageContainer}>
-                    <img src={recipe.thumb} alt="meal" className={css.recipeImgDesktop} />
+                    <div className={css.recipeImgContainer}>
+                        <img src={recipe.thumb} alt="meal" className={css.recipeImg} />
+                    </div>
                     <div className={css.recipe}>
                         <RecipeMainInfo recipe={recipe} />
                         <RecipeIngredients ingredients={recipe.ingredients} />

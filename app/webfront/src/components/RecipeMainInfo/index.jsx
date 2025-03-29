@@ -3,18 +3,17 @@ import css from './RecipeMainInfo.module.css';
 const RecipeMainInfo = ({ recipe }) => {
     return (
         <div className={css.recipe}>
-            <img src={recipe.thumb} alt="meal" className={css.recipeImg} />
             <section className={css.recipePageHeader}>
                 <h2 className={css.sectionTitle}>{recipe.title}</h2>
                 <div className={css.recipeMetrics}>
-                    <p className={css.category}>{recipe.category.name}</p>
+                    <p className={css.category}>{recipe.category?.name}</p>
                     <p className={css.time}>{recipe.time} min</p>
                 </div>
-                <p className={css.recipeDescription}>{recipe.category.description}</p>
+                <p className={css.recipeDescription}>{recipe.category?.description}</p>
                 <div className={css.userBlock}>
-                    <img src={recipe.owner.avatar} alt="user" className={css.userImg} />
+                    <img src={recipe.owner?.avatar} alt="user" className={css.userImg} />
                     <p className={css.userName}>
-                        Created by: <br /> <span>{recipe.owner.name}</span>
+                        Created by: <br /> <span>{recipe.owner?.name}</span>
                     </p>
                 </div>
             </section>

@@ -23,6 +23,7 @@ const recipesSlice = createSlice({
         page: 1,
         totalPages: 1,
         limit: 8,
+        currentRecipe: null,
         recipeDetails: recipeDetailsInitialState,
         isLoading: false,
         error: null,
@@ -65,6 +66,9 @@ const recipesSlice = createSlice({
             const index = state.recipeDetails.ingredients.findIndex(ingredient => ingredient.id === action.payload);
             state.recipeDetails.ingredients.splice(index, 1);
         },
+        resetCurrentRecipe(state) {
+            state.currentRecipe = null;
+        },
     },
     // example of asynchronous actions creation
     extraReducers: builder => {
@@ -88,7 +92,7 @@ const recipesSlice = createSlice({
                 state.recipes.splice(index, 1);
             })
             .addCase(getRecipeById.fulfilled, (state, action) => {
-                state.recipeDetails = action.payload;
+                state.currentRecipe = action.payload;
             })
             .addMatcher(
                 action => action.type.endsWith('/rejected'),
@@ -126,4 +130,5 @@ export const {
     setCurrentIngredient,
     addRecipeIngredient,
     deleteRecipeIngredient,
+    resetCurrentRecipe,
 } = recipesSlice.actions;

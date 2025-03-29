@@ -28,7 +28,7 @@ const Dropdown = ({
     const {
         formState: { errors },
         control,
-    } = useFormContext();
+    } = useFormContext() || { formState: {} };
     const error = get(errors, name, false);
 
     const selectedArea = useSelector(selectSelectedArea);
@@ -107,8 +107,8 @@ const Dropdown = ({
                             screenWidth < 768
                                 ? stylesMobile()
                                 : screenWidth < 1440
-                                ? stylesTablet({ isForSearch: true, screenWidth: screenWidth })
-                                : stylesPC({ isForSearch: true })
+                                  ? stylesTablet({ isForSearch: true, screenWidth: screenWidth })
+                                  : stylesPC({ isForSearch: true })
                         }
                     />
                 )}
