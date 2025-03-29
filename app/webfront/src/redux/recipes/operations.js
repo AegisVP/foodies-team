@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'src/api/index.js';
 import { selectLimit } from './selectors';
+import { FETCH_RECIPES, FETCH_OWNER_RECIPES, ADD_RECIPE, DELETE_RECIPE, GET_RECIPE_BY_ID } from './constants.js';
 import { selectUserId } from 'src/redux/authUser/selectors';
-import { FETCH_RECIPES, FETCH_OWNER_RECIPES, ADD_RECIPE, DELETE_RECIPE } from './constants.js';
 
 export const fetchRecipes = createAsyncThunk(
     FETCH_RECIPES,
@@ -69,3 +69,13 @@ export const deleteRecipe = createAsyncThunk(DELETE_RECIPE, async (id, { rejectW
         return rejectWithValue(error.message);
     }
 });
+
+export const getRecipeById = createAsyncThunk(GET_RECIPE_BY_ID, async (id, { rejectWithValue }) => {
+      try {
+        const recipe = await api.getRecipeById(id);
+        return recipe;
+      } catch (error) {
+        return rejectWithValue(error.message);
+      }
+    }
+  );

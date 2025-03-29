@@ -15,7 +15,7 @@ const FollowersPage = lazy(() => import('src/pages/FollowersPage/index.jsx'));
 const FollowingPage = lazy(() => import('src/pages/FollowingPage/index.jsx'));
 const NotFoundPage = lazy(() => import('src/pages/NotFoundPage'));
 
-const AppNavigator = () => {
+const AppNavigator = ({ setCustomBreadcrumbs }) => {
     return (
         <Suspense fallback={<Loader />}>
             <Routes>

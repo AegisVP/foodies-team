@@ -1,0 +1,82 @@
+.recipePageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 343px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.recipeImg {
+  width: 100%;
+  max-height: 318px;
+  border-radius: 30px;
+  object-fit: cover;
+  margin-bottom: 32px;
+}
+
+.recipeTitle {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 24px;
+  letter-spacing: -0.36px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.recipeMetrics {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 20px;
+  color: var(--gray);
+}
+
+.recipeMetrics > p {
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid var(--gray);
+  margin-right: 8px;
+  color: var(--gray);
+}
+
+.recipeDescription {
+  color: var(--gray);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.28px;
+  margin-bottom: 20px;
+}
+
+.userBlock {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 32px;
+}
+.userImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 30px;
+  margin-right: 16px;
+}
+
+.userName {
+  color: var(--gray);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: -0.24px;
+}
+
+.userName span {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: -0.28px;
+}
