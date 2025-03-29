@@ -3,12 +3,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../../redux/authUser/slice';
 import { registerUser, loginUser } from '../../api/auth';
 import styles from './RegisterForm.module.css';
 
 import { Eye, EyeOff } from 'lucide-react'; // eye icons
 import Button from '../Button';
+import { refreshUser } from 'src/redux/authUser/operations';
 
 const schema = yup.object().shape({
     name: yup.string().required('Name is required'),
@@ -40,7 +40,7 @@ export default function RegisterForm({ onClose }) {
             const loginResponse = await loginUser({ email, password });
 
             if (loginResponse.token) {
-                dispatch(loginSuccess({ token: loginResponse.token }));
+                dispatch(refreshUser());
                 reset();
                 onClose(); // Close the modal
             } else {

@@ -6,13 +6,23 @@ const favoritesSlice = createSlice({
     name: 'favorites',
     initialState: {
         favorites: [],
+        page: 1,
+        totalPages: 1,
+        limit: 8,
         isLoading: false,
         error: null,
+    },
+    reducers: {
+        setFavoritePage(state, action) {
+            state.page = action.payload;
+        },
     },
     extraReducers: builder => {
         builder
             .addCase(getFavoriteRecipes.fulfilled, (state, action) => {
                 state.favorites = action.payload.recipes;
+                state.page = action.payload.page;
+                state.totalPages = action.payload.pages;
             })
             .addCase(addToFavorites.fulfilled, (state, action) => {
                 const index = state.favorites.findIndex(recipe => recipe.id === action.payload.id);
@@ -23,7 +33,7 @@ const favoritesSlice = createSlice({
             .addCase(removeFromFavorites.fulfilled, (state, action) => {
                 const index = state.favorites.findIndex(recipe => recipe.id === action.payload.id);
                 if (index !== -1) {
-                    state.recipes[index].isFavorite = false;
+                    state.favorites = state.favorites.filter(recipe => recipe.id !== action.payload.id);
                 }
             })
             .addMatcher(
@@ -49,4 +59,5 @@ const favoritesSlice = createSlice({
     },
 });
 
+export const { setFavoritePage } = favoritesSlice.actions;
 export const favoritesReducer = favoritesSlice.reducer;

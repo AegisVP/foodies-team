@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { updateUserAvatar } from './operations';
+import { logoutUserOperation, updateUserAvatar, loginUserOperation, refreshUser } from './operations';
 
 const token = localStorage.getItem('token');
 
@@ -15,17 +15,6 @@ const authUserSlice = createSlice({
     name: 'authUser',
     initialState,
     reducers: {
-        loginSuccess: (state, action) => {
-            console.log({ payload: action.payload });
-            state.isAuthenticated = true;
-            state.token = action.payload.token;
-            state.user = action.payload.user;
-            localStorage.setItem('token', action.payload.token);
-        },
-        logout: () => {
-            localStorage.removeItem('token');
-            return initialState;
-        },
         setUser: (state, action) => {
             state.user = action.payload;
         },
@@ -35,11 +24,24 @@ const authUserSlice = createSlice({
     },
     extraReducers: builder => {
         builder
+            .addCase(refreshUser.fulfilled, (state, action) => {
+                state.isAuthenticated = true;
+                state.user = action.payload;
+            })
+            .addCase(loginUserOperation.fulfilled, (state, action) => {
+                state.isAuthenticated = true;
+                state.token = action.payload.token;
+                state.user = action.payload.user;
+                localStorage.setItem('token', action.payload.token);
+            })
+            .addCase(logoutUserOperation.fulfilled, state => {
+                localStorage.removeItem('token');
+                state.isAuthenticated = false;
+                state.token = null;
+                state.user = null;
+            })
             .addCase(updateUserAvatar.fulfilled, (state, action) => {
-                console.log('payload avatar', action.payload.avatar);
-                console.log('state 1 avatar', state.user.avatar);
                 state.user.avatar = action.payload.avatar;
-                console.log('state 2 avatar', state.user.avatar);
             })
             .addMatcher(
                 action => action.type.endsWith('/rejected'),
@@ -64,5 +66,5 @@ const authUserSlice = createSlice({
     },
 });
 
-export const { loginSuccess, logout, setUser, setIsLoading } = authUserSlice.actions;
+export const { setUser, setIsLoading } = authUserSlice.actions;
 export const authUserReducer = authUserSlice.reducer;
