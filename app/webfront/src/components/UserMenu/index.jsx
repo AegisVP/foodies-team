@@ -35,7 +35,7 @@ const UserMenu = ({ onLogoutOpen }) => {
     }, [isOpen]);
 
     if (loadingUser) {
-        return <Spinner />;
+        return <Spinner size="sm" />;
     }
 
     return (

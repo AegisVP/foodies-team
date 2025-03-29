@@ -71,7 +71,7 @@ const FollowerItem = ({ avatar, id, isFollowing, isMobile, isTablet, recipes, re
                 ))}
             </div>
 
-            <Button className={css.action} ariaLabel="View full recipe" icon={iconArrow} to={`/recipes/${id}`} />
+            <Button className={css.action} ariaLabel="View profile" icon={iconArrow} to={`/user/${id}`} />
         </li>
     );
 };

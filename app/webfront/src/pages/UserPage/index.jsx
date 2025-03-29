@@ -20,6 +20,10 @@ const UserPage = () => {
     const followers = useSelector(selectFollowers);
     const [activetab, setActiveTab] = useState('recipes');
 
+    useEffect(() => {
+        setActiveTab('recipes');
+    }, [id]);
+
     const ownUser = userProfile?.id === loggedinUser?.id;
 
     if (!ownUser) {

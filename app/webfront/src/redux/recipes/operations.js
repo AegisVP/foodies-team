@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'src/api/index.js';
 import { selectLimit } from './selectors';
-import { FETCH_RECIPES, ADD_RECIPE, DELETE_RECIPE } from './constants.js';
+import { FETCH_RECIPES, FETCH_OWNER_RECIPES, ADD_RECIPE, DELETE_RECIPE, GET_RECIPE_BY_ID } from './constants.js';
+import { selectUserId } from 'src/redux/authUser/selectors';
 
 export const fetchRecipes = createAsyncThunk(
     FETCH_RECIPES,
@@ -26,6 +27,31 @@ export const fetchRecipes = createAsyncThunk(
     }
 );
 
+export const fetchOwnerRecipes = createAsyncThunk(
+    FETCH_OWNER_RECIPES,
+    async ({ page = 1 }, { rejectWithValue, getState }) => {
+        try {
+            const queryParams = new URLSearchParams();
+            const state = getState();
+            const limit = selectLimit(state);
+            const userId = selectUserId(state);
+
+            if (!userId) {
+                return rejectWithValue('User ID not found');
+            }
+
+            queryParams.append('limit', limit);
+            if (page) queryParams.append('page', page);
+
+            const recipes = await api.getOwnerRecipes(userId, queryParams.toString());
+
+            return recipes;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 export const addRecipe = createAsyncThunk(ADD_RECIPE, async (recipe, { rejectWithValue }) => {
     try {
         const addedRecipe = await api.addRecipe(recipe);
@@ -39,6 +65,15 @@ export const deleteRecipe = createAsyncThunk(DELETE_RECIPE, async (id, { rejectW
     try {
         const deletedRecipe = await api.deleteRecipe(id);
         return deletedRecipe;
+    } catch (error) {
+        return rejectWithValue(error.message);
+    }
+});
+
+export const getRecipeById = createAsyncThunk(GET_RECIPE_BY_ID, async (id, { rejectWithValue }) => {
+    try {
+        const recipe = await api.getRecipeById(id);
+        return recipe;
     } catch (error) {
         return rejectWithValue(error.message);
     }
