@@ -1,96 +1,154 @@
 .component {
+    position: relative;
+}
+
+.open-button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    width: 20px;
+
+    span {
+        display: block;
+        height: 1px;
+        width: 100%;
+
+        &:not(:last-child) {
+            margin-bottom: 4px;
+        }
+    }
+}
+
+.dark {
+    .open-button span {
+        background-color: var(--white);
+    }
+}
+
+.light {
+    .open-button span {
+        background-color: var(--extra-black);
+    }
+}
+
+.menu {
     background-color: var(--extra-black);
-    padding: 16px;
-    border-radius: 20px;
+    background-image: url('src/images/menu-bg.png');
+    background-position: 50% 90%;
+    background-repeat: no-repeat;
+    background-size: 80% auto;
+    height: 100vh;
+    left: 100%;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    transition: left 0.5s;
+    width: 100vw;
+    z-index: 2;
+
+    &.open {
+        left: 0;
+    }
 }
 
-.title {
-    color: #fff;
-    text-align: center;
-    font-family: Mulish;
-    font-size: 40px;
-    font-weight: 800;
-    line-height: 40px; /* 100% */
-    letter-spacing: -0.8px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    margin-top: 140px;
-}
-
-.subtitle {
-    color: #fff;
-    text-align: center;
-    font-family: Mulish;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px; /* 142.857% */
-    letter-spacing: -0.28px;
-    margin-bottom: 20px;
-}
-
-.button {
-    display: block;
-    width: max-content;
-    margin: 0 auto;
-}
-
-.images {
-    max-width: 600px;
-    margin: 40px auto 84px;
-    position: relative;
+.menu-header {
+    align-items: center;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 }
 
-.images img:first-child {
-    max-width: 35%;
-    position: relative;
-    margin-top: 25%;
+.close-button {
+    background-color: transparent;
+    border: none;
+    color: var(--white);
+    padding: 0;
+
+    svg {
+        height: 22px;
+        width: 22px;
+    }
 }
 
-.images img:last-child {
-    max-width: 65%;
+.nav-list {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    padding: 0;
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    width: 100%;
 }
 
-.images img {
-    display: inline-block;
-    max-height: fit-content;
+.nav-item {
+    list-style: none;
+
+    &:not(:last-child) {
+        margin-bottom: 20px;
+    }
+
+    a {
+        color: var(--white);
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
 }
 
-@media only screen and (min-width: 768px) {
+@media (min-width: 768px) {
     .component {
-        padding: 20px 32px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
     }
 
-    .title {
-        margin-top: 151px;
-        margin-bottom: 40px;
-        font-size: 70px;
-        line-height: 70px;
-        letter-spacing: -1.4px;
+    .menu {
+        background-color: transparent;
+        background-image: none;
+        height: auto;
+        padding: 0;
+        position: static;
+        width: auto;
     }
 
-    .subtitle {
-        margin-bottom: 40px;
-        font-size: 16px;
-        line-height: 24px; /* 150% */
-        letter-spacing: -0.32px;
+    .nav-list {
+        flex-direction: row;
+        gap: 40px;
+        position: static;
+        transform: none;
     }
 
-    .images {
-        margin: 40px auto 70px;
-    }
-}
+    .nav-item {
+        &:not(:last-child) {
+            margin-bottom: 0;
+        }
 
-@media only screen and (min-width: 1440px) {
-    .component {
-        padding: 20px 60px;
+        a {
+            border: 1px solid transparent;
+            border-radius: 30px;
+            font-size: 12px;
+            padding: 14px;
+        }
     }
 
-    .title {
-        margin-top: 88px;
-        font-size: 90px;
-        line-height: 90px; /* 100% */
-        letter-spacing: -1.8px;
+    .dark {
+        .nav-item.active a,
+        .nav-item a:hover {
+            border-color: var(--white);
+        }
+    }
+
+    .light {
+        .nav-item a {
+            color: var(--extra-black);
+        }
+
+        .nav-item.active a,
+        .nav-item a:hover {
+            border-color: var(--gray);
+        }
     }
 }
