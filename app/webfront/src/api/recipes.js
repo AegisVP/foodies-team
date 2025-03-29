@@ -15,7 +15,7 @@ export const addRecipe = async data => {
     return recipe;
 };
 
-export const deleteRecipe  = async id => {
+export const deleteRecipe = async id => {
     const recipe = await axios.delete(`/recipes/${id}`);
     return recipe;
 };
@@ -36,8 +36,7 @@ export const removeFromFavorites = async id => {
     return recipe;
 };
 
-export const getFavoriteRecipes = async () => {
-    const recipes = await axios.get(`/recipes/favorites`);
-    console.log(("   "))
+export const getFavoriteRecipes = async queryParams => {
+    const recipes = await axios.get(`/recipes/favorites?${queryParams}`);
     return recipes;
 };

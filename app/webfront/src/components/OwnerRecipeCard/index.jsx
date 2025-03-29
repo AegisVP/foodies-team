@@ -3,7 +3,7 @@ import css from './OwnerRecipeCard.module.css';
 import trashIcon from '../../images/trash.svg';
 import arrowIcon from '../../images/arrow.svg';
 
-const OwnerRecipeCard = ({ recipe }) => {
+const OwnerRecipeCard = ({ recipe, onDelete = () => {} }) => {
     const { id, title, description, thumb } = recipe;
 
     return (
@@ -17,7 +17,7 @@ const OwnerRecipeCard = ({ recipe }) => {
                 <Link to={`/recipe/${id}`} className={css.actionButton} aria-label="Open recipe">
                     <img src={arrowIcon} alt="Open" />
                 </Link>
-                <button className={css.actionButton} aria-label="Delete recipe">
+                <button className={css.actionButton} aria-label="Delete recipe" onClick={() => onDelete(id)}>
                     <img src={trashIcon} alt="Delete" />
                 </button>
             </div>
