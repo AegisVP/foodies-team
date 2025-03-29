@@ -1,7 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchRecipes, fetchOwnerRecipes, addRecipe, deleteRecipe, getRecipeById } from './operations';
 
-// TODO add recipe details if needed
+const recipeDetailsInitialState = {
+    thumb: null,
+    title: '',
+    description: '',
+    category: '',
+    area: '',
+    time: 0,
+    instructions: '',
+    ingredients: [],
+    currentIngredient: '',
+    quantity: '',
+};
 
 // note, in this reducer we use mutable approach to manage state. Redux under hood uses library Immer.
 // pay attention, in the scope of one reducer only one approach could be used (mutable or immutable)
@@ -12,8 +23,7 @@ const recipesSlice = createSlice({
         page: 1,
         totalPages: 1,
         limit: 8,
-        // TODO revise if it needed (if not extra details could be taken from the list by id)
-        recipeDetails: null,
+        recipeDetails: recipeDetailsInitialState,
         isLoading: false,
         error: null,
     },
@@ -34,6 +44,25 @@ const recipesSlice = createSlice({
                 ...state.recipeDetails,
                 ...action.payload,
             };
+        },
+        resetRecipeDetails(state) {
+            state.recipeDetails = recipeDetailsInitialState;
+        },
+        setRecipeCategory: (state, action) => {
+            state.recipeDetails.category = action.payload;
+        },
+        setRecipeArea: (state, action) => {
+            state.recipeDetails.area = action.payload;
+        },
+        setCurrentIngredient: (state, action) => {
+            state.recipeDetails.currentIngredient = action.payload;
+        },
+        addRecipeIngredient: (state, action) => {
+            state.recipeDetails.ingredients.push(action.payload);
+        },
+        deleteRecipeIngredient: (state, action) => {
+            const index = state.recipeDetails.ingredients.findIndex(ingredient => ingredient.id === action.payload);
+            state.recipeDetails.ingredients.splice(index, 1);
         },
     },
     // example of asynchronous actions creation
@@ -84,4 +113,15 @@ const recipesSlice = createSlice({
 
 export const recipesReducer = recipesSlice.reducer;
 
-export const { updateRecipeDetails, clearRecipes, setPage, setLimit } = recipesSlice.actions;
+export const {
+    updateRecipeDetails,
+    resetRecipeDetails,
+    clearRecipes,
+    setPage,
+    setLimit,
+    setRecipeCategory,
+    setRecipeArea,
+    setCurrentIngredient,
+    addRecipeIngredient,
+    deleteRecipeIngredient,
+} = recipesSlice.actions;

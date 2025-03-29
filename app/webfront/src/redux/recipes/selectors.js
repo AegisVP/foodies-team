@@ -7,8 +7,12 @@ export const selectTotalPages = state => state.recipes.totalPages;
 export const selectIsRecipesLoading = state => state.recipes.isLoading;
 export const selectRecipesError = state => state.recipes.error;
 
-// TODO revise if these two selectors are needed
 export const selectRecipeDetails = state => state.recipes.recipeDetails;
+export const selectRecipeThumb = state => state.recipes.recipeDetails.thumb;
+export const selectRecipeCategory = state => state.recipes.recipeDetails.category;
+export const selectRecipeArea = state => state.recipes.recipeDetails.area;
+export const selectCurrentIngredient = state => state.recipes.recipeDetails.currentIngredient;
+export const selectRecipeIngredients = state => state.recipes.recipeDetails.ingredients;
 
 export const selectRecipeById = createSelector(
     [selectRecipes],

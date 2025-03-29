@@ -16,5 +16,5 @@ export const store = configureStore({
         followers: followersReducer,
         following: followingReducer,
         user: userReducer,
-    },
+    }
 });

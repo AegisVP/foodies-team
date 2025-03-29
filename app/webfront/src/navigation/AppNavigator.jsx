@@ -33,8 +33,15 @@ const AppNavigator = ({ setCustomBreadcrumbs }) => {
                     <Route path={ROUTES.FOLLOWERS} element={<FollowersPage />} />
                     <Route path={ROUTES.FOLLOWING} element={<FollowingPage />} />
                 </Route>
-                <Route path={ROUTES.ADD_RECIPE_PAGE} element={<AddRecipePage />} />
-                <Route path={ROUTES.RECIPE_PAGE} element={<RecipePage setCustomBreadcrumbs={setCustomBreadcrumbs} />} />
+                <Route
+                    path={ROUTES.ADD_RECIPE_PAGE}
+                    element={
+                        <ProtectedRoute>
+                            <AddRecipePage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route path={ROUTES.RECIPE_PAGE} element={<RecipePage />} />
                 <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
             </Routes>
         </Suspense>
