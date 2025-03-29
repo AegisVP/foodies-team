@@ -8,7 +8,8 @@ import { selectIsMobile, selectIsTablet } from 'src/redux/common/selectors.js';
 import { getFollowees } from 'src/redux/user/operations.js';
 import { selectFollowees, selectIsLoading } from 'src/redux/user/selectors.js';
 
-const FollowingPage = () => {
+const FolloweesPage = () => {
+    console.log('FolloweesPage start');
     const dispatch = useDispatch();
     const followees = useSelector(selectFollowees);
     const isMobile = useSelector(selectIsMobile);
@@ -22,11 +23,13 @@ const FollowingPage = () => {
         }
     }, [dispatch, id]);
 
-    return (
+    return isLoading ? (
+        <Loader />
+    ) : (
         <>
-            {isLoading && <Loader />}
-
-            {!isLoading && followees.length > 0 && (
+            {!followees || followees.length === 0 ? (
+                <Empty message="Your account currently has no subscriptions to other users. Learn more about our users and select those whose content interests you." />
+            ) : (
                 <ul>
                     {followees.map(followee => {
                         return (
@@ -45,12 +48,8 @@ const FollowingPage = () => {
                     })}
                 </ul>
             )}
-
-            {!isLoading && followees.length === 0 && (
-                <Empty message="Your account currently has no subscriptions to other users. Learn more about our users and select those whose content interests you." />
-            )}
         </>
     );
 };
 
-export default FollowingPage;
+export default FolloweesPage;

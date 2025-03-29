@@ -11,6 +11,12 @@ const UserProfileCard = ({ userProfile }) => {
     const imgPreview = useRef(null);
     const dispatch = useDispatch();
 
+    const handleAvatarClick = ownUser => {
+        if (ownUser) {
+            fileFieldRef.current.click();
+        }
+    };
+
     const handleAvatarChange = () => {
         console.log('avatar change');
         const avatar = fileFieldRef.current.files[0];
@@ -37,7 +43,7 @@ const UserProfileCard = ({ userProfile }) => {
 
     return (
         <div className={css.card}>
-            <form className={css.userImgContainer} onClick={() => fileFieldRef.current.click()}>
+            <form className={css.userImgContainer} onClick={() => handleAvatarClick(ownUser)}>
                 <input
                     ref={fileFieldRef}
                     type="file"

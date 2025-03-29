@@ -22,7 +22,7 @@ const authUserSlice = createSlice({
             state.user = action.payload.user;
             localStorage.setItem('token', action.payload.token);
         },
-        logout: state => {
+        logout: () => {
             localStorage.removeItem('token');
             return initialState;
         },
@@ -36,8 +36,10 @@ const authUserSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(updateUserAvatar.fulfilled, (state, action) => {
-                console.log('updateUserAvatar', action.payload);
-                // state.user.avatar = action.payload;
+                console.log('payload avatar', action.payload.avatar);
+                console.log('state 1 avatar', state.user.avatar);
+                state.user.avatar = action.payload.avatar;
+                console.log('state 2 avatar', state.user.avatar);
             })
             .addMatcher(
                 action => action.type.endsWith('/rejected'),
