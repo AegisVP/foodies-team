@@ -14,8 +14,8 @@ const Header = ({ className }) => {
     const isMobile = useSelector(selectIsMobile);
     const location = useLocation();
     const isHome = !!matchPath(ROUTES.HOME, location.pathname);
-    const isAddRecipe = matchPath(ROUTES.ADD_RECIPE_PAGE, location.pathname);
-    const isCategory = matchPath(ROUTES.CATEGORIES, location.pathname);
+    const isAddRecipe = !!matchPath(ROUTES.ADD_RECIPE_PAGE, location.pathname);
+    const isCategory = !!matchPath(ROUTES.CATEGORIES, location.pathname);
     const isDarkTheme = isHome || isCategory;
     const classes = clsx(
         css.component,

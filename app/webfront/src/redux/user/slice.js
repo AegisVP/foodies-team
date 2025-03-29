@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getFollowers, getFollowees, followUser, unfollowUser, getUserProfile } from './operations.js';
+import { followUser, unfollowUser, getUserProfile } from './operations.js';
 
 const initialState = {
     profile: null,
@@ -37,12 +37,6 @@ const userSlice = createSlice({
         builder
             .addCase(getUserProfile.fulfilled, (state, action) => {
                 state.profile = action.payload;
-            })
-            .addCase(getFollowers.fulfilled, (state, action) => {
-                state.followers = action.payload;
-            })
-            .addCase(getFollowees.fulfilled, (state, action) => {
-                state.followees = action.payload;
             })
             .addCase(followUser.fulfilled, (state, action) => {
                 state.followers.followers.find(follower => follower.id === action.payload).isFollowing = true;

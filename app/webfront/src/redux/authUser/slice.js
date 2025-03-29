@@ -28,6 +28,12 @@ const authUserSlice = createSlice({
                 state.isAuthenticated = true;
                 state.user = action.payload;
             })
+            .addCase(refreshUser.rejected, state => {
+                state.isAuthenticated = false;
+                state.token = null;
+                state.user = null;
+                localStorage.removeItem('token');
+            })
             .addCase(loginUserOperation.fulfilled, (state, action) => {
                 state.isAuthenticated = true;
                 state.token = action.payload.token;

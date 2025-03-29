@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = '/api';
+const baseURL = import.meta.env.VITE_BASEURL ?? '/api';
 
 const axiosPrivateInstance = axios.create({
     baseURL,

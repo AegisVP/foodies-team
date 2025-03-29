@@ -4,8 +4,9 @@ import { useParams } from 'react-router-dom';
 import Empty from 'src/components/Empty';
 import FollowerItem from 'src/components/FollowerItem';
 import Loader from 'src/components/Loader';
+import { selectAuthUser } from 'src/redux/authUser/selectors';
 import { selectIsMobile, selectIsTablet } from 'src/redux/common/selectors.js';
-import { getFollowees } from 'src/redux/user/operations.js';
+import { getFollowees } from 'src/redux/followees/operations.js';
 import { selectFollowees, selectIsLoading } from 'src/redux/user/selectors.js';
 
 const FolloweesPage = () => {
@@ -15,13 +16,16 @@ const FolloweesPage = () => {
     const isMobile = useSelector(selectIsMobile);
     const isTablet = useSelector(selectIsTablet);
     const isLoading = useSelector(selectIsLoading);
+    const authUser = useSelector(selectAuthUser);
     const { id } = useParams();
 
     useEffect(() => {
-        if (id) {
+        if (id && id === authUser?.id) {
             dispatch(getFollowees(id));
         }
-    }, [dispatch, id]);
+    }, [dispatch, id, authUser]);
+
+    console.log({ followees });
 
     return isLoading ? (
         <Loader />

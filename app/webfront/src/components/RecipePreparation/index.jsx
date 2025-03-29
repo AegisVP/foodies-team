@@ -6,7 +6,9 @@ const RecipePreparation = ({ instructions, isFavorite, onFavoriteToggle }) => {
         <section className={css.instructionsBlock}>
             <h2 className={css.sectionTitle}>Recipe Preparation</h2>
             {instructions.split('\\r\\n').map((paragraph, index) => (
-                <p key={index} className={css.instructionsList} >{paragraph}</p>
+                <p key={index} className={css.instructionsList}>
+                    {paragraph}
+                </p>
             ))}
             <Button
                 onClick={onFavoriteToggle}
