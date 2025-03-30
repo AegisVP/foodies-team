@@ -8,7 +8,7 @@ import { ROUTES } from 'src/navigation/routes';
 import { selectIsAuthenticated } from 'src/redux/authUser/selectors';
 import { useAuthHook } from 'src/hooks/useAuthHook';
 import { replaceUrlParams } from 'src/utils/replaceUrlParams';
-import PopularRecipes from 'src/components/PopularRecipes/PopularRecipes';
+import PopularRecipes from 'src/components/PopularRecipes';
 
 const RecipePage = ({ setCustomBreadcrumbs }) => {
     const navigate = useNavigate();

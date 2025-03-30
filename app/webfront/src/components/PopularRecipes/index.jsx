@@ -21,15 +21,11 @@ const PopularRecipes = ({ onUserAvatarClick }) => {
     useShowError(recipeFetchError);
 
     useEffect(() => {
-        console.log('Dispatching getPopularRecipes');
-
         if (isLoading) {
-            console.log('Already loading, skipping');
             return;
         }
 
         if (popularRecipes?.length > 0) {
-            console.log('Already loaded, skipping');
             return;
         }
 
@@ -55,7 +51,6 @@ const PopularRecipes = ({ onUserAvatarClick }) => {
     }
 
     if (!Array.isArray(popularRecipes) || popularRecipes.length === 0) {
-        console.log('No popular recipes found or invalid data format');
         return (
             <div className={css.container}>
                 <h2 className={css.title}>POPULAR RECIPES</h2>
@@ -71,9 +66,7 @@ const PopularRecipes = ({ onUserAvatarClick }) => {
 
                 <div className={css.grid}>
                     {popularRecipes.map(recipe => {
-                        console.log('Recipe:', recipe);
                         if (!recipe) {
-                            console.log('Encountered null recipe item');
                             return null;
                         }
 
@@ -97,7 +90,7 @@ const PopularRecipes = ({ onUserAvatarClick }) => {
                                 recipeId={recipe.id}
                                 onFavoriteToggle={() => handleToggleFavorite(recipe.id)}
                                 isFavorite={favoritesIds.includes(recipe.id)}
-                                onUserAvatarClick={onUserAvatarClick}
+                                onUserAvatarClick={() => onUserAvatarClick(recipe.owner.id)}
                             />
                         );
                     })}
