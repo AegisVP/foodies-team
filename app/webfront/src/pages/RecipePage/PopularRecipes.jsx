@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectIsRecipesLoading, selectPopularRecipes } from 'src/redux/recipes/selectors';
+import { selectIsRecipesLoading, selectPopularRecipes, selectRecipesError } from 'src/redux/recipes/selectors';
 import { selectFavoriteRecipesId } from 'src/redux/authUser/selectors';
 import { addToFavorites, removeFromFavorites } from 'src/redux/authUser/operations';
 import { getPopularRecipes } from 'src/redux/recipes/operations';
@@ -13,15 +13,43 @@ import css from './PopularRecipes.module.css';
 const PopularRecipes = ({ onUserAvatarClick }) => {
     const dispatch = useDispatch();
     const isLoading = useSelector(selectIsRecipesLoading);
+    const recipeFetchError = useSelector(selectRecipesError);
     const popularRecipes = useSelector(selectPopularRecipes) || [];
     const favoritesIds = useSelector(selectFavoriteRecipesId) || [];
     
+    // Додаємо логування для відстеження стану
+    console.log('PopularRecipes state:', { 
+        isLoading, 
+        popularRecipes: Array.isArray(popularRecipes) ? popularRecipes.length : popularRecipes, 
+        favoritesIds 
+    });
+    
     useEffect(() => {
-        try {
-            dispatch(getPopularRecipes());
-        } catch (error) {
-            console.error("Error fetching popular recipes:", error);
+        console.log('Dispatching getPopularRecipes');
+        
+        // const fetchData = async () => {
+        //     try {
+        //         const resultAction = await dispatch(getPopularRecipes());
+        //         console.log('getPopularRecipes result:', resultAction);
+        //         // Перевіряємо, чи операція була успішною
+        //         if (getPopularRecipes.fulfilled.match(resultAction)) {
+        //             console.log('Fetched data successfully:', resultAction.payload);
+        //         } else if (getPopularRecipes.rejected.match(resultAction)) {
+        //             console.error('Failed to fetch data:', resultAction.error);
+        //         }
+        //     } catch (error) {
+        //         console.error("Error fetching popular recipes:", error);
+        //     }
+        // };
+        
+        // fetchData();
+
+        if (isLoading || recipeFetchError || !!popularRecipes) {
+            console.log("Not fetching popular recipes:", { isLoading, recipeFetchError, popularRecipes });
+            return;
         }
+
+        dispatch(getPopularRecipes());
     }, [dispatch]);
     
     const handleToggleFavorite = (recipeId) => {
@@ -43,6 +71,7 @@ const PopularRecipes = ({ onUserAvatarClick }) => {
     }
     
     if (!Array.isArray(popularRecipes) || popularRecipes.length === 0) {
+        console.log('No popular recipes found or invalid data format');
         return (
             <div className={css.container}>
                 <h2 className={css.title}>POPULAR RECIPES</h2>
@@ -51,13 +80,16 @@ const PopularRecipes = ({ onUserAvatarClick }) => {
         );
     }
     
-    return (
+    return popularRecipes && (
         <div className={css.container}>
             <h2 className={css.title}>POPULAR RECIPES</h2>
             
             <div className={css.grid}>
                 {popularRecipes.map(recipe => {
-                    if (!recipe) return null;
+                    if (!recipe) {
+                        console.log('Encountered null recipe item');
+                        return null;
+                    }
                     
                     return (
                         <RecipeCard
