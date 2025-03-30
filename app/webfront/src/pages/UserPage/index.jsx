@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from 'react';
-import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import Spinner from 'src/components/Spinner';
@@ -10,13 +10,14 @@ import UserProfileCard from 'src/components/UserProfile/UserProfileCard/UserProf
 import Button from 'src/components/Button';
 import {
     followUser,
+    getFavoriteRecipes,
     getFollowees,
     getFollowers,
     logoutUserOperation,
     unfollowUser,
 } from 'src/redux/authUser/operations';
 import { selectAuthUserFollowees, selectAuthUserId } from 'src/redux/authUser/selectors';
-import { selectUserProfile } from 'src/redux/user/selectors';
+import { selectUserProfile, selectIsLoading } from 'src/redux/user/selectors';
 import { getUserProfile } from 'src/redux/user/operations';
 
 const PATHS = {
@@ -31,6 +32,7 @@ const UserPage = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const userProfile = useSelector(selectUserProfile);
+    const isProfileLoading = useSelector(selectIsLoading);
     const authUserId = useSelector(selectAuthUserId);
     const { followees } = useSelector(selectAuthUserFollowees);
     const path = window.location.pathname.split('/').at(-1);
@@ -80,7 +82,7 @@ const UserPage = () => {
         dispatch(getFollowees());
         setOwnUser(id === authUserId);
         if (id === authUserId) {
-            // dispatch(getFavoriteRecipes());
+            dispatch(getFavoriteRecipes());
         }
     }, [authUserId, dispatch, id]);
 
@@ -132,8 +134,10 @@ const UserPage = () => {
                 </Suspense>
             </div>
         </div>
-    ) : (
+    ) : isProfileLoading ? (
         <Loader />
+    ) : (
+        <Navigate to={ROUTES.NOT_FOUND} />
     );
 };
 
