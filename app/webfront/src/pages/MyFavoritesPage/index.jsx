@@ -6,13 +6,23 @@ import Empty from '../../components/Empty';
 import css from './MyFavoritesPage.module.css';
 import cssPagination from 'src/components/RecipePagination/RecipePagination.module.css';
 import OwnerRecipeCard from 'src/components/OwnerRecipeCard';
-import { selectAuthUserError, selectAuthUserIsLoading, selectFavorites } from 'src/redux/authUser/selectors.js';
+import {
+    selectAuthUserError,
+    selectAuthUserIsLoading,
+    selectFavorites,
+    selectFavoritesLimit,
+    selectFavoritesPage,
+    selectFavoritesTotalPages,
+} from 'src/redux/authUser/selectors.js';
 import { getFavoriteRecipes, removeFromFavorites } from 'src/redux/authUser/operations.js';
 import ReactPaginate from 'react-paginate';
 
 const MyFavoritesPage = () => {
     const dispatch = useDispatch();
-    const { page, limit, pages, recipes } = useSelector(selectFavorites);
+    const page = useSelector(selectFavoritesPage);
+    const limit = useSelector(selectFavoritesLimit);
+    const pages = useSelector(selectFavoritesTotalPages);
+    const recipes = useSelector(selectFavorites);
     const isLoading = useSelector(selectAuthUserIsLoading);
     const error = useSelector(selectAuthUserError);
 
