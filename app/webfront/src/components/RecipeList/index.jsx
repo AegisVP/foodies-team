@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useShowError } from 'src/hooks/useShowError.js';
 import { selectRecipes, selectIsRecipesLoading, selectRecipesError } from 'src/redux/recipes/selectors';
 
-const RecipeList = () => {
+const RecipeList = ({ onUserAvatarClick, onRecipeDetailsClick }) => {
     const isRecipesLoading = useSelector(selectIsRecipesLoading);
     const error = useSelector(selectRecipesError);
     const recipes = useSelector(selectRecipes);
@@ -24,7 +24,10 @@ const RecipeList = () => {
                                 description={item.description}
                                 userAvatar={item.owner.avatar}
                                 userName={item.owner.name}
+                                userId={item.owner.id}
                                 recipeId={item.id}
+                                onUserAvatarClick={onUserAvatarClick}
+                                onRecipeDetailsClick={onRecipeDetailsClick}
                             />
                         </li>
                     ))}

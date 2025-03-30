@@ -1,12 +1,17 @@
 import clsx from 'clsx';
 import { useLocation, matchPath } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Logo from 'src/components/Logo';
-import NavBar from 'src/components/NavBar';
-import Profile from 'src/components/Profile';
+
+import Logo from '../Logo';
+import NavBar from '../NavBar';
+import Profile from '../Profile';
+import AuthModal from '../AuthModal';
+
 import ROUTES from 'src/navigation/routes.js';
 import { selectIsAuthenticated } from 'src/redux/authUser/selectors.js';
 import { selectIsMobile } from 'src/redux/common/selectors.js';
+import { useAuthHook } from 'src/hooks/useAuthHook';
+
 import css from './Header.module.css';
 
 const Header = ({ className }) => {
@@ -27,19 +32,50 @@ const Header = ({ className }) => {
     );
     const theme = isDarkTheme ? 'dark' : 'light';
 
+    const {
+        isLoginModalOpen,
+        isRegisterModalOpen,
+        openLoginModal,
+        closeLoginModal,
+        openRegisterModal,
+        closeRegisterModal,
+    } = useAuthHook();
+
     return (
         <header className={classes}>
             <Logo theme={theme} />
 
-            {!isMobile && <NavBar theme={theme} isMobile={false} isHome={isHome} isAddRecipe={isAddRecipe} />}
+            {!isMobile && (
+                <NavBar
+                    theme={theme}
+                    isMobile={false}
+                    isHome={isHome}
+                    isAddRecipe={isAddRecipe}
+                    openLoginModal={openLoginModal}
+                />
+            )}
 
             <div className={css.right}>
                 <Profile isMobile={isMobile} />
 
                 {isMobile && isAuthenticated && (
-                    <NavBar theme={theme} isMobile={true} isHome={isHome} isAddRecipe={isAddRecipe} />
+                    <NavBar
+                        theme={theme}
+                        isMobile={true}
+                        isHome={isHome}
+                        isAddRecipe={isAddRecipe}
+                        openLoginModal={openLoginModal}
+                    />
                 )}
             </div>
+            <AuthModal
+                isLoginModalOpen={isLoginModalOpen}
+                isRegisterModalOpen={isRegisterModalOpen}
+                openLoginModal={openLoginModal}
+                closeLoginModal={closeLoginModal}
+                openRegisterModal={openRegisterModal}
+                closeRegisterModal={closeRegisterModal}
+            />
         </header>
     );
 };

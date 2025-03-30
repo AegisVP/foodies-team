@@ -1,10 +1,11 @@
-import Header from 'src/components/Header';
-import css from './Hero.module.css';
-import Button from '../Button';
-import ROUTES from 'src/navigation/routes.js';
 import clsx from 'clsx';
 
-const Hero = ({ className }) => {
+import Header from '../Header';
+import Button from '../Button';
+
+import css from './Hero.module.css';
+
+const Hero = ({ className, onAddRecipeClick }) => {
     return (
         <div className={clsx(css.component, className)}>
             <Header />
@@ -15,7 +16,7 @@ const Hero = ({ className }) => {
                 various cuisines.
             </p>
 
-            <Button label="Add Recipe" to={ROUTES.ADD_RECIPE_PAGE} theme="light-transparent" className={css.button} />
+            <Button label="Add Recipe" onClick={onAddRecipeClick} theme="light-transparent" className={css.button} />
 
             <div className={css.images}>
                 <img
