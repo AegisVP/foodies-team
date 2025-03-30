@@ -9,6 +9,7 @@ import RecipeCard from 'src/components/RecipeCard';
 import { Loader } from 'src/components';
 
 import css from './PopularRecipes.module.css';
+import { useShowError } from 'src/hooks/useShowError';
 
 const PopularRecipes = ({ onUserAvatarClick }) => {
     const dispatch = useDispatch();
@@ -16,6 +17,8 @@ const PopularRecipes = ({ onUserAvatarClick }) => {
     const recipeFetchError = useSelector(selectRecipesError);
     const popularRecipes = useSelector(selectPopularRecipes);
     const favoritesIds = useSelector(selectFavoriteRecipesId);
+
+    useShowError(recipeFetchError);
 
     // Додаємо логування для відстеження стану
     console.log('PopularRecipes state:', {
