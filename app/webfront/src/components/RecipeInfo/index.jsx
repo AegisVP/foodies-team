@@ -18,7 +18,7 @@ import css from './RecipeInfo.module.css';
 import { Loader } from '..';
 import { replaceUrlParams } from 'src/utils/replaceUrlParams';
 
-const RecipeInfo = ({ setCustomBreadcrumbs }) => {
+const RecipeInfo = ({ setCustomBreadcrumbs, renderAfter }) => {
     const { id } = useParams();
     const { state } = useLocation();
     const dispatch = useDispatch();
@@ -51,10 +51,12 @@ const RecipeInfo = ({ setCustomBreadcrumbs }) => {
 
     useEffect(() => {
         return () => {
-            setCustomBreadcrumbs(null);
+            if (setCustomBreadcrumbs) {
+                setCustomBreadcrumbs(null);
+            }
             dispatch(resetCurrentRecipe());
         };
-    }, [dispatch]);
+    }, [dispatch, setCustomBreadcrumbs]);
 
     const addTofavorite = () => {
         if (recipe) {
@@ -66,7 +68,6 @@ const RecipeInfo = ({ setCustomBreadcrumbs }) => {
                         if (response.error) {
                             console.error('Failed to add to favorites:', response.error.message);
                         } else {
-                            console.log('Recipe added to favorites successfully!');
                             dispatch(getFavoriteRecipes());
                         }
                     })
@@ -79,7 +80,6 @@ const RecipeInfo = ({ setCustomBreadcrumbs }) => {
                         if (response.error) {
                             console.error('Failed to remove from favorites:', response.error.message);
                         } else {
-                            console.log('Recipe removed from favorites successfully!');
                             dispatch(getFavoriteRecipes());
                         }
                     })
@@ -106,6 +106,7 @@ const RecipeInfo = ({ setCustomBreadcrumbs }) => {
                             isFavorite={favoritesIds.includes(id)}
                             onFavoriteToggle={addTofavorite}
                         />
+                        {renderAfter && renderAfter()}
                     </div>
                 </div>
             )}
