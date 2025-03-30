@@ -78,7 +78,7 @@ Button.propTypes = {
     fullWidth: PropTypes.bool,
     href: PropTypes.string,
     icon: PropTypes.string,
-    label: PropTypes.string,
+    label: PropTypes.string.isRequired,
     onClick: PropTypes.func,
     theme: PropTypes.oneOf(['light', 'dark', 'light-transparent']),
     to: PropTypes.string,

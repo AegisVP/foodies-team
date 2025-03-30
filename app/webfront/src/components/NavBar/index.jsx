@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -8,15 +8,23 @@ import Logo from '../Logo';
 
 import ROUTES from 'src/navigation/routes.js';
 import spriteX from 'src/images/icons.svg#x';
+import { setSelectedCategory, setSelectedIngredients, setSelectedArea } from 'src/redux/common/slice';
 import { selectIsAuthenticated } from 'src/redux/authUser/selectors';
-
 
 import css from './NavBar.module.css';
 
 const NavBar = ({ isAddRecipe, isHome, isMobile, theme, openLoginModal }) => {
-    const isAuthenticated = useSelector(selectIsAuthenticated);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+
     const [isOpen, setIsOpen] = useState(false);
+
+    const classes = clsx(css.component, {
+        [css.light]: theme === 'light',
+        [css.dark]: theme === 'dark',
+    });
+
     const toggleMenu = () => {
         setIsOpen(prev => !prev);
     };
@@ -25,6 +33,9 @@ const NavBar = ({ isAddRecipe, isHome, isMobile, theme, openLoginModal }) => {
         if (isMobile) {
             toggleMenu();
         }
+        dispatch(setSelectedCategory(null));
+        dispatch(setSelectedArea(null));
+        dispatch(setSelectedIngredients([]));
 
         navigate(ROUTES.HOME);
     };
@@ -40,11 +51,6 @@ const NavBar = ({ isAddRecipe, isHome, isMobile, theme, openLoginModal }) => {
             openLoginModal();
         }
     };
-
-    const classes = clsx(css.component, {
-        [css.light]: theme === 'light',
-        [css.dark]: theme === 'dark',
-    });
 
     return (
         <nav className={classes}>
