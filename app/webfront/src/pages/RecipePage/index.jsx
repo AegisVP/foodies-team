@@ -10,7 +10,7 @@ const RecipePage = ({ setCustomBreadcrumbs }) => {
     
     const handleUserAvatarClick = (userId) => {
         if (userId) {
-            navigate(replaceUrlParams(ROUTES.USER_PROFILE, { id: userId }));
+            navigate(replaceUrlParams(ROUTES.USER_PAGE, { id: userId }));
         }
     };
     
