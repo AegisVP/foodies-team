@@ -7,6 +7,7 @@ import { selectCurrentRecipe, selectIsRecipesLoading } from 'src/redux/recipes/s
 import { addToFavorites, removeFromFavorites, getFavoriteRecipes } from 'src/redux/favorites/operation';
 import { getRecipeById } from 'src/redux/recipes/operations';
 import { resetCurrentRecipe } from 'src/redux/recipes/slice';
+import { selectUserId } from 'src/redux/authUser/selectors';
 
 import ROUTES from 'src/navigation/routes';
 
@@ -16,31 +17,41 @@ import RecipePreparation from '../RecipePreparation';
 
 import css from './RecipeInfo.module.css';
 import { Loader } from '..';
+import { replaceUrlParams } from 'src/utils/replaceUrlParams';
 
 const RecipeInfo = ({ setCustomBreadcrumbs }) => {
     const { id } = useParams();
     const isRecipesLoading = useSelector(selectIsRecipesLoading);
     const recipe = useSelector(selectCurrentRecipe);
     const favoritesIds = useSelector(selectFavoriteRecipesId);
+    const userId = useSelector(selectUserId);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (id && !isRecipesLoading && !recipe) {
             dispatch(getRecipeById(id));
-            dispatch(getFavoriteRecipes());
         }
+    }, [dispatch, recipe, id, isRecipesLoading]);
 
+    useEffect(() => {
         if (recipe && setCustomBreadcrumbs) {
             setCustomBreadcrumbs([
                 { label: 'Home', path: ROUTES.HOME },
-                { label: 'Recipes', path: ROUTES.RECIPES },
-                { label: recipe.title, path: ROUTES.RECIPE_PAGE.replace(':id', id) },
+                { label: 'Recipes', path: replaceUrlParams(ROUTES.USER_PAGE, { id: userId }) },
+                { label: recipe.title, path: replaceUrlParams(ROUTES.RECIPE_PAGE, { id }) },
             ]);
         }
-    }, [dispatch, recipe, id, isRecipesLoading, setCustomBreadcrumbs]);
+    }, [id, recipe, setCustomBreadcrumbs]);
+
+    useEffect(() => {
+        if (!isRecipesLoading && !favoritesIds) {
+            dispatch(getFavoriteRecipes());
+        }
+    }, [dispatch, isRecipesLoading, favoritesIds]);
 
     useEffect(() => {
         return () => {
+            setCustomBreadcrumbs(null);
             dispatch(resetCurrentRecipe());
         };
     }, [dispatch]);
