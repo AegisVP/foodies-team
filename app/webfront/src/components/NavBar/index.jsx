@@ -1,17 +1,46 @@
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import ROUTES from 'src/navigation/routes.js';
-import spriteX from 'src/images/icons.svg#x';
-import css from './NavBar.module.css';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+
 import Logo from '../Logo';
 
-const NavBar = ({ isAddRecipe, isHome, isMobile, theme }) => {
+import ROUTES from 'src/navigation/routes.js';
+import spriteX from 'src/images/icons.svg#x';
+import { selectIsAuthenticated } from 'src/redux/authUser/selectors';
+
+
+import css from './NavBar.module.css';
+
+const NavBar = ({ isAddRecipe, isHome, isMobile, theme, openLoginModal }) => {
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const toggleMenu = () => {
         setIsOpen(prev => !prev);
     };
+
+    const onHomeClick = () => {
+        if (isMobile) {
+            toggleMenu();
+        }
+
+        navigate(ROUTES.HOME);
+    };
+
+    const onAddRecipeClick = () => {
+        if (isMobile) {
+            toggleMenu();
+        }
+
+        if (isAuthenticated) {
+            navigate(ROUTES.ADD_RECIPE_PAGE);
+        } else {
+            openLoginModal();
+        }
+    };
+
     const classes = clsx(css.component, {
         [css.light]: theme === 'light',
         [css.dark]: theme === 'dark',
@@ -48,16 +77,19 @@ const NavBar = ({ isAddRecipe, isHome, isMobile, theme }) => {
 
                 <nav className={css.nav}>
                     <ul className={css['nav-list']}>
-                        <li className={clsx(css['nav-item'], { [css.active]: isHome })}>
-                            <NavLink to={ROUTES.HOME} onClick={isMobile && toggleMenu}>
+                        <li>
+                            <button className={clsx(css['nav-item'], { [css.active]: isHome })} onClick={onHomeClick}>
                                 Home
-                            </NavLink>
+                            </button>
                         </li>
 
-                        <li className={clsx(css['nav-item'], { [css.active]: isAddRecipe })}>
-                            <NavLink to={ROUTES.ADD_RECIPE_PAGE} onClick={isMobile && toggleMenu}>
+                        <li>
+                            <button
+                                className={clsx(css['nav-item'], { [css.active]: isAddRecipe })}
+                                onClick={onAddRecipeClick}
+                            >
                                 Add recipe
-                            </NavLink>
+                            </button>
                         </li>
                     </ul>
                 </nav>

@@ -10,10 +10,9 @@ import RecipeFilters from '../RecipeFilters';
 import RecipeList from '../RecipeList';
 import RecipePagination from '../RecipePagination';
 
-const Recipes = () => {
-    const selectedCategory = useSelector(selectSelectedCategory);
-
+const Recipes = ({ onUserAvatarClick, onRecipeDetailsClick }) => {
     const dispatch = useDispatch();
+    const selectedCategory = useSelector(selectSelectedCategory);
 
     const handleClick = () => {
         dispatch(setSelectedCategory(null));
@@ -38,7 +37,7 @@ const Recipes = () => {
             <div className={css.recipesListFiltersContainer}>
                 <RecipeFilters />
                 <div className={css.recipesListContainer}>
-                    <RecipeList />
+                    <RecipeList onUserAvatarClick={onUserAvatarClick} onRecipeDetailsClick={onRecipeDetailsClick} />
                     <RecipePagination />
                 </div>
             </div>
