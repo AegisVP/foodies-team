@@ -1,5 +1,6 @@
 export const ROUTES = {
     HOME: '/',
+    PROTECTED_REDIRECT: '/',
     USER_PAGE: '/user/:id?',
     ADD_RECIPE_PAGE: '/recipe/add',
     RECIPE_PAGE: '/recipe/:id',
