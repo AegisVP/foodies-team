@@ -28,13 +28,12 @@ export const getFollowers = createAsyncThunk(
     async (id, { rejectWithValue }) => await wrapper(api.getFollowers, rejectWithValue)(id)
 );
 
-export const getFollowees = createAsyncThunk('followees/getFollowees', async (_, { rejectWithValue }) => {
-    console.log('getFollowees action');
-    return await wrapper(api.getFollowees, rejectWithValue)();
-});
+export const getFollowees = createAsyncThunk(
+    'followees/getFollowees',
+    async (_, { rejectWithValue }) => await wrapper(api.getFollowees, rejectWithValue)()
+);
 
 export const followUser = createAsyncThunk('authUser/followUser', async (id, { rejectWithValue, dispatch }) => {
-    console.log('followUser action');
     await wrapper(api.followUser, rejectWithValue)(id);
     dispatch(getFollowees());
     dispatch(getFollowers(id));
@@ -64,10 +63,9 @@ export const getFavoriteRecipes = createAsyncThunk(
         const queryParams = new URLSearchParams();
         const state = getState();
         const limit = selectFavoritesLimit(state);
-
         queryParams.append('limit', limit);
+
         if (page) queryParams.append('page', page);
-        console.log(queryParams.toString());
 
         return await wrapper(api.getFavoriteRecipes, rejectWithValue)(queryParams.toString());
     }

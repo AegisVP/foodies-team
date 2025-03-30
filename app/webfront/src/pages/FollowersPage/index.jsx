@@ -31,8 +31,6 @@ const FollowersPage = () => {
         }
     }, [dispatch, id]);
 
-    console.log({ followers });
-
     return isLoading ? (
         <Loader />
     ) : followers?.length > 0 ? (
