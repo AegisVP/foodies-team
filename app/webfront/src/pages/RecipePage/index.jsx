@@ -8,6 +8,7 @@ import { ROUTES } from 'src/navigation/routes';
 import { selectIsAuthenticated } from 'src/redux/authUser/selectors';
 import { useAuthHook } from 'src/hooks/useAuthHook';
 import { replaceUrlParams } from 'src/utils/replaceUrlParams';
+import PopularRecipes from 'src/components/PopularRecipes/PopularRecipes';
 
 const RecipePage = ({ setCustomBreadcrumbs }) => {
     const navigate = useNavigate();
@@ -33,6 +34,7 @@ const RecipePage = ({ setCustomBreadcrumbs }) => {
     return (
         <>
             <RecipeInfo setCustomBreadcrumbs={setCustomBreadcrumbs} onUserAvatarClick={onUserAvatarClick} />
+            <PopularRecipes onUserAvatarClick={onUserAvatarClick} />
             <AuthModal
                 isLoginModalOpen={isLoginModalOpen}
                 isRegisterModalOpen={isRegisterModalOpen}
