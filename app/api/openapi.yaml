@@ -712,6 +712,8 @@ components:
             properties:
                 page:
                     type: integer
+                limit:
+                    type: integer
                 pages:
                     type: integer
                 total:

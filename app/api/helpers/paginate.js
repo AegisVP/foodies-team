@@ -8,5 +8,5 @@ export const paginateItems = (sentPage = 1, limit = 12, items) => {
     const startIdx = (page - 1) * limit;
     const endIdx = Math.min(startIdx + limit, items.length);
 
-    return { page, pages, total: items.length, items: items.slice(startIdx, endIdx) };
+    return { page, limit, pages, total: items.length, items: items.slice(startIdx, endIdx) };
 };

@@ -43,9 +43,9 @@ export const listRecipes = async (req, res) => {
     }
 
     const allRecipes = await recipesService.listRecipes(whereCondition.join(' AND '));
-    const { page, pages, total, items: recipes } = paginateItems(req.query.page, req.query.limit, allRecipes);
+    const { page, limit, pages, total, items: recipes } = paginateItems(req.query.page, req.query.limit, allRecipes);
 
-    res.json({ page, pages, total, recipes });
+    res.json({ page, limit, pages, total, recipes });
 };
 
 export const getRecipeById = async (req, res, next) => {
@@ -153,9 +153,9 @@ export const getPopularRecipes = async (req, res) => {
 
 export const getFavoriteRecipes = async (req, res) => {
     const allRecipes = await recipesService.getFavoriteRecipes(req.user.id);
-    const { page, pages, total, items: recipes } = paginateItems(req.query.page, req.query.limit, allRecipes);
+    const { page, limit, pages, total, items: recipes } = paginateItems(req.query.page, req.query.limit, allRecipes);
 
-    res.json({ page, pages, total, recipes });
+    res.json({ page, limit, pages, total, recipes });
 };
 
 export const addRecipeToFavorites = async (req, res, next) => {
