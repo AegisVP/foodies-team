@@ -33,9 +33,11 @@ export const listRecipes = async (req, res) => {
                 .split(',')
                 .map(id => id.trim())
                 .filter(id => id !== '') || [];
-        whereCondition.push(
-            `${ingredientIds.map(id => `CAST(ingredients AS TEXT) SIMILAR TO '%"id":[ ]?"${id}"%'`).join(' AND ')}`
-        );
+        if (ingredientIds.length > 0) {
+            whereCondition.push(
+                `${ingredientIds.map(id => `CAST(ingredients AS TEXT) SIMILAR TO '%"id":[ ]?"${id}"%'`).join(' AND ')}`
+            );
+        }
     }
 
     if (req.query.owner) {
