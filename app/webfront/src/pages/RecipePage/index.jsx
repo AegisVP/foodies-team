@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import RecipeInfo from '../../components/RecipeInfo';
-import PopularRecipes from './PopularRecipes';
+import PopularRecipes from '../../components/PopularRecipes/PopularRecipes';
 import ROUTES from 'src/navigation/routes';
 import { replaceUrlParams } from 'src/utils/replaceUrlParams';
 import css from './Recipe.module.css';
