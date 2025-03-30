@@ -1,8 +1,15 @@
-import css from './RecipeCard.module.css';
+import { useNavigate, useLocation } from 'react-router-dom';
+import ROUTES from 'src/navigation/routes';
+import { replaceUrlParams } from 'src/utils/replaceUrlParams';
 import spriteArrow from 'src/images/icons.svg#arrow';
 import spriteHeart from 'src/images/icons.svg#heart';
 
+import css from './RecipeCard.module.css';
+
 const RecipeCard = ({ mealImage, title, description, userAvatar, userName, recipeId }) => {
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+
     return (
         <div className={css.card}>
             <img src={mealImage} alt="meal" className={css.cardImg} />
@@ -19,7 +26,15 @@ const RecipeCard = ({ mealImage, title, description, userAvatar, userName, recip
                             <use href={spriteHeart} className={css.arrow}></use>
                         </svg>
                     </button>
-                    <button className={css.cardBtn} aria-label="Go to details">
+                    <button
+                        className={css.cardBtn}
+                        onClick={() =>
+                            navigate(replaceUrlParams(ROUTES.RECIPE_PAGE, { id: recipeId }), {
+                                state: { from: pathname },
+                            })
+                        }
+                        aria-label="Go to details"
+                    >
                         <svg>
                             <use href={spriteArrow} className={css.arrow}></use>
                         </svg>

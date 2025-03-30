@@ -12,7 +12,7 @@ const Breadcrumbs = ({ items }) => {
                     const isLast = index === items.length - 1;
 
                     return (
-                        <li key={item.path || index} className={css.breadcrumbItem}>
+                        <li key={item.path + index} className={css.breadcrumbItem}>
                             {isLast ? (
                                 <span className={css.currentPage}>{item.label}</span>
                             ) : (

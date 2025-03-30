@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 import { selectFavoriteRecipesId } from 'src/redux/favorites/selectors';
 import { selectCurrentRecipe, selectIsRecipesLoading } from 'src/redux/recipes/selectors';
@@ -16,31 +16,42 @@ import RecipePreparation from '../RecipePreparation';
 
 import css from './RecipeInfo.module.css';
 import { Loader } from '..';
+import { replaceUrlParams } from 'src/utils/replaceUrlParams';
 
 const RecipeInfo = ({ setCustomBreadcrumbs }) => {
     const { id } = useParams();
+    const { state } = useLocation();
+    const dispatch = useDispatch();
+
     const isRecipesLoading = useSelector(selectIsRecipesLoading);
     const recipe = useSelector(selectCurrentRecipe);
     const favoritesIds = useSelector(selectFavoriteRecipesId);
-    const dispatch = useDispatch();
 
     useEffect(() => {
         if (id && !isRecipesLoading && !recipe) {
             dispatch(getRecipeById(id));
-            dispatch(getFavoriteRecipes());
         }
+    }, [dispatch, recipe, id, isRecipesLoading]);
 
+    useEffect(() => {
         if (recipe && setCustomBreadcrumbs) {
             setCustomBreadcrumbs([
                 { label: 'Home', path: ROUTES.HOME },
-                { label: 'Recipes', path: ROUTES.RECIPES },
-                { label: recipe.title, path: ROUTES.RECIPE_PAGE.replace(':id', id) },
+                { label: 'Recipes', path: state?.from ? state.from : ROUTES.HOME },
+                { label: recipe.title, path: replaceUrlParams(ROUTES.RECIPE_PAGE, { id }) },
             ]);
         }
-    }, [dispatch, recipe, id, isRecipesLoading, setCustomBreadcrumbs]);
+    }, [id, recipe, setCustomBreadcrumbs, state]);
+
+    useEffect(() => {
+        if (!isRecipesLoading && !favoritesIds) {
+            dispatch(getFavoriteRecipes());
+        }
+    }, [dispatch, isRecipesLoading, favoritesIds]);
 
     useEffect(() => {
         return () => {
+            setCustomBreadcrumbs(null);
             dispatch(resetCurrentRecipe());
         };
     }, [dispatch]);

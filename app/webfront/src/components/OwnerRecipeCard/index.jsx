@@ -1,10 +1,15 @@
-import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import ROUTES from 'src/navigation/routes';
+import { replaceUrlParams } from 'src/utils/replaceUrlParams';
+import trashIcon from 'src/images/trash.svg';
+import arrowIcon from 'src/images/arrow.svg';
+
 import css from './OwnerRecipeCard.module.css';
-import trashIcon from '../../images/trash.svg';
-import arrowIcon from '../../images/arrow.svg';
 
 const OwnerRecipeCard = ({ recipe, onDelete = () => {} }) => {
+    const navigate = useNavigate();
     const { id, title, description, thumb } = recipe;
+    const { pathname } = useLocation();
 
     return (
         <div className={css.card}>
@@ -14,9 +19,15 @@ const OwnerRecipeCard = ({ recipe, onDelete = () => {} }) => {
                 <p className={css.description}>{description}</p>
             </div>
             <div className={css.actions}>
-                <Link to={`/recipe/${id}`} className={css.actionButton} aria-label="Open recipe">
+                <button
+                    className={css.actionButton}
+                    aria-label="Open recipe"
+                    onClick={() =>
+                        navigate(replaceUrlParams(ROUTES.RECIPE_PAGE, { id }), { state: { from: pathname } })
+                    }
+                >
                     <img src={arrowIcon} alt="Open" />
-                </Link>
+                </button>
                 <button className={css.actionButton} aria-label="Delete recipe" onClick={() => onDelete(id)}>
                     <img src={trashIcon} alt="Delete" />
                 </button>
