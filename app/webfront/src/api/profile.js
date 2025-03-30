@@ -1,12 +1,12 @@
 import axios from './axiosInstance.js';
 
-export const getFollowers = async id => {
-    const followers = await axios.get(`users/followers?id=${id}`);
+export const getFollowers = async ({ id, page }) => {
+    const followers = await axios.get(`users/followers?id=${id}&page=${page}&limit=10`);
     return followers;
 };
 
-export const getFollowees = async () => {
-    const followees = await axios.get('users/followees');
+export const getFollowees = async page => {
+    const followees = await axios.get(`users/followees?page=${page}&limit=10`);
     return followees;
 };
 

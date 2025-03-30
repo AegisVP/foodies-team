@@ -1,10 +1,10 @@
 import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from 'react-redux';
+import css from 'src/components/Pagination/Pagination.module.css';
 import { selectSelectedCategory, selectSelectedArea, selectSelectedIngredients } from 'src/redux/common/selectors';
 import { selectTotalPages, selectPage } from 'src/redux/recipes/selectors';
 import { fetchRecipes, fetchOwnerRecipes } from 'src/redux/recipes/operations';
 import { setPage } from 'src/redux/recipes/slice';
-import css from './RecipePagination.module.css';
 import { setFavoritePage } from 'src/redux/favorites/slice';
 import { getFavoriteRecipes } from 'src/redux/favorites/operation';
 

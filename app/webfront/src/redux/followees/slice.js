@@ -6,13 +6,21 @@ const followeesSlice = createSlice({
     name: 'followees',
     initialState: {
         following: [],
+        page: 1,
+        totalPages: 1,
         isLoading: false,
         error: null,
+    },
+    reducers: {
+        setPage(state, action) {
+            state.page = action.payload;
+        },
     },
     extraReducers: builder => {
         builder
             .addCase(getFollowees.fulfilled, (state, action) => {
                 state.followees = action.payload.followees;
+                state.totalPages = action.payload.pages;
             })
             .addMatcher(
                 action => action.type.endsWith('/rejected'),
@@ -36,3 +44,7 @@ const followeesSlice = createSlice({
 });
 
 export const followeesReducer = followeesSlice.reducer;
+
+export const {
+    setPage,
+} = followeesSlice.actions;

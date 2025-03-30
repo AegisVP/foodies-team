@@ -64,7 +64,7 @@ const FollowerItem = ({ avatar, id, isFollowing, isMobile, isTablet, recipes, re
                             alt="Thumbnail"
                             className={css.thumbnail}
                             height="100"
-                            src="https://www.foodandwine.com/thmb/kuakUXBI867NCXNKErdjriQTkDM=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/FAW-recipes-pasta-sausage-basil-and-mustard-ingredients-1b50ce143bb74823a1622d738da10b66.jpg"
+                            src={recipe.thumb || "https://www.foodandwine.com/thmb/kuakUXBI867NCXNKErdjriQTkDM=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/FAW-recipes-pasta-sausage-basil-and-mustard-ingredients-1b50ce143bb74823a1622d738da10b66.jpg"}
                             width="100"
                         />
                     </NavLink>
@@ -85,7 +85,7 @@ FollowerItem.propTypes = {
     recipes: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string.isRequired,
-            thumbnail: PropTypes.string.isRequired,
+            thumb: PropTypes.string.isRequired,
         })
     ),
     recipesCount: PropTypes.number.isRequired,

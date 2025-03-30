@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from 'react';
-import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { logoutUserOperation } from 'src/redux/authUser/operations';
@@ -10,23 +10,29 @@ import { Loader } from 'src/components';
 import UserProfileCard from 'src/components/UserProfile/UserProfileCard/UserProfileCard';
 import { getUserInformation } from 'src/api/user';
 import { selectAuthUser } from 'src/redux/authUser/selectors';
+import { selectFollowers } from 'src/redux/followers/selectors';
 import { setProfile } from 'src/redux/user/slice';
-import { selectFollowees, selectFollowers, selectUserProfile } from 'src/redux/user/selectors';
+import { selectUserProfile } from 'src/redux/user/selectors';
 import Button from 'src/components/Button';
 
 const UserPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     const { id } = useParams();
     const userProfile = useSelector(selectUserProfile);
     const loggedinUser = useSelector(selectAuthUser);
     const followers = useSelector(selectFollowers);
     const [activetab, setActiveTab] = useState('recipes');
-    useSelector(selectFollowees);
+
+    const getActiveTabFromPath = () => {
+        const pathParts = location.pathname.split("/"); 
+        return Object.values(ROUTES).includes(pathParts[pathParts.length - 1]) ? pathParts[pathParts.length - 1] : "recipes"; 
+    };
 
     useEffect(() => {
-        setActiveTab('recipes');
-    }, [id]);
+        setActiveTab(getActiveTabFromPath());
+    }, [location.pathname]);
 
     const ownUser = userProfile?.id === loggedinUser?.id;
 
@@ -46,6 +52,7 @@ const UserPage = () => {
             dispatch(setProfile(data));
         });
     }, [loggedinUser, dispatch, id]);
+    
 
     return userProfile ? (
         <div className={css.component}>
