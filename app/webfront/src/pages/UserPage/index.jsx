@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from 'react';
-import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import Spinner from 'src/components/Spinner';
@@ -17,7 +17,7 @@ import {
     unfollowUser,
 } from 'src/redux/authUser/operations';
 import { selectAuthUserFollowees, selectAuthUserId } from 'src/redux/authUser/selectors';
-import { selectUserProfile } from 'src/redux/user/selectors';
+import { selectUserProfile, selectIsLoading } from 'src/redux/user/selectors';
 import { getUserProfile } from 'src/redux/user/operations';
 
 const PATHS = {
@@ -32,6 +32,7 @@ const UserPage = () => {
     const navigate = useNavigate();
     let { id } = useParams();
     const userProfile = useSelector(selectUserProfile);
+    const isLoading = useSelector(selectIsLoading);
     const authUserId = useSelector(selectAuthUserId);
     const { followees } = useSelector(selectAuthUserFollowees);
     const path = window.location.pathname.split('/').at(-1);
@@ -55,8 +56,12 @@ const UserPage = () => {
         dispatch(followUser(userProfile.id));
     };
 
-    if (!id && authUserId) {
-        id = authUserId;
+    if (!id) {
+        if (authUserId) {
+            id = authUserId;
+        } else {
+            navigate('/');
+        }
     }
 
     useEffect(() => {
@@ -82,7 +87,7 @@ const UserPage = () => {
     }, [currentTab, navigate, id, ownUser, authUserId]);
 
     useEffect(() => {
-        if (!id && !authUserId) return;
+        if (!id) return;
 
         dispatch(getUserProfile(id));
         authUserId && dispatch(getFollowers(id));
@@ -149,8 +154,10 @@ const UserPage = () => {
                 </Suspense>
             </div>
         </div>
-    ) : (
+    ) : isLoading ? (
         <Loader />
+    ) : (
+        <Navigate to={ROUTES.NOT_FOUND} />
     );
 };
 
