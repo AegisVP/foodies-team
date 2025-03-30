@@ -6,7 +6,17 @@ import spriteHeart from 'src/images/icons.svg#heart';
 
 import css from './RecipeCard.module.css';
 
-const RecipeCard = ({ mealImage, title, description, userAvatar, userName, recipeId, onFavoriteToggle, isFavorite }) => {
+const RecipeCard = ({ 
+    mealImage, 
+    title, 
+    description, 
+    userAvatar, 
+    userName, 
+    recipeId, 
+    onFavoriteToggle, 
+    isFavorite,
+    onUserAvatarClick 
+}) => {
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
@@ -17,7 +27,13 @@ const RecipeCard = ({ mealImage, title, description, userAvatar, userName, recip
             <p className={css.cardDescription}>{description}</p>
             <div className={css.cardFooter}>
                 <div className={css.userInfo}>
-                    <img src={userAvatar} className={css.userImg} alt={userName} />
+                    <button 
+                        className={css.userImgButton}
+                        onClick={() => onUserAvatarClick && onUserAvatarClick(recipe.owner?.id)}
+                        aria-label="View chef profile"
+                    >
+                        <img src={userAvatar} className={css.userImg} alt={userName} />
+                    </button>
                     <p className={css.userName}>{userName}</p>
                 </div>
                 <div className={css.cardActions}>

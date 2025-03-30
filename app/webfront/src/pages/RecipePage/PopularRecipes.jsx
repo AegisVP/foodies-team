@@ -10,7 +10,7 @@ import { Loader } from 'src/components';
 
 import css from './PopularRecipes.module.css';
 
-const PopularRecipes = () => {
+const PopularRecipes = ({ onUserAvatarClick }) => {
     const dispatch = useDispatch();
     const isLoading = useSelector(selectIsRecipesLoading);
     const popularRecipes = useSelector(selectPopularRecipes) || [];
@@ -70,6 +70,7 @@ const PopularRecipes = () => {
                             recipeId={recipe.id}
                             onFavoriteToggle={() => handleToggleFavorite(recipe.id)}
                             isFavorite={favoritesIds.includes(recipe.id)}
+                            onUserAvatarClick={onUserAvatarClick}
                         />
                     );
                 })}
