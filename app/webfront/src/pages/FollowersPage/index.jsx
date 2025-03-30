@@ -26,7 +26,7 @@ const FollowersPage = () => {
             console.log({ id });
             dispatch(getFollowers({ id, page }));
         }
-    }, []);
+    }, [dispatch, id]);
 
     function handlePageClick(selectedPage) {
         dispatch(setPage(selectedPage.selected + 1));

@@ -28,7 +28,7 @@ const FolloweesPage = () => {
         if (id && id === authUser?.id) {
             dispatch(getFollowees(page));
         }
-    }, []);
+    }, [dispatch, id, authUser]);
 
     function handlePageClick(selectedPage) {
         dispatch(setPage(selectedPage.selected + 1));
