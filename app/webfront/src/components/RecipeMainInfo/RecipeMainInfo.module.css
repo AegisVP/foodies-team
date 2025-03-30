@@ -48,6 +48,7 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    background-color: transparent;
 }
 
 .userImg {
@@ -61,6 +62,7 @@
     font-weight: 500;
     line-height: 20px;
     letter-spacing: -0.28px;
+    text-align: start;
 }
 
 .userName > span {

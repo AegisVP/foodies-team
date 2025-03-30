@@ -1,38 +1,40 @@
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import clsx from 'clsx';
+
 import Modal from '../Modal';
-import LoginForm from '../LoginForm';
-import RegisterForm from '../RegisterForm';
-import styles from './Profile.module.css';
+import AuthModal from '../AuthModal';
 import AuthenticationButtons from '../AuthenticationButtons';
 import UserMenu from '../UserMenu';
 import Button from '../Button';
+
+import ROUTES from 'src/navigation/routes';
+import { useAuthHook } from 'src/hooks/useAuthHook';
 import { logoutUserOperation } from 'src/redux/authUser/operations';
+import { selectIsAuthenticated } from 'src/redux/authUser/selectors';
+
+import styles from './Profile.module.css';
 
 export default function Profile({ isMobile }) {
-    const isAuthenticated = useSelector(state => state.authUser.isAuthenticated);
+    const isAuthenticated = useSelector(selectIsAuthenticated);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [showRegisterModal, setShowRegisterModal] = useState(false);
+
     const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const {
+        isLoginModalOpen,
+        isRegisterModalOpen,
+        openLoginModal,
+        closeLoginModal,
+        openRegisterModal,
+        closeRegisterModal,
+    } = useAuthHook();
 
     const handleLogout = () => {
         dispatch(logoutUserOperation());
         setShowLogoutModal(false);
-        navigate('/');
-    };
-
-    const onSwitchToLogin = () => {
-        setShowLoginModal(true);
-        setShowRegisterModal(false);
-    };
-
-    const onSwitchToRegister = () => {
-        setShowLoginModal(false);
-        setShowRegisterModal(true);
+        navigate(ROUTES.HOME);
     };
 
     if (!isAuthenticated) {
@@ -40,35 +42,17 @@ export default function Profile({ isMobile }) {
             <div>
                 <AuthenticationButtons
                     isMobile={isMobile}
-                    onLoginOpen={() => setShowLoginModal(true)}
-                    onRegisterOpen={() => setShowRegisterModal(true)}
+                    onLoginOpen={openLoginModal}
+                    onRegisterOpen={openRegisterModal}
                 />
-                <div>
-                    {showLoginModal && (
-                        <Modal onClose={() => setShowLoginModal(false)}>
-                            <h2 className={styles.modalTitle}>SIGN IN</h2>
-                            <LoginForm onClose={() => setShowLoginModal(false)} />
-                            <p className={styles.switchText}>
-                                Don&apos;t have an account?
-                                <button type="button" onClick={onSwitchToRegister} className={styles.switchBtn}>
-                                    Create an account
-                                </button>
-                            </p>
-                        </Modal>
-                    )}
-                    {showRegisterModal && (
-                        <Modal onClose={() => setShowRegisterModal(false)}>
-                            <h2 className={styles.modalTitle}>SIGN UP</h2>
-                            <RegisterForm onClose={() => setShowRegisterModal(false)} />
-                            <p className={styles.switchText}>
-                                Already have an account?
-                                <button type="button" onClick={onSwitchToLogin} className={styles.switchBtn}>
-                                    Sign In
-                                </button>
-                            </p>
-                        </Modal>
-                    )}
-                </div>
+                <AuthModal
+                    isLoginModalOpen={isLoginModalOpen}
+                    isRegisterModalOpen={isRegisterModalOpen}
+                    openLoginModal={openLoginModal}
+                    closeLoginModal={closeLoginModal}
+                    openRegisterModal={openRegisterModal}
+                    closeRegisterModal={closeRegisterModal}
+                />
             </div>
         );
     }

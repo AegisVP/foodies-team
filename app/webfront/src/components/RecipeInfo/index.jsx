@@ -7,18 +7,18 @@ import { selectCurrentRecipe, selectIsRecipesLoading } from 'src/redux/recipes/s
 import { addToFavorites, removeFromFavorites, getFavoriteRecipes } from 'src/redux/authUser/operations';
 import { getRecipeById } from 'src/redux/recipes/operations';
 import { resetCurrentRecipe } from 'src/redux/recipes/slice';
+import { replaceUrlParams } from 'src/utils/replaceUrlParams';
 
 import ROUTES from 'src/navigation/routes';
 
 import RecipeMainInfo from '../RecipeMainInfo';
 import RecipeIngredients from '../RecipeIngredients';
 import RecipePreparation from '../RecipePreparation';
+import Loader from '../Loader';
 
 import css from './RecipeInfo.module.css';
-import { Loader } from '..';
-import { replaceUrlParams } from 'src/utils/replaceUrlParams';
 
-const RecipeInfo = ({ setCustomBreadcrumbs, renderAfter }) => {
+const RecipeInfo = ({ setCustomBreadcrumbs, onUserAvatarClick }) => {
     const { id } = useParams();
     const { state } = useLocation();
     const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const RecipeInfo = ({ setCustomBreadcrumbs, renderAfter }) => {
         };
     }, [dispatch, setCustomBreadcrumbs]);
 
-    const addTofavorite = () => {
+    const addToFavorite = () => {
         if (recipe) {
             const isFavorite = favoritesIds.includes(id);
 
@@ -99,14 +99,13 @@ const RecipeInfo = ({ setCustomBreadcrumbs, renderAfter }) => {
                         <img src={recipe.thumb} alt="meal" className={css.recipeImg} />
                     </div>
                     <div className={css.recipe}>
-                        <RecipeMainInfo recipe={recipe} />
+                        <RecipeMainInfo recipe={recipe} onUserAvatarClick={onUserAvatarClick} />
                         <RecipeIngredients ingredients={recipe.ingredients} />
                         <RecipePreparation
                             instructions={recipe.instructions}
                             isFavorite={favoritesIds.includes(id)}
-                            onFavoriteToggle={addTofavorite}
+                            onFavoriteToggle={addToFavorite}
                         />
-                        {renderAfter && renderAfter()}
                     </div>
                 </div>
             )}
