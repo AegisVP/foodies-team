@@ -1,15 +1,18 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Button from 'src/components/Button';
 import iconArrow from 'src/images/icons.svg#arrow';
-import { followUser, unfollowUser } from 'src/redux/user/operations.js';
+import { followUser, unfollowUser } from 'src/redux/authUser/operations.js';
 import css from './FollowerItem.module.css';
+import { selectAuthUserId } from 'src/redux/authUser/selectors';
 
 const FollowerItem = ({ avatar, id, isFollowing, isMobile, isTablet, recipes, recipesCount, username }) => {
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const dispatch = useDispatch();
+    const authUserId = useSelector(selectAuthUserId);
+
     function onButtonClick() {
         setButtonDisabled(true);
 
@@ -47,26 +50,22 @@ const FollowerItem = ({ avatar, id, isFollowing, isMobile, isTablet, recipes, re
 
                     <p className={css['recipes-count']}>Own recipes: {recipesCount}</p>
 
-                    <Button
-                        ariaLabel={isFollowing ? `Unfollow ${username}` : `Follow ${username}`}
-                        label={isFollowing ? 'Following' : 'Follow'}
-                        size="small"
-                        disabled={buttonDisabled}
-                        onClick={onButtonClick}
-                    />
+                    {authUserId === id ? null : (
+                        <Button
+                            ariaLabel={isFollowing ? `Unfollow ${username}` : `Follow ${username}`}
+                            label={isFollowing ? 'Following' : 'Follow'}
+                            size="small"
+                            disabled={buttonDisabled}
+                            onClick={onButtonClick}
+                        />
+                    )}
                 </div>
             </div>
 
             <div className={css.recipes}>
                 {recipesToDisplay()?.map(recipe => (
                     <NavLink className={css.recipe} key={recipe.id} to={`/recipe/${recipe.id}`}>
-                        <img
-                            alt="Thumbnail"
-                            className={css.thumbnail}
-                            height="100"
-                            src="https://www.foodandwine.com/thmb/kuakUXBI867NCXNKErdjriQTkDM=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/FAW-recipes-pasta-sausage-basil-and-mustard-ingredients-1b50ce143bb74823a1622d738da10b66.jpg"
-                            width="100"
-                        />
+                        <img alt="Thumbnail" className={css.thumbnail} height="100" src={recipe.thumb} width="100" />
                     </NavLink>
                 ))}
             </div>
@@ -85,7 +84,7 @@ FollowerItem.propTypes = {
     recipes: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string.isRequired,
-            thumbnail: PropTypes.string.isRequired,
+            thumb: PropTypes.string.isRequired,
         })
     ),
     recipesCount: PropTypes.number.isRequired,

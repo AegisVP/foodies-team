@@ -26,7 +26,9 @@ const UserProfileAvatar = ({ userProfile, ownUser }) => {
             imgPreview.current.style.display = 'block';
             imgPreview.current.src = this.result;
         });
-        dispatch(updateUserAvatar(avatar));
+        const formData = new FormData();
+        formData.append('avatar', avatar);
+        dispatch(updateUserAvatar(formData));
     };
 
     return (

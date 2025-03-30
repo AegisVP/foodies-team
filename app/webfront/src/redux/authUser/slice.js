@@ -1,5 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { logoutUserOperation, updateUserAvatar, loginUserOperation, refreshUser } from './operations';
+import {
+    logoutUserOperation,
+    updateUserAvatar,
+    loginUserOperation,
+    refreshUser,
+    getFollowers,
+    getFollowees,
+    getFavoriteRecipes,
+    removeFromFavorites,
+} from './operations';
 
 const token = localStorage.getItem('token');
 
@@ -7,6 +16,34 @@ const initialState = {
     isAuthenticated: token !== null && token !== undefined,
     token: token || null,
     user: null,
+    favorites: {
+        page: 0,
+        limit: 0,
+        pages: 0,
+        total: 0,
+        recipes: [],
+    },
+    recipes: {
+        page: 0,
+        limit: 0,
+        pages: 0,
+        total: 0,
+        recipes: [],
+    },
+    followees: {
+        page: 0,
+        limit: 0,
+        pages: 0,
+        total: 0,
+        followees: [],
+    },
+    followers: {
+        page: 0,
+        limit: 0,
+        pages: 0,
+        total: 0,
+        followers: [],
+    },
     isLoading: false,
     error: null,
 };
@@ -14,16 +51,21 @@ const initialState = {
 const authUserSlice = createSlice({
     name: 'authUser',
     initialState,
-    reducers: {
-        setUser: (state, action) => {
-            state.user = action.payload;
-        },
-        setIsLoading: (state, action) => {
-            state.isLoading = action.payload;
-        },
-    },
+    reducers: {},
     extraReducers: builder => {
         builder
+            .addCase(removeFromFavorites.fulfilled, (state, action) => {
+                state.favorites.recipes.filter(recipe => recipe.id !== action.meta.arg);
+            })
+            .addCase(getFavoriteRecipes.fulfilled, (state, action) => {
+                state.favorites = action.payload;
+            })
+            .addCase(getFollowers.fulfilled, (state, action) => {
+                state.followers = action.payload;
+            })
+            .addCase(getFollowees.fulfilled, (state, action) => {
+                state.followees = action.payload;
+            })
             .addCase(refreshUser.fulfilled, (state, action) => {
                 state.isAuthenticated = true;
                 state.user = action.payload;
@@ -32,7 +74,7 @@ const authUserSlice = createSlice({
                 state.isAuthenticated = false;
                 state.token = null;
                 state.user = null;
-                localStorage.removeItem('token');
+                // localStorage.removeItem('token');
             })
             .addCase(loginUserOperation.fulfilled, (state, action) => {
                 state.isAuthenticated = true;
@@ -72,5 +114,4 @@ const authUserSlice = createSlice({
     },
 });
 
-export const { setUser, setIsLoading } = authUserSlice.actions;
 export const authUserReducer = authUserSlice.reducer;

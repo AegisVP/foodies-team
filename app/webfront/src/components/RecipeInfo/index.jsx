@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { selectFavoriteRecipesId } from 'src/redux/favorites/selectors';
+import { selectFavoriteRecipesId } from 'src/redux/authUser/selectors';
 import { selectCurrentRecipe, selectIsRecipesLoading } from 'src/redux/recipes/selectors';
-import { addToFavorites, removeFromFavorites, getFavoriteRecipes } from 'src/redux/favorites/operation';
+import { addToFavorites, removeFromFavorites, getFavoriteRecipes } from 'src/redux/authUser/operations';
 import { getRecipeById } from 'src/redux/recipes/operations';
 import { resetCurrentRecipe } from 'src/redux/recipes/slice';
 

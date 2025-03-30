@@ -1,29 +1,11 @@
-import axiosPrivateInstance from './axiosInstance.js';
+import axios, { HEADER_MFD } from './axiosInstance.js';
 
-export const registerUser = async userData => {
-    const response = await axiosPrivateInstance.post('/users/register', userData);
-    return response;
-};
+export const registerUser = async userData => await axios.post('/users/register', userData);
 
-export const loginUser = async credentials => {
-    const response = await axiosPrivateInstance.post('/users/login', credentials);
-    return response;
-};
+export const loginUser = async credentials => await axios.post('/users/login', credentials);
 
-export const logoutUser = async () => {
-    const response = await axiosPrivateInstance.post('/users/logout');
-    return response;
-};
+export const logoutUser = async () => await axios.post('/users/logout');
 
-export const getCurrentUser = async () => {
-    const response = await axiosPrivateInstance.get('/users/current');
-    return response;
-};
+export const getCurrentUser = async () => await axios.get('/users/current');
 
-export const updateAvatar = async avatar => {
-    const headers = { 'Content-Type': 'multipart/form-data' };
-    const formData = new FormData();
-    formData.append('avatar', avatar);
-    const response = await axiosPrivateInstance.patch('/users/avatar', formData, { headers });
-    return response;
-};
+export const updateAvatar = async formData => await axios.patch('/users/avatar', formData, { headers: HEADER_MFD });

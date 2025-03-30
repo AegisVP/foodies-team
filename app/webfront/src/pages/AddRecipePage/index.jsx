@@ -37,7 +37,7 @@ import {
     selectRecipesError,
     selectIsRecipesSuccessful,
 } from 'src/redux/recipes/selectors';
-import { selectUserId } from 'src/redux/authUser/selectors';
+import { selectAuthUserId } from 'src/redux/authUser/selectors';
 
 import {
     Button,
@@ -58,7 +58,7 @@ const AddRecipePage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     //authUser
-    const userId = useSelector(selectUserId);
+    const userId = useSelector(selectAuthUserId);
 
     // recipe details
     const recipeDetails = useSelector(selectRecipeDetails);

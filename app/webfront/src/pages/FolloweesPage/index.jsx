@@ -1,31 +1,25 @@
-import { useEffect } from 'react';
+import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import Empty from 'src/components/Empty';
 import FollowerItem from 'src/components/FollowerItem';
 import Loader from 'src/components/Loader';
-import { selectAuthUser } from 'src/redux/authUser/selectors';
+import cssPagination from 'src/components/RecipePagination/RecipePagination.module.css';
+import { getFollowees } from 'src/redux/authUser/operations';
+import { selectAuthUserFollowees } from 'src/redux/authUser/selectors';
 import { selectIsMobile, selectIsTablet } from 'src/redux/common/selectors.js';
-import { getFollowees } from 'src/redux/followees/operations.js';
-import { selectFollowees, selectIsLoading } from 'src/redux/user/selectors.js';
+import { selectIsLoading } from 'src/redux/user/selectors.js';
 
 const FolloweesPage = () => {
     console.log('FolloweesPage start');
     const dispatch = useDispatch();
-    const followees = useSelector(selectFollowees);
+    const { page, pages, limit, followees } = useSelector(selectAuthUserFollowees);
     const isMobile = useSelector(selectIsMobile);
     const isTablet = useSelector(selectIsTablet);
     const isLoading = useSelector(selectIsLoading);
-    const authUser = useSelector(selectAuthUser);
-    const { id } = useParams();
 
-    useEffect(() => {
-        if (id && id === authUser?.id) {
-            dispatch(getFollowees(id));
-        }
-    }, [dispatch, id, authUser]);
-
-    console.log({ followees });
+    const handlePageClick = data => {
+        dispatch(getFollowees({ page: data.selected + 1, limit: limit }));
+    };
 
     return isLoading ? (
         <Loader />
@@ -34,23 +28,44 @@ const FolloweesPage = () => {
             {!followees || followees.length === 0 ? (
                 <Empty message="Your account currently has no subscriptions to other users. Learn more about our users and select those whose content interests you." />
             ) : (
-                <ul>
-                    {followees.map(followee => {
-                        return (
-                            <FollowerItem
-                                key={followee.id}
-                                avatar={followee.avatar}
-                                id={followee.id}
-                                isFollowing={followee.isFollowing}
-                                isMobile={isMobile}
-                                isTablet={isTablet}
-                                recipes={followee.recipes}
-                                recipesCount={Number(followee.recipeCount)}
-                                username={followee.name}
-                            />
-                        );
-                    })}
-                </ul>
+                <>
+                    <ul>
+                        {followees.map(followee => {
+                            return (
+                                <FollowerItem
+                                    key={followee.id}
+                                    avatar={followee.avatar}
+                                    id={followee.id}
+                                    isFollowing={followee.isFollowing}
+                                    isMobile={isMobile}
+                                    isTablet={isTablet}
+                                    recipes={followee.recipes}
+                                    recipesCount={Number(followee.recipeCount)}
+                                    username={followee.name}
+                                />
+                            );
+                        })}
+                    </ul>
+
+                    {pages > 1 && (
+                        <ReactPaginate
+                            previousLabel={null}
+                            nextLabel={null}
+                            pageCount={pages}
+                            onPageChange={handlePageClick}
+                            breakLabel={'...'}
+                            pageRangeDisplayed={2}
+                            marginPagesDisplayed={1}
+                            containerClassName={cssPagination.paginationContainer}
+                            pageClassName={cssPagination.paginationItem}
+                            pageLinkClassName={cssPagination.pageLink}
+                            activeClassName={cssPagination.paginationItemActive}
+                            breakClassName={cssPagination.break}
+                            breakLinkClassName={cssPagination.breakLink}
+                            forcePage={page - 1}
+                        />
+                    )}
+                </>
             )}
         </>
     );

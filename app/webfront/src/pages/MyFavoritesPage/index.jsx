@@ -1,38 +1,40 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFavoriteRecipes, removeFromFavorites } from '../../redux/favorites/operation.js';
-import { selectFavorites, selectIsFavoritesLoading, selectFavoritesError } from '../../redux/favorites/selectors.js';
 import { useShowError } from '../../hooks/useShowError.js';
 import { Loader } from '../../components';
 import Empty from '../../components/Empty';
 import css from './MyFavoritesPage.module.css';
-import RecipePagination from 'src/components/RecipePagination';
+import cssPagination from 'src/components/RecipePagination/RecipePagination.module.css';
 import OwnerRecipeCard from 'src/components/OwnerRecipeCard';
+import { selectAuthUserError, selectAuthUserIsLoading, selectFavorites } from 'src/redux/authUser/selectors.js';
+import { getFavoriteRecipes, removeFromFavorites } from 'src/redux/authUser/operations.js';
+import ReactPaginate from 'react-paginate';
 
 const MyFavoritesPage = () => {
     const dispatch = useDispatch();
-    const favorites = useSelector(selectFavorites);
-    const isLoading = useSelector(selectIsFavoritesLoading);
-    const error = useSelector(selectFavoritesError);
+    const { page, limit, pages, recipes } = useSelector(selectFavorites);
+    const isLoading = useSelector(selectAuthUserIsLoading);
+    const error = useSelector(selectAuthUserError);
 
     useShowError(error);
 
+    const handlePageClick = data => {
+        dispatch(getFavoriteRecipes({ page: data.selected + 1, limit: limit }));
+    };
+
     useEffect(() => {
+        console.log('getting favorite recipes');
         dispatch(getFavoriteRecipes({ page: 1 }));
     }, [dispatch]);
 
     return (
         <div className={css.container}>
-            {isLoading && <Loader />}
-
-            {!isLoading && favorites?.length === 0 && (
-                <Empty message="You haven't added any recipes to favorites yet" />
-            )}
-
-            {!isLoading && favorites?.length > 0 && (
+            {isLoading ? (
+                <Loader />
+            ) : recipes?.length > 0 ? (
                 <>
                     <ul className={css.recipeList}>
-                        {favorites.map(recipe => (
+                        {recipes.map(recipe => (
                             <li key={recipe.id} className={css.recipeItem}>
                                 <OwnerRecipeCard
                                     recipe={recipe}
@@ -43,8 +45,28 @@ const MyFavoritesPage = () => {
                             </li>
                         ))}
                     </ul>
-                    <RecipePagination variant="favorites" />
+
+                    {pages > 1 && (
+                        <ReactPaginate
+                            previousLabel={null}
+                            nextLabel={null}
+                            pageCount={pages}
+                            onPageChange={handlePageClick}
+                            breakLabel={'...'}
+                            pageRangeDisplayed={2}
+                            marginPagesDisplayed={1}
+                            containerClassName={cssPagination.paginationContainer}
+                            pageClassName={cssPagination.paginationItem}
+                            pageLinkClassName={cssPagination.pageLink}
+                            activeClassName={cssPagination.paginationItemActive}
+                            breakClassName={cssPagination.break}
+                            breakLinkClassName={cssPagination.breakLink}
+                            forcePage={page - 1}
+                        />
+                    )}
                 </>
+            ) : (
+                <Empty message="You haven't added any recipes to favorites yet" />
             )}
         </div>
     );

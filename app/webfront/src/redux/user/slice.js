@@ -1,20 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { followUser, unfollowUser, getUserProfile } from './operations.js';
+import { getUserFollowers, getUserProfile, getUserRecipes } from './operations.js';
+
+const setUserProfile = (state, action) => {
+    state.profile = action.payload;
+};
 
 const initialState = {
     profile: null,
-    recipes: [],
+    recipes: {
+        page: 0,
+        limit: 0,
+        pages: 0,
+        total: 0,
+        recipes: [],
+    },
     followers: {
         page: 0,
+        limit: 0,
         pages: 0,
         total: 0,
         followers: [],
-    },
-    followees: {
-        page: 0,
-        pages: 0,
-        total: 0,
-        followees: [],
     },
     isLoading: false,
     error: null,
@@ -29,30 +34,28 @@ const userSlice = createSlice({
         setIsLoading: (state, { payload }) => {
             state.isLoading = payload;
         },
-        setProfile: (_, { payload }) => {
-            return payload;
-        },
+        setProfile: setUserProfile,
     },
     extraReducers: builder => {
         builder
-            .addCase(getUserProfile.fulfilled, (state, action) => {
-                state.profile = action.payload;
+            .addCase(getUserRecipes.fulfilled, (state, action) => {
+                state.recipes = action.payload;
             })
-            .addCase(followUser.fulfilled, (state, action) => {
-                state.followers.followers.find(follower => follower.id === action.payload).isFollowing = true;
+            .addCase(getUserFollowers.fulfilled, (state, action) => {
+                state.followers = action.payload;
             })
-            .addCase(unfollowUser.fulfilled, (state, action) => {
-                state.followees.followees.find(followee => followee.id === action.payload).isFollowing = false;
-            })
+            .addCase(getUserProfile.fulfilled, setUserProfile)
             .addMatcher(
                 action => action.type.endsWith('/rejected'),
                 (state, action) => {
                     state.error = action.payload;
+                    state.isLoading = false;
                 }
             )
             .addMatcher(
                 action => action.type.endsWith('/pending'),
                 state => {
+                    state.error = null;
                     state.isLoading = true;
                 }
             )

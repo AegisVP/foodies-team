@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_BASEURL ?? '/api';
 
+export const HEADER_MFD = { 'Content-Type': 'multipart/form-data' };
+
 const axiosPrivateInstance = axios.create({
     baseURL,
     headers: {
