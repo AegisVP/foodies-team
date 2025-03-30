@@ -20,14 +20,7 @@ const AppNavigator = ({ setCustomBreadcrumbs }) => {
         <Suspense fallback={<Loader />}>
             <Routes>
                 <Route path={ROUTES.HOME} element={<HomePage />} />
-                <Route
-                    path={ROUTES.USER_PAGE}
-                    element={
-                        <ProtectedRoute>
-                            <UserPage />
-                        </ProtectedRoute>
-                    }
-                >
+                <Route path={ROUTES.USER_PAGE} element={<UserPage />}>
                     <Route index element={<RecipesPage />} />
                     <Route path={ROUTES.RECIPES} element={<RecipesPage />} />
                     <Route path={ROUTES.FAVORITES} element={<MyFavoritesPage />} />

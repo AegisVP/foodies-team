@@ -56,7 +56,7 @@ const RecipeInfo = ({ setCustomBreadcrumbs }) => {
         };
     }, [dispatch]);
 
-    const addTofavorite = () => {
+    const addToFavorite = () => {
         if (recipe) {
             const isFavorite = favoritesIds.includes(id);
 
@@ -104,7 +104,7 @@ const RecipeInfo = ({ setCustomBreadcrumbs }) => {
                         <RecipePreparation
                             instructions={recipe.instructions}
                             isFavorite={favoritesIds.includes(id)}
-                            onFavoriteToggle={addTofavorite}
+                            onFavoriteToggle={addToFavorite}
                         />
                     </div>
                 </div>

@@ -1,0 +1,22 @@
+.modalTitle {
+    margin-bottom: 40px;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.switchText {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    color: var(--black);
+}
+
+.switchBtn {
+    background: none;
+    color: var(--extra-black);
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+}

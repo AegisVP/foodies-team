@@ -33,4 +33,11 @@
 .deleteBtn {
     cursor: pointer;
     align-self: start;
+    background-color: transparent;
+    padding: 5px;
+}
+
+.deleteIcon {
+    width: 20px;
+    height: auto;
 }

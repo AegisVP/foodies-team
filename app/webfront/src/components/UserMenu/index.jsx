@@ -1,26 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import css from './UserMenu.module.css';
 import defaultAvatar from 'src/images/default-avatar.svg';
 import spriteArrow from 'src/images/icons.svg#arrow';
 import spriteChevronDown from 'src/images/icons.svg#chevron-down';
 import spriteChevronUp from 'src/images/icons.svg#chevron-up';
 import Spinner from '../Spinner';
-import { logoutUserOperation } from 'src/redux/authUser/operations';
+import ROUTES from 'src/navigation/routes';
+import { replaceUrlParams } from 'src/utils/replaceUrlParams';
 
 const UserMenu = ({ onLogoutOpen }) => {
-    const dispatch = useDispatch();
     const user = useSelector(state => state.authUser.user);
     const loadingUser = useSelector(state => state.authUser.isLoading);
 
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef(null);
-
-    const handleLogout = () => {
-        dispatch(logoutUserOperation());
-        toggleMenu();
-    };
 
     const toggleMenu = () => {
         setIsOpen(prev => !prev);
@@ -63,13 +58,13 @@ const UserMenu = ({ onLogoutOpen }) => {
                     <nav className={css.menu}>
                         <ul>
                             <li>
-                                <NavLink to={`/user/${user?.id}`} onClick={toggleMenu}>
+                                <NavLink to={replaceUrlParams(ROUTES.USER_PAGE, { id: user.id })} onClick={toggleMenu}>
                                     Profile
                                 </NavLink>
                             </li>
 
-                            <li onClick={onLogoutOpen}>
-                                <NavLink onClick={handleLogout}>
+                            <li>
+                                <NavLink onClick={onLogoutOpen}>
                                     Logout
                                     <svg>
                                         <use href={spriteArrow} />

@@ -1,3 +1,4 @@
+import closeIcon from 'src/images/x.svg';
 import css from './IngredientCard.module.css';
 
 const IngredientCard = ({ imageUrl, title, subtitle, onDelete }) => {
@@ -12,7 +13,7 @@ const IngredientCard = ({ imageUrl, title, subtitle, onDelete }) => {
             </div>
             {/* TODO: add delete icon */}
             <button className={css.deleteBtn} onClick={onDelete}>
-                -
+                <img className={css.deleteIcon} src={closeIcon} alt="delete ingredient" />
             </button>
         </div>
     );
