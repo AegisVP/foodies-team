@@ -20,13 +20,6 @@ const PopularRecipes = ({ onUserAvatarClick }) => {
 
     useShowError(recipeFetchError);
 
-    // Додаємо логування для відстеження стану
-    console.log('PopularRecipes state:', {
-        isLoading,
-        popularRecipes: Array.isArray(popularRecipes) ? popularRecipes.length : popularRecipes,
-        favoritesIds,
-    });
-
     useEffect(() => {
         console.log('Dispatching getPopularRecipes');
 
