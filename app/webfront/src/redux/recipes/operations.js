@@ -93,7 +93,8 @@ export const getPopularRecipes = createAsyncThunk(
             const popularRecipes = await api.getPopularRecipes();
             return popularRecipes;
         } catch (error) {
-            return rejectWithValue(error.message);
+            console.error("Error in getPopularRecipes operation:", error);
+            return rejectWithValue(error.message || "Failed to fetch popular recipes");
         }
     }
 );
