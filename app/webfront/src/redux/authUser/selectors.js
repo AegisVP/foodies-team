@@ -10,7 +10,7 @@ export const selectAuthUserFollowees = state => state.authUser.followees;
 export const selectAuthUserFollowers = state => state.authUser.followers;
 export const selectAuthUserRecipes = state => state.authUser.recipes;
 
-export const selectFavorites = state => state.authUser.favorites;
+export const selectFavorites = state => state.authUser.favorites.recipes;
 export const selectFavoritesPage = state => state.authUser.favorites.page;
 export const selectFavoritesTotalPages = state => state.authUser.favorites.pages;
 export const selectFavoritesLimit = state => state.authUser.favorites.limit;
