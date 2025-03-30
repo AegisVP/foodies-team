@@ -10,6 +10,7 @@ import UserProfileCard from 'src/components/UserProfile/UserProfileCard/UserProf
 import Button from 'src/components/Button';
 import {
     followUser,
+    getFavoriteRecipes,
     getFollowees,
     getFollowers,
     logoutUserOperation,
@@ -29,7 +30,7 @@ const PATHS = {
 const UserPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { id } = useParams();
+    let { id } = useParams();
     const userProfile = useSelector(selectUserProfile);
     const authUserId = useSelector(selectAuthUserId);
     const { followees } = useSelector(selectAuthUserFollowees);
@@ -54,6 +55,10 @@ const UserPage = () => {
         dispatch(followUser(userProfile.id));
     };
 
+    if (!id && authUserId) {
+        id = authUserId;
+    }
+
     useEffect(() => {
         setIsFollowee(!!followees?.find(followee => followee.id === id));
     }, [id, followees]);
@@ -68,19 +73,23 @@ const UserPage = () => {
             navigate(`/user/${id}/${PATHS.recipes}`, { replace: true });
             return;
         }
+        if (!authUserId && currentTab !== PATHS.recipes) {
+            navigate(`/user/${id}/${PATHS.recipes}`, { replace: true });
+            return;
+        }
         setActiveTab(currentTab);
         navigate(`/user/${id}/${currentTab}`, { replace: true });
-    }, [currentTab, navigate, id, ownUser]);
+    }, [currentTab, navigate, id, ownUser, authUserId]);
 
     useEffect(() => {
         if (!id && !authUserId) return;
 
-        dispatch(getUserProfile(id ?? authUserId));
-        dispatch(getFollowers(id ?? authUserId));
-        dispatch(getFollowees());
+        dispatch(getUserProfile(id));
+        authUserId && dispatch(getFollowers(id));
+        authUserId && dispatch(getFollowees());
         setOwnUser(id === authUserId);
         if (id === authUserId) {
-            // dispatch(getFavoriteRecipes());
+            dispatch(getFavoriteRecipes());
         }
     }, [authUserId, dispatch, id]);
 
@@ -113,11 +122,13 @@ const UserPage = () => {
                             </NavLink>
                         </li>
                     )}
-                    <li className={clsx(css.tab, { [css.active]: activetab === PATHS.followers })}>
-                        <NavLink to={ROUTES.FOLLOWERS} onClick={() => setActiveTab(PATHS.followers)}>
-                            Followers
-                        </NavLink>
-                    </li>
+                    {authUserId && (
+                        <li className={clsx(css.tab, { [css.active]: activetab === PATHS.followers })}>
+                            <NavLink to={ROUTES.FOLLOWERS} onClick={() => setActiveTab(PATHS.followers)}>
+                                Followers
+                            </NavLink>
+                        </li>
+                    )}
                     {ownUser && (
                         <li className={clsx(css.tab, { [css.active]: activetab === PATHS.following })}>
                             <NavLink to={ROUTES.FOLLOWING} onClick={() => setActiveTab(PATHS.following)}>
