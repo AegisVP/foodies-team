@@ -5,8 +5,6 @@ import { selectTotalPages, selectPage } from 'src/redux/recipes/selectors';
 import { fetchRecipes, fetchOwnerRecipes } from 'src/redux/recipes/operations';
 import { setPage } from 'src/redux/recipes/slice';
 import css from './RecipePagination.module.css';
-import { setFavoritePage } from 'src/redux/favorites/slice';
-import { getFavoriteRecipes } from 'src/redux/favorites/operation';
 
 const RecipePagination = ({ variant = 'all' }) => {
     const selectedArea = useSelector(selectSelectedArea);
@@ -25,13 +23,6 @@ const RecipePagination = ({ variant = 'all' }) => {
             dispatch(
                 fetchOwnerRecipes({
                     page: selectedPage.selected + 1,
-                })
-            );
-        } else if (variant === 'favorites') {
-            dispatch(setFavoritePage(newPage));
-            dispatch(
-                getFavoriteRecipes({
-                    page: newPage,
                 })
             );
         } else {

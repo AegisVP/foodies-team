@@ -1,21 +1,9 @@
 import axios from './axiosInstance';
 
-export const getCategories = async () => {
-    const categories = await axios.get('/categories');
-    return categories;
-};
+export const getCategories = async () => await axios.get('/categories');
 
-export const getIngredients = async () => {
-    const ingredients = await axios.get('/ingredients');
-    return ingredients;
-};
+export const getIngredients = async () => await axios.get('/ingredients');
 
-export const getAreas = async () => {
-    const areas = await axios.get('/areas');
-    return areas;
-};
+export const getAreas = async () => await axios.get('/areas');
 
-export const getTestimonials = async () => {
-    const testimonials = await axios.get('/testimonials');
-    return testimonials;
-};
+export const getTestimonials = async () => await axios.get('/testimonials');

@@ -2,50 +2,87 @@ import { Suspense, useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
-import { logoutUserOperation } from 'src/redux/authUser/operations';
 import Spinner from 'src/components/Spinner';
 import ROUTES from 'src/navigation/routes.js';
 import css from './UserPage.module.css';
 import { Loader } from 'src/components';
 import UserProfileCard from 'src/components/UserProfile/UserProfileCard/UserProfileCard';
-import { getUserInformation } from 'src/api/user';
-import { selectAuthUser } from 'src/redux/authUser/selectors';
-import { setProfile } from 'src/redux/user/slice';
-import { selectFollowees, selectFollowers, selectUserProfile } from 'src/redux/user/selectors';
 import Button from 'src/components/Button';
+import {
+    followUser,
+    getFollowees,
+    getFollowers,
+    logoutUserOperation,
+    unfollowUser,
+} from 'src/redux/authUser/operations';
+import { selectAuthUserFollowees, selectAuthUserId } from 'src/redux/authUser/selectors';
+import { selectUserProfile } from 'src/redux/user/selectors';
+import { getUserProfile } from 'src/redux/user/operations';
+
+const PATHS = {
+    recipes: 'recipes',
+    favorites: 'favorites',
+    following: 'following',
+    followers: 'followers',
+};
 
 const UserPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
     const userProfile = useSelector(selectUserProfile);
-    const loggedinUser = useSelector(selectAuthUser);
-    const followers = useSelector(selectFollowers);
-    const [activetab, setActiveTab] = useState('recipes');
-    useSelector(selectFollowees);
+    const authUserId = useSelector(selectAuthUserId);
+    const { followees } = useSelector(selectAuthUserFollowees);
+    const path = window.location.pathname.split('/').at(-1);
+    const currentTab = Object.keys(PATHS).find(tab => tab === path);
+    const [ownUser, setOwnUser] = useState(id === authUserId);
+    const [activetab, setActiveTab] = useState(null);
+    const [isFollowee, setIsFollowee] = useState(false);
 
-    useEffect(() => {
-        setActiveTab('recipes');
-    }, [id]);
-
-    const ownUser = userProfile?.id === loggedinUser?.id;
-
-    if (!ownUser) {
-        console.log('TODO: add follow/unfollow button');
-    }
+    // console.log({ isFollowing, followers,id });
 
     const handleLogout = () => {
         dispatch(logoutUserOperation());
         navigate('/');
     };
 
-    useEffect(() => {
-        if (!id && !loggedinUser?.id) return;
+    const handleFollowClick = () => {
+        if (isFollowee) {
+            dispatch(unfollowUser(userProfile.id));
+            return;
+        }
+        dispatch(followUser(userProfile.id));
+    };
 
-        getUserInformation(id ?? loggedinUser?.id).then(data => {
-            dispatch(setProfile(data));
-        });
-    }, [loggedinUser, dispatch, id]);
+    useEffect(() => {
+        setIsFollowee(!!followees?.find(followee => followee.id === id));
+    }, [id, followees]);
+
+    useEffect(() => {
+        if (currentTab === undefined) {
+            setActiveTab(PATHS.recipes);
+            navigate(`/user/${id}/${PATHS.recipes}`, { replace: true });
+            return;
+        }
+        if (!ownUser && (currentTab === PATHS.following || currentTab === PATHS.favorites)) {
+            navigate(`/user/${id}/${PATHS.recipes}`, { replace: true });
+            return;
+        }
+        setActiveTab(currentTab);
+        navigate(`/user/${id}/${currentTab}`, { replace: true });
+    }, [currentTab, navigate, id, ownUser]);
+
+    useEffect(() => {
+        if (!id && !authUserId) return;
+
+        dispatch(getUserProfile(id ?? authUserId));
+        dispatch(getFollowers(id ?? authUserId));
+        dispatch(getFollowees());
+        setOwnUser(id === authUserId);
+        if (id === authUserId) {
+            // dispatch(getFavoriteRecipes());
+        }
+    }, [authUserId, dispatch, id]);
 
     return userProfile ? (
         <div className={css.component}>
@@ -58,35 +95,32 @@ const UserPage = () => {
                 {ownUser ? (
                     <Button label="Logout" theme="dark" onClick={handleLogout} fullWidth={true} />
                 ) : (
-                    <Button
-                        label={followers?.find(follower => follower.id === id) ? 'Unfollow' : 'Follow'}
-                        fullWidth={true}
-                    />
+                    <Button label={isFollowee ? 'Unfollow' : 'Follow'} onClick={handleFollowClick} fullWidth={true} />
                 )}
             </div>
 
             <div>
                 <ul className={css.tabs}>
-                    <li className={clsx(css.tab, { [css.active]: activetab === 'recipes' })}>
-                        <NavLink to={ROUTES.RECIPES} onClick={() => setActiveTab('recipes')}>
+                    <li className={clsx(css.tab, { [css.active]: activetab === PATHS.recipes })}>
+                        <NavLink to={ROUTES.RECIPES} onClick={() => setActiveTab(PATHS.recipes)}>
                             {ownUser && 'My'} Recipes
                         </NavLink>
                     </li>
                     {ownUser && (
-                        <li className={clsx(css.tab, { [css.active]: activetab === 'favorites' })}>
-                            <NavLink to={ROUTES.FAVORITES} onClick={() => setActiveTab('favorites')}>
+                        <li className={clsx(css.tab, { [css.active]: activetab === PATHS.favorites })}>
+                            <NavLink to={ROUTES.FAVORITES} onClick={() => setActiveTab(PATHS.favorites)}>
                                 My Favorites
                             </NavLink>
                         </li>
                     )}
-                    <li className={clsx(css.tab, { [css.active]: activetab === 'followers' })}>
-                        <NavLink to={ROUTES.FOLLOWERS} onClick={() => setActiveTab('followers')}>
+                    <li className={clsx(css.tab, { [css.active]: activetab === PATHS.followers })}>
+                        <NavLink to={ROUTES.FOLLOWERS} onClick={() => setActiveTab(PATHS.followers)}>
                             Followers
                         </NavLink>
                     </li>
                     {ownUser && (
-                        <li className={clsx(css.tab, { [css.active]: activetab === 'following' })}>
-                            <NavLink to={ROUTES.FOLLOWING} onClick={() => setActiveTab('following')}>
+                        <li className={clsx(css.tab, { [css.active]: activetab === PATHS.following })}>
+                            <NavLink to={ROUTES.FOLLOWING} onClick={() => setActiveTab(PATHS.following)}>
                                 Following
                             </NavLink>
                         </li>

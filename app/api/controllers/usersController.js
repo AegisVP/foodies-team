@@ -146,17 +146,29 @@ export const getUserInformation = async (req, res, next) => {
 export const getUsersFollowers = async (req, res) => {
     const requestedUserId = req.query.id ?? req.user.id;
     const { followers: allFollowers } = await usersService.userWithFollowers(requestedUserId, req.user.id);
-    const { page, pages, total, items: followers } = paginateItems(req.query.page, req.query.limit, allFollowers);
+    const {
+        page,
+        limit,
+        pages,
+        total,
+        items: followers,
+    } = paginateItems(req.query.page, req.query.limit, allFollowers);
 
-    res.json({ page, pages, total, followers });
+    res.json({ page, limit, pages, total, followers });
 };
 
 export const getUsersFollowees = async (req, res) => {
     const requestedUserId = req.query.id ?? req.user.id;
     const { followees: allFollowees } = await usersService.userWithFollowees(requestedUserId, req.user.id);
-    const { page, pages, total, items: followees } = paginateItems(req.query.page, req.query.limit, allFollowees);
+    const {
+        page,
+        limit,
+        pages,
+        total,
+        items: followees,
+    } = paginateItems(req.query.page, req.query.limit, allFollowees);
 
-    res.json({ page, pages, total, followees });
+    res.json({ page, limit, pages, total, followees });
 };
 
 export const addUserToFollow = async (req, res, next) => {

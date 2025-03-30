@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'src/api/index.js';
 import { selectLimit } from './selectors';
 import { FETCH_RECIPES, FETCH_OWNER_RECIPES, ADD_RECIPE, DELETE_RECIPE, GET_RECIPE_BY_ID } from './constants.js';
-import { selectUserId } from 'src/redux/authUser/selectors';
+import { selectAuthUserId } from 'src/redux/authUser/selectors';
 
 export const fetchRecipes = createAsyncThunk(
     FETCH_RECIPES,
@@ -34,7 +34,7 @@ export const fetchOwnerRecipes = createAsyncThunk(
             const queryParams = new URLSearchParams();
             const state = getState();
             const limit = selectLimit(state);
-            const userId = selectUserId(state);
+            const userId = selectAuthUserId(state);
 
             if (!userId) {
                 return rejectWithValue('User ID not found');

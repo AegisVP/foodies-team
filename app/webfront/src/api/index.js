@@ -1,4 +1,4 @@
-import { loginUser } from './auth';
+import { loginUser, registerUser, logoutUser, getCurrentUser, updateAvatar } from './auth';
 import {
     getRecipes,
     getOwnerRecipes,
@@ -10,12 +10,26 @@ import {
     getFavoriteRecipes,
 } from './recipes';
 import { getCategories, getIngredients, getAreas, getTestimonials } from './common';
-import { getFollowers, getFollowees, followUser, unfollowUser } from './profile';
+import {
+    getUserInformation,
+    getUserFavoriteRecipes,
+    getFollowers,
+    getFollowees,
+    followUser,
+    unfollowUser,
+} from './user';
 
 // TODO add all api methods here for reexport
 export default {
     //auth
     loginUser,
+    registerUser,
+    logoutUser,
+    getCurrentUser,
+    updateAvatar,
+    getFollowees,
+    followUser,
+    unfollowUser,
     //recipes
     getRecipes,
     getOwnerRecipes,
@@ -30,8 +44,8 @@ export default {
     getIngredients,
     getAreas,
     getTestimonials,
+    //user
+    getUserInformation,
+    getUserFavoriteRecipes,
     getFollowers,
-    getFollowees,
-    followUser,
-    unfollowUser,
 };
