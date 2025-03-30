@@ -4,12 +4,10 @@ import usersService from '../services/usersService.js';
 
 const SECRET_KEY = process.env.JWT_SECRET;
 
-const authMiddleware = async (req, res, next) => {
-    const authHeader = req.headers.authorization;
-
+const extractUser = async authHeader => {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         console.warn('Authorization header missing or malformed');
-        return next(HttpError(401, 'Not authorized'));
+        return [null, HttpError(401, 'Not authorized')];
     }
 
     const token = authHeader.split(' ')[1];
@@ -18,17 +16,37 @@ const authMiddleware = async (req, res, next) => {
         decoded = jwt.verify(token, SECRET_KEY);
     } catch (error) {
         console.error('JWT Verification Error:', error);
-        return next(HttpError(401, 'Invalid token'));
+        return [null, HttpError(401, 'Invalid token')];
     }
 
     const user = await usersService.getUserById(decoded.id);
 
     if (!user || user.token !== token) {
         console.warn('User not found or token mismatch');
-        return next(HttpError(401, 'Not authorized'));
+        return [null, HttpError(401, 'Not authorized')];
+    }
+
+    return [user, null];
+};
+
+const authMiddleware = async (req, res, next) => {
+    const [user, error] = await extractUser(req.headers.authorization);
+
+    if (error) {
+        return next(error);
     }
 
     req.user = user;
+    next();
+};
+
+export const userMiddleware = async (req, res, next) => {
+    const [user] = await extractUser(req.headers.authorization);
+
+    if (user) {
+        req.user = user;
+    }
+
     next();
 };
 

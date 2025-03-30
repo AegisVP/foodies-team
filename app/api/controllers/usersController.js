@@ -110,7 +110,7 @@ export const updateAvatar = async (req, res, next) => {
 
 export const getUserInformation = async (req, res, next) => {
     const requestedUserId = req.params.id;
-    const authUserId = req.user.id;
+    const authUserId = req.user?.id;
     const user = await usersService.getUserById(requestedUserId);
 
     if (!user) {
