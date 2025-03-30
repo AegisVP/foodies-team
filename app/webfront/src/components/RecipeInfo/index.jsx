@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 import { selectFavoriteRecipesId } from 'src/redux/favorites/selectors';
 import { selectCurrentRecipe, selectIsRecipesLoading } from 'src/redux/recipes/selectors';
 import { addToFavorites, removeFromFavorites, getFavoriteRecipes } from 'src/redux/favorites/operation';
 import { getRecipeById } from 'src/redux/recipes/operations';
 import { resetCurrentRecipe } from 'src/redux/recipes/slice';
-import { selectUserId } from 'src/redux/authUser/selectors';
 
 import ROUTES from 'src/navigation/routes';
 
@@ -21,11 +20,12 @@ import { replaceUrlParams } from 'src/utils/replaceUrlParams';
 
 const RecipeInfo = ({ setCustomBreadcrumbs }) => {
     const { id } = useParams();
+    const { state } = useLocation();
+    const dispatch = useDispatch();
+
     const isRecipesLoading = useSelector(selectIsRecipesLoading);
     const recipe = useSelector(selectCurrentRecipe);
     const favoritesIds = useSelector(selectFavoriteRecipesId);
-    const userId = useSelector(selectUserId);
-    const dispatch = useDispatch();
 
     useEffect(() => {
         if (id && !isRecipesLoading && !recipe) {
@@ -37,11 +37,11 @@ const RecipeInfo = ({ setCustomBreadcrumbs }) => {
         if (recipe && setCustomBreadcrumbs) {
             setCustomBreadcrumbs([
                 { label: 'Home', path: ROUTES.HOME },
-                { label: 'Recipes', path: replaceUrlParams(ROUTES.USER_PAGE, { id: userId }) },
+                { label: 'Recipes', path: state?.from ? state.from : ROUTES.HOME },
                 { label: recipe.title, path: replaceUrlParams(ROUTES.RECIPE_PAGE, { id }) },
             ]);
         }
-    }, [id, recipe, setCustomBreadcrumbs]);
+    }, [id, recipe, setCustomBreadcrumbs, state]);
 
     useEffect(() => {
         if (!isRecipesLoading && !favoritesIds) {
