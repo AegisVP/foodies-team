@@ -119,7 +119,7 @@ async function getPopularRecipes() {
             r.id, u.id
         ORDER BY
             favorite_count DESC
-        LIMIT 12;`,
+        LIMIT 4;`,
         {
             type: QueryTypes.SELECT,
         }
