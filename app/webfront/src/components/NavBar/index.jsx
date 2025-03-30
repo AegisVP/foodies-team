@@ -1,14 +1,17 @@
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import ROUTES from 'src/navigation/routes.js';
 import spriteX from 'src/images/icons.svg#x';
+import { setSelectedCategory, setSelectedIngredients, setSelectedArea } from 'src/redux/common/slice';
 import css from './NavBar.module.css';
 import Logo from '../Logo';
 
 const NavBar = ({ isAddRecipe, isHome, isMobile, theme }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch();
     const toggleMenu = () => {
         setIsOpen(prev => !prev);
     };
@@ -16,6 +19,16 @@ const NavBar = ({ isAddRecipe, isHome, isMobile, theme }) => {
         [css.light]: theme === 'light',
         [css.dark]: theme === 'dark',
     });
+
+    function onHomeClick() {
+        if (isMobile) {
+            toggleMenu();
+        }
+
+        dispatch(setSelectedCategory(null));
+        dispatch(setSelectedArea(null));
+        dispatch(setSelectedIngredients([]));
+    }
 
     return (
         <nav className={classes}>
@@ -49,7 +62,7 @@ const NavBar = ({ isAddRecipe, isHome, isMobile, theme }) => {
                 <nav className={css.nav}>
                     <ul className={css['nav-list']}>
                         <li className={clsx(css['nav-item'], { [css.active]: isHome })}>
-                            <NavLink to={ROUTES.HOME} onClick={isMobile && toggleMenu}>
+                            <NavLink to={ROUTES.HOME} onClick={onHomeClick}>
                                 Home
                             </NavLink>
                         </li>
