@@ -104,7 +104,13 @@ const UserPage = () => {
                 {ownUser ? (
                     <Button label="Logout" theme="dark" onClick={handleLogout} fullWidth={true} />
                 ) : (
-                    <Button label={isFollowee ? 'Unfollow' : 'Follow'} onClick={handleFollowClick} fullWidth={true} />
+                    authUserId && (
+                        <Button
+                            label={isFollowee ? 'Unfollow' : 'Follow'}
+                            onClick={handleFollowClick}
+                            fullWidth={true}
+                        />
+                    )
                 )}
             </div>
 
