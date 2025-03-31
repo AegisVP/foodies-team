@@ -74,7 +74,7 @@ const authUserSlice = createSlice({
                 state.isAuthenticated = false;
                 state.token = null;
                 state.user = null;
-                // localStorage.removeItem('token');
+                localStorage.removeItem('token');
             })
             .addCase(loginUserOperation.fulfilled, (state, action) => {
                 state.isAuthenticated = true;
