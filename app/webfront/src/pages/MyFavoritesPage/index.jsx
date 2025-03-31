@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useShowError } from '../../hooks/useShowError.js';
 import { Loader } from '../../components';
@@ -10,17 +9,15 @@ import {
     selectAuthUserError,
     selectAuthUserIsLoading,
     selectFavorites,
-    selectFavoritesLimit,
     selectFavoritesPage,
     selectFavoritesTotalPages,
 } from 'src/redux/authUser/selectors.js';
-import { getFavoriteRecipes, removeFromFavorites } from 'src/redux/authUser/operations.js';
+import { getFavoriteRecipes, removeFavorite } from 'src/redux/authUser/operations.js';
 import ReactPaginate from 'react-paginate';
 
 const MyFavoritesPage = () => {
     const dispatch = useDispatch();
     const page = useSelector(selectFavoritesPage);
-    const limit = useSelector(selectFavoritesLimit);
     const pages = useSelector(selectFavoritesTotalPages);
     const recipes = useSelector(selectFavorites);
     const isLoading = useSelector(selectAuthUserIsLoading);
@@ -29,13 +26,8 @@ const MyFavoritesPage = () => {
     useShowError(error);
 
     const handlePageClick = data => {
-        dispatch(getFavoriteRecipes({ page: data.selected + 1, limit: limit }));
+        dispatch(getFavoriteRecipes({ page: data.selected + 1 }));
     };
-
-    useEffect(() => {
-        console.log('getting favorite recipes');
-        dispatch(getFavoriteRecipes({ page: 1 }));
-    }, [dispatch]);
 
     return (
         <div className={css.container}>
@@ -49,7 +41,7 @@ const MyFavoritesPage = () => {
                                 <OwnerRecipeCard
                                     recipe={recipe}
                                     onDelete={id => {
-                                        dispatch(removeFromFavorites(id));
+                                        dispatch(removeFavorite(id));
                                     }}
                                 />
                             </li>

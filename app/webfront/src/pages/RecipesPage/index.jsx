@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { selectRecipes, selectIsRecipesLoading, selectRecipesError } from 'src/redux/recipes/selectors';
-import { selectUserRecipes } from 'src/redux/user/selectors';
+import { selectUserRecipes, selectIsLoading, selectError } from 'src/redux/user/selectors';
 import { getUserRecipes } from 'src/redux/user/operations';
 import { useShowError } from 'src/hooks/useShowError.js';
 import css from './RecipesPage.module.css';
@@ -15,8 +14,8 @@ import ReactPaginate from 'react-paginate';
 const RecipesPage = () => {
     const dispatch = useDispatch();
     const { page, limit, pages, recipes } = useSelector(selectUserRecipes);
-    const isLoading = recipes?.isLoading;
-    const error = recipes?.error;
+    const isLoading = useSelector(selectIsLoading);
+    const error = useSelector(selectError);
     const { id } = useParams();
 
     useShowError(error);
@@ -24,12 +23,6 @@ const RecipesPage = () => {
     const handlePageClick = data => {
         dispatch(getUserRecipes({ owner: id, page: data.selected + 1, limit: limit }));
     };
-
-    useEffect(() => {
-        if (!id) return;
-
-        dispatch(getUserRecipes({ owner: id }));
-    }, [dispatch, id]);
 
     return (
         <div className={css.container}>

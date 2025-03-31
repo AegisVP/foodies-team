@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -8,8 +7,9 @@ import FollowerItem from 'src/components/FollowerItem';
 import Loader from 'src/components/Loader';
 import { selectIsMobile, selectIsTablet } from 'src/redux/common/selectors.js';
 import { getUserFollowers } from 'src/redux/user/operations';
-import { selectUserFollowers, selectIsLoading } from 'src/redux/user/selectors.js';
+import { selectUserFollowers, selectIsLoading, selectError } from 'src/redux/user/selectors.js';
 import { selectAuthUserId } from 'src/redux/authUser/selectors';
+import { useShowError } from 'src/hooks/useShowError';
 
 const FollowersPage = () => {
     const dispatch = useDispatch();
@@ -18,18 +18,14 @@ const FollowersPage = () => {
     const isMobile = useSelector(selectIsMobile);
     const isTablet = useSelector(selectIsTablet);
     const isLoading = useSelector(selectIsLoading);
-    const { id } = useParams();
+    const error = useSelector(selectError);
+    const { id } = useParams() ?? authUserId;
+
+    useShowError(error);
 
     const handlePageClick = data => {
         dispatch(getUserFollowers({ owner: id, page: data.selected + 1, limit: limit }));
     };
-
-    useEffect(() => {
-        if (id) {
-            console.log({ id });
-            dispatch(getUserFollowers(id));
-        }
-    }, [dispatch, id]);
 
     return isLoading ? (
         <Loader />
