@@ -13,3 +13,4 @@ export const selectRecipeArea = state => state.recipes.recipeDetails.area;
 export const selectCurrentIngredient = state => state.recipes.recipeDetails.currentIngredient;
 export const selectRecipeIngredients = state => state.recipes.recipeDetails.ingredients;
 export const selectCurrentRecipe = state => state.recipes.currentRecipe;
+export const selectPopularRecipes = state => state.recipes.popularRecipes;

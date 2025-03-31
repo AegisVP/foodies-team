@@ -106,6 +106,8 @@ async function getPopularRecipes() {
             r.thumb,
             r.time,
             u.id as user_id,
+            u.name as user_name,
+            u.avatar as user_avatar,
             COUNT(fr.id) as favorite_count
         FROM
             recipes r
@@ -117,7 +119,7 @@ async function getPopularRecipes() {
             r.id, u.id
         ORDER BY
             favorite_count DESC
-        LIMIT 12;`,
+        LIMIT 4;`,
         {
             type: QueryTypes.SELECT,
         }
@@ -131,7 +133,11 @@ async function getPopularRecipes() {
         thumb: recipe.thumb,
         time: recipe.time,
         favoriteCount: parseInt(recipe.favorite_count, 10) || 0,
-        owner: recipe.user_id,
+        owner: {
+            id: recipe.user_id,
+            name: recipe.user_name,
+            avatar: recipe.user_avatar,
+        },
     }));
 }
 
