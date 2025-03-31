@@ -4,27 +4,27 @@ import wrapper from 'src/redux/wrapper';
 import { getUserFollowers } from '../user/operations';
 
 export const updateUserAvatar = createAsyncThunk('authUser/updateAvatar', async (formData, { rejectWithValue }) => {
-    await wrapper(api.updateAvatar, rejectWithValue)(formData);
+    return await wrapper(api.updateAvatar, rejectWithValue)(formData);
 });
 
 export const logoutUserOperation = createAsyncThunk('authUser/logoutUser', async (_, { rejectWithValue }) => {
-    await wrapper(api.logoutUser, rejectWithValue)();
+    return await wrapper(api.logoutUser, rejectWithValue)();
 });
 
 export const loginUserOperation = createAsyncThunk('authUser/loginUser', async (credentials, { rejectWithValue }) => {
-    await wrapper(api.loginUser, rejectWithValue)(credentials);
+    return await wrapper(api.loginUser, rejectWithValue)(credentials);
 });
 
 export const refreshUser = createAsyncThunk('authUser/refreshUser', async (_, { rejectWithValue }) => {
-    await wrapper(api.getCurrentUser, rejectWithValue)();
+    return await wrapper(api.getCurrentUser, rejectWithValue)();
 });
 
 export const getFollowers = createAsyncThunk('authUser/getFollowers', async (id, { rejectWithValue }) => {
-    await wrapper(api.getFollowers, rejectWithValue)(id);
+    return await wrapper(api.getFollowers, rejectWithValue)(id);
 });
 
 export const getFollowees = createAsyncThunk('authUser/getFollowees', async (_, { rejectWithValue }) => {
-    await wrapper(api.getFollowees, rejectWithValue)();
+    return await wrapper(api.getFollowees, rejectWithValue)();
 });
 
 export const followUser = createAsyncThunk('authUser/followUser', async (id, { rejectWithValue, dispatch }) => {
@@ -45,7 +45,7 @@ export const addToFavorites = createAsyncThunk('authUser/addToFavorites', async 
 });
 
 export const removeFromFavorites = createAsyncThunk('authUser/removeFromFavorites', async (id, { rejectWithValue }) => {
-    await wrapper(api.removeFromFavorites, rejectWithValue)(id);
+    return await wrapper(api.removeFromFavorites, rejectWithValue)(id);
 });
 
 export const getFavoriteRecipes = createAsyncThunk(
