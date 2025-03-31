@@ -7,12 +7,14 @@ import cssPagination from 'src/components/RecipePagination/RecipePagination.modu
 import OwnerRecipeCard from 'src/components/OwnerRecipeCard';
 import {
     selectAuthUserError,
+    selectAuthUserId,
     selectAuthUserIsLoading,
+    selectFavoriteRecipesId,
     selectFavorites,
     selectFavoritesPage,
     selectFavoritesTotalPages,
 } from 'src/redux/authUser/selectors.js';
-import { getFavoriteRecipes, removeFavorite } from 'src/redux/authUser/operations.js';
+import { addToFavorites, getFavoriteRecipes, removeFavorite } from 'src/redux/authUser/operations.js';
 import ReactPaginate from 'react-paginate';
 
 const MyFavoritesPage = () => {
@@ -22,11 +24,20 @@ const MyFavoritesPage = () => {
     const recipes = useSelector(selectFavorites);
     const isLoading = useSelector(selectAuthUserIsLoading);
     const error = useSelector(selectAuthUserError);
+    const authUserId = useSelector(selectAuthUserId);
+    const favoritesIds = useSelector(selectFavoriteRecipesId);
 
     useShowError(error);
 
     const handlePageClick = data => {
         dispatch(getFavoriteRecipes({ page: data.selected + 1 }));
+    };
+
+    const onDelete = recipeId => {
+        if (!authUserId) {
+            return;
+        }
+        dispatch(favoritesIds.includes(recipeId) ? removeFavorite(recipeId) : addToFavorites(recipeId));
     };
 
     return (
@@ -38,12 +49,7 @@ const MyFavoritesPage = () => {
                     <ul className={css.recipeList}>
                         {recipes.map(recipe => (
                             <li key={recipe.id} className={css.recipeItem}>
-                                <OwnerRecipeCard
-                                    recipe={recipe}
-                                    onDelete={id => {
-                                        dispatch(removeFavorite(id));
-                                    }}
-                                />
+                                <OwnerRecipeCard recipe={recipe} onDelete={onDelete} />
                             </li>
                         ))}
                     </ul>
