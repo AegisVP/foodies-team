@@ -2,7 +2,7 @@ import axios, { HEADER_MFD } from './axiosInstance.js';
 
 export const getRecipes = async params => await axios.get('/recipes', { params });
 
-export const getOwnerRecipes = async (userId, query) => await axios.get(`/recipes/owner/${userId}?${query}`);
+export const getOwnerRecipes = async (userId, params) => await axios.get(`/recipes/owner/${userId}`, { params });
 
 export const addRecipe = async data => await axios.post('/recipes', data, { headers: HEADER_MFD });
 
