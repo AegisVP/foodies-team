@@ -1,7 +1,7 @@
 import { Area } from '../models/areas.js';
 
 async function listAreas(whereCondition = null) {
-    return await Area.findAll({ where: whereCondition });
+    return await Area.findAll({ where: whereCondition, order: [['name', 'ASC']] });
 }
 
 export default {

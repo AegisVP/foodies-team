@@ -1,13 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'src/api/index.js';
 import { selectLimit } from './selectors';
-import { 
-    FETCH_RECIPES, 
-    FETCH_OWNER_RECIPES, 
-    ADD_RECIPE, 
-    DELETE_RECIPE, 
+import {
+    FETCH_RECIPES,
+    FETCH_OWNER_RECIPES,
+    ADD_RECIPE,
+    DELETE_RECIPE,
     GET_RECIPE_BY_ID,
-    GET_POPULAR_RECIPES 
+    GET_POPULAR_RECIPES,
 } from './constants.js';
 import { selectAuthUserId } from 'src/redux/authUser/selectors';
 
@@ -25,7 +25,7 @@ export const fetchRecipes = createAsyncThunk(
             if (area) queryParams.append('area', area);
             if (ingredients && ingredients.length > 0) queryParams.append('ingredients', ingredients.join(','));
 
-            const recipes = await api.getRecipes(queryParams.toString());
+            const recipes = await api.getRecipes(queryParams);
 
             return recipes;
         } catch (error) {
@@ -50,7 +50,7 @@ export const fetchOwnerRecipes = createAsyncThunk(
             queryParams.append('limit', limit);
             if (page) queryParams.append('page', page);
 
-            const recipes = await api.getOwnerRecipes(userId, queryParams.toString());
+            const recipes = await api.getOwnerRecipes(userId, queryParams);
 
             return recipes;
         } catch (error) {
@@ -86,15 +86,12 @@ export const getRecipeById = createAsyncThunk(GET_RECIPE_BY_ID, async (id, { rej
     }
 });
 
-export const getPopularRecipes = createAsyncThunk(
-    GET_POPULAR_RECIPES,
-    async (_, { rejectWithValue }) => {
-        try {
-            const popularRecipes = await api.getPopularRecipes();
-            return popularRecipes;
-        } catch (error) {
-            console.error("Error in getPopularRecipes operation:", error);
-            return rejectWithValue(error.message || "Failed to fetch popular recipes");
-        }
+export const getPopularRecipes = createAsyncThunk(GET_POPULAR_RECIPES, async (_, { rejectWithValue }) => {
+    try {
+        const popularRecipes = await api.getPopularRecipes();
+        return popularRecipes;
+    } catch (error) {
+        console.error('Error in getPopularRecipes operation:', error);
+        return rejectWithValue(error.message || 'Failed to fetch popular recipes');
     }
-);
+});

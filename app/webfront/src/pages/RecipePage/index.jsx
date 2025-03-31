@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import RecipeInfo from 'src/components/RecipeInfo';
 import AuthModal from 'src/components/AuthModal';
@@ -12,7 +12,6 @@ import PopularRecipes from 'src/components/PopularRecipes';
 
 const RecipePage = ({ setCustomBreadcrumbs }) => {
     const navigate = useNavigate();
-    const location = useLocation();
 
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const {
@@ -32,21 +31,15 @@ const RecipePage = ({ setCustomBreadcrumbs }) => {
         }
     };
 
-    const onRecipeDetailsClick = (id) => {
+    const onRecipeDetailsClick = id => {
         // Force a full page reload when navigating to a new recipe
         window.location.href = `/recipe/${id}`;
     };
 
     return (
         <>
-            <RecipeInfo 
-                setCustomBreadcrumbs={setCustomBreadcrumbs} 
-                onUserAvatarClick={onUserAvatarClick} 
-            />
-            <PopularRecipes 
-                onUserAvatarClick={onUserAvatarClick}
-                onRecipeDetailsClick={onRecipeDetailsClick}
-            />
+            <RecipeInfo setCustomBreadcrumbs={setCustomBreadcrumbs} onUserAvatarClick={onUserAvatarClick} />
+            <PopularRecipes onUserAvatarClick={onUserAvatarClick} onRecipeDetailsClick={onRecipeDetailsClick} />
             <AuthModal
                 isLoginModalOpen={isLoginModalOpen}
                 isRegisterModalOpen={isRegisterModalOpen}

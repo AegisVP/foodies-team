@@ -123,7 +123,8 @@
     background-color: var(--white);
 
     &:hover,
-    &:focus {
+    &:focus,
+    &active {
         color: var(--white);
         background-color: var(--extra-black);
         border-color: transparent;

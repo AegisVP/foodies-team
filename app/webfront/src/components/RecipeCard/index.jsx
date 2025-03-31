@@ -2,6 +2,9 @@ import spriteArrow from 'src/images/icons.svg#arrow';
 import spriteHeart from 'src/images/icons.svg#heart';
 
 import css from './RecipeCard.module.css';
+import { useSelector } from 'react-redux';
+import { selectFavoriteRecipesId } from 'src/redux/authUser/selectors';
+import clsx from 'clsx';
 
 const RecipeCard = ({
     mealImage,
@@ -11,9 +14,15 @@ const RecipeCard = ({
     userAvatar,
     userName,
     recipeId,
-    onUserAvatarClick,
-    onRecipeDetailsClick,
+    onUserAvatarClick = () => {},
+    onRecipeDetailsClick = () => {},
+    onFavoriteClick = () => {},
 }) => {
+    const favoritesIds = useSelector(selectFavoriteRecipesId);
+    const isFav = favoritesIds.includes(recipeId);
+    const classes = clsx(css.cardBtn, {
+        [css.cardBtn]: isFav,
+    });
     return (
         <div className={css.card}>
             <img src={mealImage} alt="meal" className={css.cardImg} />
@@ -25,7 +34,7 @@ const RecipeCard = ({
                     <p className={css.userName}>{userName}</p>
                 </button>
                 <div className={css.cardActions}>
-                    <button className={css.cardBtn} aria-label="Add to favorite">
+                    <button className={classes} aria-label="Toggle favorite" onClick={() => onFavoriteClick(recipeId)}>
                         <svg>
                             <use href={spriteHeart} className={css.arrow}></use>
                         </svg>

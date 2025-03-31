@@ -31,9 +31,6 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setIsLoading: (state, { payload }) => {
-            state.isLoading = payload;
-        },
         setProfile: setUserProfile,
     },
     extraReducers: builder => {
