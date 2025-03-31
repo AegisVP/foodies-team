@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'src/api';
 import wrapper from 'src/redux/wrapper';
-import { selectFavoritesLimit } from './selectors';
+import { getUserFollowers } from '../user/operations';
 
 export const updateUserAvatar = createAsyncThunk(
     'authUser/updateAvatar',
@@ -36,14 +36,14 @@ export const getFollowees = createAsyncThunk(
 export const followUser = createAsyncThunk('authUser/followUser', async (id, { rejectWithValue, dispatch }) => {
     await wrapper(api.followUser, rejectWithValue)(id);
     dispatch(getFollowees());
-    dispatch(getFollowers(id));
+    dispatch(getUserFollowers(id));
 });
 
 export const unfollowUser = createAsyncThunk('authUser/unfollowUser', async (id, { rejectWithValue, dispatch }) => {
     console.log('unfollowUser action');
     await wrapper(api.unfollowUser, rejectWithValue)(id);
     dispatch(getFollowees());
-    dispatch(getFollowers(id));
+    dispatch(getUserFollowers(id));
 });
 
 export const addToFavorites = createAsyncThunk('authUser/addToFavorites', async (id, { rejectWithValue, dispatch }) => {
