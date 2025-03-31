@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsRecipesLoading, selectPopularRecipes, selectRecipesError } from 'src/redux/recipes/selectors';
 import { selectFavoriteRecipesId } from 'src/redux/authUser/selectors';
-import { addToFavorites, removeFromFavorites } from 'src/redux/authUser/operations';
+import { addToFavorites, removeFavorite } from 'src/redux/authUser/operations';
 import { getPopularRecipes } from 'src/redux/recipes/operations';
 
 import RecipeCard from 'src/components/RecipeCard';
@@ -28,11 +28,7 @@ const PopularRecipes = ({ onUserAvatarClick, onRecipeDetailsClick }) => {
 
     const handleToggleFavorite = recipeId => {
         try {
-            dispatch(
-                favoritesIds.includes(recipeId)
-                    ? removeFromFavorites(recipeId)
-                    : addToFavorites(recipeId)
-            );
+            dispatch(favoritesIds.includes(recipeId) ? removeFavorite(recipeId) : addToFavorites(recipeId));
         } catch (error) {
             console.error('Error toggling favorite:', error);
         }
@@ -60,7 +56,9 @@ const PopularRecipes = ({ onUserAvatarClick, onRecipeDetailsClick }) => {
                         <RecipeCard
                             key={recipe.id}
                             recipeId={recipe.id}
-                            mealImage={recipe.thumb || recipe.preview || 'https://via.placeholder.com/300x200?text=No+Image'}
+                            mealImage={
+                                recipe.thumb || recipe.preview || 'https://via.placeholder.com/300x200?text=No+Image'
+                            }
                             title={recipe.title || 'Untitled Recipe'}
                             description={
                                 recipe.description ||
