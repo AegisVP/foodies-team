@@ -42,7 +42,7 @@ const RecipesPage = () => {
 
             {!isLoading && recipes?.length > 0 && (
                 <>
-                    <ul className={css.recipeList}>
+                    <ul>
                         {recipes.map(recipe => (
                             <li key={recipe.id} className={css.recipeItem}>
                                 <OwnerRecipeCard recipe={recipe} onDelete={onDelete} />

@@ -26,6 +26,8 @@ const SharedLayout = ({ children, customBreadcrumbs }) => {
             dispatch(setIsTablet(width >= 768 && width < 1440));
         };
 
+        handleResize();
+
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, [dispatch]);
