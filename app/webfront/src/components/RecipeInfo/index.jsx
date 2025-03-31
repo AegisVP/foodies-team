@@ -51,10 +51,12 @@ const RecipeInfo = ({ setCustomBreadcrumbs, onUserAvatarClick }) => {
 
     useEffect(() => {
         return () => {
-            setCustomBreadcrumbs(null);
+            if (setCustomBreadcrumbs) {
+                setCustomBreadcrumbs(null);
+            }
             dispatch(resetCurrentRecipe());
         };
-    }, [dispatch]);
+    }, [dispatch, setCustomBreadcrumbs]);
 
     const addToFavorite = () => {
         if (recipe) {
@@ -66,7 +68,6 @@ const RecipeInfo = ({ setCustomBreadcrumbs, onUserAvatarClick }) => {
                         if (response.error) {
                             console.error('Failed to add to favorites:', response.error.message);
                         } else {
-                            console.log('Recipe added to favorites successfully!');
                             dispatch(getFavoriteRecipes());
                         }
                     })
@@ -79,7 +80,6 @@ const RecipeInfo = ({ setCustomBreadcrumbs, onUserAvatarClick }) => {
                         if (response.error) {
                             console.error('Failed to remove from favorites:', response.error.message);
                         } else {
-                            console.log('Recipe removed from favorites successfully!');
                             dispatch(getFavoriteRecipes());
                         }
                     })

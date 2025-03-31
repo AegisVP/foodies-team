@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchRecipes, fetchOwnerRecipes, addRecipe, deleteRecipe, getRecipeById } from './operations';
+import { 
+    fetchRecipes, 
+    fetchOwnerRecipes, 
+    addRecipe, 
+    deleteRecipe, 
+    getRecipeById,
+    getPopularRecipes 
+} from './operations';
 
 const recipeDetailsInitialState = {
     thumb: null,
@@ -24,6 +31,7 @@ const recipesSlice = createSlice({
         totalPages: 1,
         limit: 8,
         currentRecipe: null,
+        popularRecipes: [],
         recipeDetails: recipeDetailsInitialState,
         isLoading: false,
         error: null,
@@ -93,6 +101,9 @@ const recipesSlice = createSlice({
             })
             .addCase(getRecipeById.fulfilled, (state, action) => {
                 state.currentRecipe = action.payload;
+            })
+            .addCase(getPopularRecipes.fulfilled, (state, action) => {
+                state.popularRecipes = action.payload;
             })
             .addMatcher(
                 action => action.type.endsWith('/rejected'),

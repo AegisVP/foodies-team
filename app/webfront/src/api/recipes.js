@@ -15,3 +15,5 @@ export const addToFavorites = async id => await axios.post(`/recipes/${id}/favor
 export const removeFromFavorites = async id => await axios.delete(`/recipes/${id}/favorite`);
 
 export const getFavoriteRecipes = async params => await axios.get('/recipes/favorites', { params });
+
+export const getPopularRecipes = async () => await axios.get('/recipes/popular');

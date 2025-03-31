@@ -6,6 +6,7 @@ import {
     deleteRecipe,
     getRecipeById,
     addToFavorites,
+    getPopularRecipes,
     removeFromFavorites,
     getFavoriteRecipes,
 } from './recipes';
@@ -38,6 +39,7 @@ export default {
     getRecipeById,
     addToFavorites,
     removeFromFavorites,
+    getPopularRecipes,
     getFavoriteRecipes,
     //common
     getCategories,
