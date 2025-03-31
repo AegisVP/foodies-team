@@ -7,7 +7,7 @@ import {
     getFollowers,
     getFollowees,
     getFavoriteRecipes,
-    removeFromFavorites,
+    removeFavorite,
 } from './operations';
 
 const token = localStorage.getItem('token');
@@ -54,7 +54,7 @@ const authUserSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder
-            .addCase(removeFromFavorites.fulfilled, (state, action) => {
+            .addCase(removeFavorite.fulfilled, (state, action) => {
                 state.favorites.recipes.filter(recipe => recipe.id !== action.meta.arg);
             })
             .addCase(getFavoriteRecipes.fulfilled, (state, action) => {

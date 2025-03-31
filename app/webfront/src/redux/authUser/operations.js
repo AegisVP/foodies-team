@@ -44,8 +44,9 @@ export const addToFavorites = createAsyncThunk('authUser/addToFavorites', async 
     dispatch(getFavoriteRecipes());
 });
 
-export const removeFromFavorites = createAsyncThunk('authUser/removeFromFavorites', async (id, { rejectWithValue }) => {
-    return await wrapper(api.removeFromFavorites, rejectWithValue)(id);
+export const removeFavorite = createAsyncThunk('authUser/removeFavorite', async (id, { rejectWithValue, dispatch }) => {
+    await wrapper(api.removeFromFavorites, rejectWithValue)(id);
+    dispatch(getFavoriteRecipes());
 });
 
 export const getFavoriteRecipes = createAsyncThunk(

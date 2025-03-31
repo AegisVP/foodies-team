@@ -4,7 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 
 import { selectFavoriteRecipesId } from 'src/redux/authUser/selectors';
 import { selectCurrentRecipe, selectIsRecipesLoading } from 'src/redux/recipes/selectors';
-import { addToFavorites, removeFromFavorites, getFavoriteRecipes } from 'src/redux/authUser/operations';
+import { addToFavorites, removeFavorite, getFavoriteRecipes } from 'src/redux/authUser/operations';
 import { getRecipeById } from 'src/redux/recipes/operations';
 import { resetCurrentRecipe } from 'src/redux/recipes/slice';
 import { replaceUrlParams } from 'src/utils/replaceUrlParams';
@@ -74,7 +74,7 @@ const RecipeInfo = ({ setCustomBreadcrumbs, onUserAvatarClick }) => {
                         console.error('Error adding to favorites:', error);
                     });
             } else {
-                dispatch(removeFromFavorites(id))
+                dispatch(removeFavorite(id))
                     .then(response => {
                         if (response.error) {
                             console.error('Failed to remove from favorites:', response.error.message);
