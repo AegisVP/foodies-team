@@ -11,7 +11,7 @@ import { Loader } from 'src/components';
 import css from './PopularRecipes.module.css';
 import { useShowError } from 'src/hooks/useShowError';
 
-const PopularRecipes = ({ onUserAvatarClick }) => {
+const PopularRecipes = ({ onUserAvatarClick, onRecipeDetailsClick }) => {
     const dispatch = useDispatch();
     const isLoading = useSelector(selectIsRecipesLoading);
     const recipeFetchError = useSelector(selectRecipesError);
@@ -21,36 +21,26 @@ const PopularRecipes = ({ onUserAvatarClick }) => {
     useShowError(recipeFetchError);
 
     useEffect(() => {
-        if (isLoading) {
-            return;
+        if (!isLoading && !popularRecipes?.length) {
+            dispatch(getPopularRecipes());
         }
-
-        if (popularRecipes?.length > 0) {
-            return;
-        }
-
-        dispatch(getPopularRecipes());
     }, [isLoading, popularRecipes]);
 
     const handleToggleFavorite = recipeId => {
         try {
-            const isFavorite = favoritesIds.includes(recipeId);
-
-            if (isFavorite) {
-                dispatch(removeFromFavorites(recipeId));
-            } else {
-                dispatch(addToFavorites(recipeId));
-            }
+            dispatch(
+                favoritesIds.includes(recipeId)
+                    ? removeFromFavorites(recipeId)
+                    : addToFavorites(recipeId)
+            );
         } catch (error) {
             console.error('Error toggling favorite:', error);
         }
     };
 
-    if (isLoading) {
-        return <Loader />;
-    }
+    if (isLoading) return <Loader />;
 
-    if (!Array.isArray(popularRecipes) || popularRecipes.length === 0) {
+    if (!Array.isArray(popularRecipes) || !popularRecipes.length) {
         return (
             <div className={css.container}>
                 <h2 className={css.title}>POPULAR RECIPES</h2>
@@ -60,43 +50,34 @@ const PopularRecipes = ({ onUserAvatarClick }) => {
     }
 
     return (
-        popularRecipes && (
-            <div className={css.container}>
-                <h2 className={css.title}>POPULAR RECIPES</h2>
+        <div className={css.container}>
+            <h2 className={css.title}>POPULAR RECIPES</h2>
+            <div className={css.grid}>
+                {popularRecipes.map(recipe => {
+                    if (!recipe?.id) return null;
 
-                <div className={css.grid}>
-                    {popularRecipes.map(recipe => {
-                        if (!recipe) {
-                            return null;
-                        }
-
-                        return (
-                            <RecipeCard
-                                recipe={recipe}
-                                key={recipe.id}
-                                mealImage={
-                                    recipe.thumb ||
-                                    recipe.preview ||
-                                    'https://via.placeholder.com/300x200?text=No+Image'
-                                }
-                                title={recipe.title || 'Untitled Recipe'}
-                                description={
-                                    recipe.description ||
-                                    recipe.instructions?.substring(0, 80) + '...' ||
-                                    'No description available'
-                                }
-                                userAvatar={recipe.owner?.avatar || 'https://via.placeholder.com/40'}
-                                userName={recipe.owner?.name || 'Unknown Chef'}
-                                recipeId={recipe.id}
-                                onFavoriteToggle={() => handleToggleFavorite(recipe.id)}
-                                isFavorite={favoritesIds.includes(recipe.id)}
-                                onUserAvatarClick={() => onUserAvatarClick(recipe.owner.id)}
-                            />
-                        );
-                    })}
-                </div>
+                    return (
+                        <RecipeCard
+                            key={recipe.id}
+                            recipeId={recipe.id}
+                            mealImage={recipe.thumb || recipe.preview || 'https://via.placeholder.com/300x200?text=No+Image'}
+                            title={recipe.title || 'Untitled Recipe'}
+                            description={
+                                recipe.description ||
+                                recipe.instructions?.substring(0, 80) + '...' ||
+                                'No description available'
+                            }
+                            userAvatar={recipe.owner?.avatar || 'https://via.placeholder.com/40'}
+                            userName={recipe.owner?.name || 'Unknown Chef'}
+                            onFavoriteToggle={() => handleToggleFavorite(recipe.id)}
+                            isFavorite={favoritesIds.includes(recipe.id)}
+                            onUserAvatarClick={() => onUserAvatarClick(recipe.owner.id)}
+                            onRecipeDetailsClick={() => onRecipeDetailsClick(recipe.id)}
+                        />
+                    );
+                })}
             </div>
-        )
+        </div>
     );
 };
 
