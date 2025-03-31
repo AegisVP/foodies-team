@@ -20,8 +20,14 @@
 .large {
     padding: 15px 40px;
 }
+
 .small {
     padding: 10px 25px;
+}
+
+.x-small {
+    font-size: 14px;
+    padding: 8px 16px;
 }
 
 .light {
@@ -90,6 +96,16 @@ svg {
     height: 42px;
     padding: 0;
     width: 42px;
+
+    &.x-small {
+        height: 36px;
+        width: 36px;
+
+        svg {
+            height: 16px;
+            width: 16px;
+        }
+    }
 }
 
 .withIcon {

@@ -54,7 +54,7 @@ const FollowerItem = ({ avatar, id, isFollowing, isMobile, isTablet, recipes, re
                         <Button
                             ariaLabel={isFollowing ? `Unfollow ${username}` : `Follow ${username}`}
                             label={isFollowing ? 'Following' : 'Follow'}
-                            size="small"
+                            size={isMobile ? "x-small" : "small"}
                             disabled={buttonDisabled}
                             onClick={onButtonClick}
                         />
@@ -70,7 +70,12 @@ const FollowerItem = ({ avatar, id, isFollowing, isMobile, isTablet, recipes, re
                 ))}
             </div>
 
-            <Button className={css.action} ariaLabel="View profile" icon={iconArrow} to={`/user/${id}`} />
+            <Button
+                className={css.action}
+                ariaLabel="View profile"
+                icon={iconArrow}
+                to={`/user/${id}`}
+                size={isMobile ? "x-small" : "small"} />
         </li>
     );
 };

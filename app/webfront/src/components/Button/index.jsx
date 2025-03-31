@@ -28,6 +28,7 @@ const Button = ({
             [css.withIcon]: icon && label,
             [css.large]: size === 'large',
             [css.small]: size === 'small',
+            [css['x-small']]: size === 'x-small',
         },
         className
     );
@@ -78,14 +79,14 @@ Button.propTypes = {
     fullWidth: PropTypes.bool,
     href: PropTypes.string,
     icon: PropTypes.string,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
     onClick: PropTypes.func,
     theme: PropTypes.oneOf(['light', 'dark', 'light-transparent']),
     to: PropTypes.string,
     className: PropTypes.string,
     type: PropTypes.string,
     disabled: PropTypes.bool,
-    size: PropTypes.oneOf(['large', 'small']),
+    size: PropTypes.oneOf(['large', 'small', 'x-small']),
 };
 
 export default Button;

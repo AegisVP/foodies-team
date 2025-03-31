@@ -20,6 +20,7 @@ const OwnerRecipeCard = ({ recipe, onDelete = () => {} }) => {
             </div>
             <div className={css.actions}>
                 <button
+                    type="button"
                     className={css.actionButton}
                     aria-label="Open recipe"
                     onClick={() =>
@@ -28,7 +29,11 @@ const OwnerRecipeCard = ({ recipe, onDelete = () => {} }) => {
                 >
                     <img src={arrowIcon} alt="Open" />
                 </button>
-                <button className={css.actionButton} aria-label="Delete recipe" onClick={() => onDelete(id)}>
+                <button
+                    type="button"
+                    className={css.actionButton}
+                    aria-label="Delete recipe"
+                    onClick={() => onDelete(id)}>
                     <img src={trashIcon} alt="Delete" />
                 </button>
             </div>
