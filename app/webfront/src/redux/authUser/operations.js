@@ -59,14 +59,5 @@ export const removeFromFavorites = createAsyncThunk(
 
 export const getFavoriteRecipes = createAsyncThunk(
     'authUser/getFavoriteRecipes',
-    async ({ page = 1 }, { rejectWithValue, getState }) => {
-        const queryParams = new URLSearchParams();
-        const state = getState();
-        const limit = selectFavoritesLimit(state);
-        queryParams.append('limit', limit);
-
-        if (page) queryParams.append('page', page);
-
-        return await wrapper(api.getFavoriteRecipes, rejectWithValue)(queryParams.toString());
-    }
+    async (params, { rejectWithValue }) => await wrapper(api.getFavoriteRecipes, rejectWithValue)(params)
 );
