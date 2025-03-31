@@ -1,7 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'src/api/index.js';
 import { selectLimit } from './selectors';
-import { FETCH_RECIPES, FETCH_OWNER_RECIPES, ADD_RECIPE, DELETE_RECIPE, GET_RECIPE_BY_ID } from './constants.js';
+import { 
+    FETCH_RECIPES, 
+    FETCH_OWNER_RECIPES, 
+    ADD_RECIPE, 
+    DELETE_RECIPE, 
+    GET_RECIPE_BY_ID,
+    GET_POPULAR_RECIPES 
+} from './constants.js';
 import { selectAuthUserId } from 'src/redux/authUser/selectors';
 
 export const fetchRecipes = createAsyncThunk(
@@ -78,3 +85,16 @@ export const getRecipeById = createAsyncThunk(GET_RECIPE_BY_ID, async (id, { rej
         return rejectWithValue(error.message);
     }
 });
+
+export const getPopularRecipes = createAsyncThunk(
+    GET_POPULAR_RECIPES,
+    async (_, { rejectWithValue }) => {
+        try {
+            const popularRecipes = await api.getPopularRecipes();
+            return popularRecipes;
+        } catch (error) {
+            console.error("Error in getPopularRecipes operation:", error);
+            return rejectWithValue(error.message || "Failed to fetch popular recipes");
+        }
+    }
+);
