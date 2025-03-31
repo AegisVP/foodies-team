@@ -3,9 +3,14 @@ import api from 'src/api';
 import wrapper from 'src/redux/wrapper';
 import { getUserFollowers } from '../user/operations';
 
-export const updateUserAvatar = createAsyncThunk('authUser/updateAvatar', async (formData, { rejectWithValue }) => {
-    return await wrapper(api.updateAvatar, rejectWithValue)(formData);
-});
+export const updateUserAvatar = createAsyncThunk(
+    'authUser/updateAvatar',
+    async (formData, { rejectWithValue, dispatch }) => {
+        const res = await wrapper(api.updateAvatar, rejectWithValue)(formData);
+        dispatch(refreshUser());
+        return res;
+    }
+);
 
 export const logoutUserOperation = createAsyncThunk('authUser/logoutUser', async (_, { rejectWithValue }) => {
     return await wrapper(api.logoutUser, rejectWithValue)();
